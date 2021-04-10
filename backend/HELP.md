@@ -1,3 +1,8 @@
+# Read Me First
+The following was discovered as part of building this project:
+
+* The original package name 'com.example.power-nine' is invalid and this project uses 'com.example.powernine' instead.
+
 # Getting Started
 
 ### Reference Documentation
