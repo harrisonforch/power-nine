@@ -1,10 +1,12 @@
 package com.example.powernine.person;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.security.SecureRandom;
 
+@Document(collection = "user")
 public class User {
 
     @Id
@@ -48,5 +50,10 @@ public class User {
     static String getPasswordHash(String password) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10, new SecureRandom());
         return encoder.encode(password);
+    }
+
+    @Override
+    public String toString() {
+        return getUsername() + " " + getPasswordHash(getPassword());
     }
 }

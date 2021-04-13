@@ -1,4 +1,4 @@
-package com.example.powernine.person;
+package com.example.powernine.security;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
