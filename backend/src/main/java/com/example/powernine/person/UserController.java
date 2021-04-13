@@ -19,21 +19,19 @@ public class UserController {
         return repository.findAll();
     }
 
-    @PostMapping("/users")
-    User newUser(@RequestBody User newUser) {
-        System.out.println(newUser);
-        return repository.save(newUser);
-    }
-
-    @GetMapping("/users/{id}/{password}")
-    User validateLogin(@PathVariable String id, @PathVariable String password) {
+    @PostMapping("/users/add/{id}/{password}")
+    User newUser(@PathVariable String id, @PathVariable String password) {
         Optional<User> user = this.repository.findById(id);
-        if (isPresent(user, password))
-            return user.get();
+        if (!isPresent(user, password)) {
+            User newUser = new User();
+            newUser.setUsername(id);
+            newUser.setPassword(password);
+            return repository.save(newUser);
+        }
         return null;
     }
 
-    @DeleteMapping("/users/{id}/{password}")
+    @DeleteMapping("/users/delete/{id}/{password}")
     boolean deleteUser(@PathVariable String id, @PathVariable String password) {
         Optional<User> user = this.repository.findById(id);
         if (isPresent(user, password)) {

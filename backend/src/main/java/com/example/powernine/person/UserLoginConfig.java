@@ -8,6 +8,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
@@ -22,6 +24,8 @@ public class UserLoginConfig extends WebSecurityConfigurerAdapter {
             .formLogin()
                 .permitAll()
                 .and()
+            .httpBasic()
+            .and()
             .logout()
                 .permitAll();
     }
@@ -29,6 +33,7 @@ public class UserLoginConfig extends WebSecurityConfigurerAdapter {
     @Bean
     @Override
     public UserDetailsService userDetailsService() {
+        // curl -i http://localhost:8080/users --user user:password
         UserDetails user =
                 User.withDefaultPasswordEncoder()
                         .username("user")
