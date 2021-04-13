@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 @Configuration
 @EnableWebSecurity
-public class LoginConfig extends WebSecurityConfigurerAdapter {
+public class UserLoginConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
@@ -24,12 +24,5 @@ public class LoginConfig extends WebSecurityConfigurerAdapter {
                 .and()
             .logout()
                 .permitAll();
-    }
-
-    @Bean
-    @Override
-    // TODO: Implement: in-memory store of result of user query
-    public UserDetailsService userDetailsService() {
-        return null;
     }
 }

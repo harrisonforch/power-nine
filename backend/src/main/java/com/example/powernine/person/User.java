@@ -1,6 +1,9 @@
 package com.example.powernine.person;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.security.SecureRandom;
 
 public class User {
 
@@ -30,6 +33,15 @@ public class User {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = getPasswordHash(password);
+    }
+
+    public boolean comparePasswords(String password) {
+        return this.password.equals(getPasswordHash(password));
+    }
+
+    static String getPasswordHash(String password) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10, new SecureRandom());
+        return encoder.encode(password);
     }
 }
