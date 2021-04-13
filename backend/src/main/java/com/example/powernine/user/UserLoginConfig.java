@@ -1,4 +1,4 @@
-package com.example.powernine.person;
+package com.example.powernine.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -19,9 +19,9 @@ public class UserLoginConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/register", "/search").permitAll()
                 .anyRequest().authenticated()
                 .and()
-            .formLogin()
-                .permitAll()
-                .and()
+//            .formLogin()
+//                .permitAll()
+//                .and()
             .httpBasic()
                 .and()
             .logout()
@@ -35,9 +35,10 @@ public class UserLoginConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("admin").password(passwordEncoder().encode("admin"))
-                .authorities("ROLE_USER");
+//        auth.inMemoryAuthentication()
+//                .withUser("admin").password(passwordEncoder().encode("admin"))
+//                .authorities("ROLE_USER");
+        auth.userDetailsService(new CustomUserDetailsService());
     }
 
     @Bean

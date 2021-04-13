@@ -1,4 +1,4 @@
-package com.example.powernine.person;
+package com.example.powernine.user;
 
 import org.springframework.web.bind.annotation.*;
 
@@ -20,19 +20,13 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    User newEmployee(@RequestBody User newEmployee) {
-        newEmployee.setPassword(User.getPasswordHash(newEmployee.getPassword()));
-        return repository.save(newEmployee);
+    User newEmployee(@RequestBody User user) {
+        return repository.save(user);
     }
 
-    @DeleteMapping("/users/delete/{id}/{password}")
-    boolean deleteUser(@PathVariable String id, @PathVariable String password) {
-        Optional<User> user = this.repository.findById(id);
-        if (isPresent(user, password)) {
-            repository.delete(user.get());
-            return true;
-        }
-        return false;
+    @DeleteMapping("/users")
+    void deleteUser(@RequestBody User user) {
+        repository.delete(user);
     }
 
     private static boolean isPresent(Optional<User> user, String password) {

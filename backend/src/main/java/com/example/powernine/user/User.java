@@ -1,4 +1,4 @@
-package com.example.powernine.person;
+package com.example.powernine.user;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

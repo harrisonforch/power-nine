@@ -1,4 +1,4 @@
-package com.example.powernine.security;
+package com.example.powernine.user.security;
 
 
 import org.springframework.security.web.csrf.CsrfToken;
