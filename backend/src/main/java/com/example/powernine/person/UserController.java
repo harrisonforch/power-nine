@@ -2,6 +2,7 @@ package com.example.powernine.person;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -13,15 +14,23 @@ public class UserController {
         this.repository = repository;
     }
 
+    @GetMapping("/users")
+    List<User> all() {
+        return repository.findAll();
+    }
+
     @PostMapping("/users")
     User newUser(@RequestBody User newUser) {
+        System.out.println(newUser);
         return repository.save(newUser);
     }
 
     @GetMapping("/users/{id}/{password}")
-    boolean validateLogin(@PathVariable String id, @PathVariable String password) {
+    User validateLogin(@PathVariable String id, @PathVariable String password) {
         Optional<User> user = this.repository.findById(id);
-        return isPresent(user, password);
+        if (isPresent(user, password))
+            return user.get();
+        return null;
     }
 
     @DeleteMapping("/users/{id}/{password}")
