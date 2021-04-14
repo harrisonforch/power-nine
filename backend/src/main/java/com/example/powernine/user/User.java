@@ -15,13 +15,13 @@ public class User {
     private String UID;
     private String username;
     private String password;
-//    @DBRef
-//    private ArrayList<Deck> decks;
+    @DBRef
+    private ArrayList<Deck> decks;
 
     public User(String username, String password) {
         this.username = username;
         this.password = password;
-//        this.decks = new ArrayList<>();
+        this.decks = new ArrayList<>();
     }
 
 //    public User(String username, String password, ArrayList<Deck> decks) {
@@ -59,27 +59,27 @@ public class User {
         return getUsername() + " " + getPassword();
     }
 
-//    public ArrayList<Deck> getDecks() {
-//        return decks;
-//    }
-//
-//    public void setDecks(ArrayList<Deck> decks) {
-//        this.decks = decks;
-//    }
-//
-//    public Deck getDeckByID(Long id) {
-//        for (Deck deck: decks) {
-//            if (deck.getId().equals(id))
-//                return deck;
-//        }
-//        throw new DeckNotFoundException(id);
-//    }
-//
-//    public Deck getDeckByName(String name) {
-//        for (Deck deck: decks) {
-//            if (deck.getDeckName().equals(name))
-//                return deck;
-//        }
-//        throw new DeckNotFoundException(name);
-//    }
+    public ArrayList<Deck> getDecks() {
+        return decks;
+    }
+
+    public void setDecks(ArrayList<Deck> decks) {
+        this.decks = decks;
+    }
+
+    public Deck getDeckByID(Long id) {
+        for (Deck deck: decks) {
+            if (deck.getId().equals(id))
+                return deck;
+        }
+        throw new DeckNotFoundException(id);
+    }
+
+    public Deck getDeckByName(String name) {
+        for (Deck deck: decks) {
+            if (deck.getDeckName().equals(name))
+                return deck;
+        }
+        throw new DeckNotFoundException(name);
+    }
 }
