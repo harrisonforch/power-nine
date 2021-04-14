@@ -1,4 +1,4 @@
-package com.example.powernine.user.utils;
+package com.example.powernine.user.security;
 
 import com.example.powernine.user.User;
 import com.example.powernine.user.UserRepository;

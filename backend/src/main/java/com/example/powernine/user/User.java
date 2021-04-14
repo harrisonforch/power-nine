@@ -1,7 +1,7 @@
 package com.example.powernine.user;
 
 import com.example.powernine.deck.Deck;
-import com.example.powernine.deck.DeckNotFoundException;
+import com.example.powernine.deck.utils.DeckNotFoundException;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -23,12 +23,6 @@ public class User {
         this.password = password;
         this.decks = new ArrayList<>();
     }
-
-//    public User(String username, String password, ArrayList<Deck> decks) {
-//        this.username = username;
-//        this.password = password;
-//        this.decks = decks;
-//    }
 
     public String getUID() {
         return UID;

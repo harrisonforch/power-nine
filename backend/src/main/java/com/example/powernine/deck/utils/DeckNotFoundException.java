@@ -1,4 +1,4 @@
-package com.example.powernine.deck;
+package com.example.powernine.deck.utils;
 
 public class DeckNotFoundException extends RuntimeException{
     public DeckNotFoundException(Long id) {

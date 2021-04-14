@@ -1,6 +1,8 @@
 package com.example.powernine.user;
 
+import com.example.powernine.user.utils.UserExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -8,15 +10,10 @@ import java.util.List;
 
 @RestController
 public class UserController {
-
     @Autowired
     private PasswordEncoder encoder;
-
-    private final UserRepository repository;
-
-    UserController(UserRepository repository) {
-        this.repository = repository;
-    }
+    @Autowired
+    private UserRepository repository;
 
     @GetMapping("/users")
     List<User> all() {
@@ -24,14 +21,24 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    User newEmployee(@RequestBody User user) {
-        user.setPassword(encoder.encode(user.getPassword()));
-        return repository.save(user);
+    User newUser(@RequestBody User user) {
+        User existingUser = repository.findByUsername(user.getUsername());
+        if (existingUser == null) {
+            user.setPassword(encoder.encode(user.getPassword()));
+            return repository.save(user);
+        } else {
+            throw new UserExistsException(user.getUsername());
+        }
     }
 
     @DeleteMapping("/users")
     void deleteUser(@RequestBody User user) {
-        repository.delete(user);
+        User existingUser = repository.findByUsername(user.getUsername());
+        if (existingUser != null) {
+            repository.delete(user);
+        } else {
+            throw new UsernameNotFoundException(user.getUsername());
+        }
     }
 
 }
