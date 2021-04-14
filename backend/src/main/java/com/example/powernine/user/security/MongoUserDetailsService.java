@@ -1,7 +1,7 @@
 package com.example.powernine.user.security;
 
 import com.example.powernine.user.User;
-import com.example.powernine.user.utils.UserRepository;
+import com.example.powernine.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
