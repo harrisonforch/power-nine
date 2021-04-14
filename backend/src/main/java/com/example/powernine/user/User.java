@@ -21,6 +21,7 @@ public class User {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+        this.decks = new ArrayList<>();
     }
 
     public User(String username, String password, ArrayList<Deck> decks) {
