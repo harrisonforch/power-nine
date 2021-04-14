@@ -1,4 +1,4 @@
-package com.example.powernine.user.security;
+package com.example.powernine.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -15,7 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 //@EnableWebSecurity
 public class UserLoginConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    CustomUserDetailsService userDetailsService;
+    MongoUserDetailsService userDetailsService;
 
     @Override
     public void configure(AuthenticationManagerBuilder builder)
@@ -29,9 +29,6 @@ public class UserLoginConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/register", "/search").permitAll()
                 .anyRequest().authenticated()
                 .and()
-//            .formLogin()
-//                .permitAll()
-//                .and()
             .httpBasic()
                 .and()
             .logout()
