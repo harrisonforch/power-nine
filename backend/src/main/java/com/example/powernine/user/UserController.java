@@ -1,11 +1,16 @@
 package com.example.powernine.user;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 public class UserController {
+
+    @Autowired
+    private PasswordEncoder encoder;
 
     private final UserRepository repository;
 
@@ -20,6 +25,7 @@ public class UserController {
 
     @PostMapping("/users")
     User newEmployee(@RequestBody User user) {
+        user.setPassword(encoder.encode(user.getPassword()));
         return repository.save(user);
     }
 
