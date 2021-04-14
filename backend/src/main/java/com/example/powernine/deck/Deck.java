@@ -1,6 +1,6 @@
 package com.example.powernine.deck;
 
-import com.example.powernine.card.Card;
+import com.example.powernine.card_full.Card;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
