@@ -1,4 +1,4 @@
-package com.example.powernine.card_full;
+package com.example.powernine.card;
 
 import java.util.ArrayList;
 

@@ -15,13 +15,15 @@ public class User {
     private String UID;
     private String username;
     private String password;
+    private String role;
     @DBRef
     private ArrayList<Deck> decks;
 
-    public User(String username, String password) {
+    public User(String username, String password, String role) {
         this.username = username;
         this.password = password;
         this.decks = new ArrayList<>();
+        this.role = role;
     }
 
     public String getUID() {
@@ -75,5 +77,13 @@ public class User {
                 return deck;
         }
         throw new DeckNotFoundException(name);
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

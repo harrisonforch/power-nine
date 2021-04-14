@@ -1,4 +1,4 @@
-package com.example.powernine.user.security;
+package com.example.powernine.login;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -26,7 +26,9 @@ public class UserLoginConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/").permitAll()
+                .antMatchers("/").hasRole("USER")
+                .antMatchers("/users").hasRole("ADMIN")
+                .antMatchers("/decks").hasAnyRole("ADMIN", "USER")
                 .anyRequest().authenticated()
                 .and()
 //            .formLogin()

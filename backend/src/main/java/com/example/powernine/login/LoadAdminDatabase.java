@@ -1,4 +1,4 @@
-package com.example.powernine.user.security;
+package com.example.powernine.login;
 
 import com.example.powernine.user.User;
 import com.example.powernine.user.UserRepository;
@@ -20,7 +20,8 @@ class LoadAdminDatabase {
         // admin:welcome1
         return args -> {
             log.info("Preloading " + repository.save(new User("admin",
-                    "$2a$10$AjHGc4x3Nez/p4ZpvFDWeO6FGxee/cVqj5KHHnHfuLnIOzC5ag4fm")));
+                    "$2a$10$AjHGc4x3Nez/p4ZpvFDWeO6FGxee/cVqj5KHHnHfuLnIOzC5ag4fm",
+                    "ROLE_ADMIN")));
         };
     }
 }

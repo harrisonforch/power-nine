@@ -1,4 +1,4 @@
-package com.example.powernine.user.security;
+package com.example.powernine.login;
 
 import com.example.powernine.user.User;
 import com.example.powernine.user.UserRepository;
@@ -25,7 +25,7 @@ public class MongoUserDetailsService implements UserDetailsService {
             return new org.springframework.security.core.userdetails.User(
                     user.getUsername(),
                     user.getPassword(),
-                    Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"))
+                    Collections.singleton(new SimpleGrantedAuthority(user.getRole()))
             );
         } else {
             throw new UsernameNotFoundException("Username not found");

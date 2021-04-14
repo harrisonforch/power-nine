@@ -25,6 +25,7 @@ public class UserController {
         User existingUser = repository.findByUsername(user.getUsername());
         if (existingUser == null) {
             user.setPassword(encoder.encode(user.getPassword()));
+            user.setRole("ROLE_USER");
             return repository.save(user);
         } else {
             throw new UserExistsException(user.getUsername());
