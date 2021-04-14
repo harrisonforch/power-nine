@@ -1,4 +1,4 @@
-package com.example.powernine.user.security;
+package com.example.powernine.security;
 
 import com.example.powernine.user.User;
 import com.example.powernine.user.utils.UserRepository;
@@ -14,7 +14,7 @@ import java.util.Collections;
 
 @Service
 @Component
-public class CustomUserDetailsService implements UserDetailsService {
+public class MongoUserDetailsService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 

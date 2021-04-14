@@ -25,7 +25,7 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    User newEmployee(@RequestBody User user) {
+    User newUser(@RequestBody User user) {
         user.setPassword(encoder.encode(user.getPassword()));
         return repository.save(user);
     }
