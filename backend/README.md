@@ -6,21 +6,29 @@ All endpoints require simple user:password authentication. This may be accomplis
 client side:
 
 ```
-$.ajax({
-    url: "http://localhost:8080/users",
-    beforeSend: function(xhr) { 
-      xhr.setRequestHeader("Authorization", "Basic " + btoa("username:password")); 
-    },
-    type: 'GET',
-    dataType: 'json',
-    contentType: 'application/json',
-    success: function (data) {
-      alert(JSON.stringify(data));
-    },
-    error: function(){
-      alert("Cannot get data");
-    }
-});
+sendRequest(url, method, body, username, password) {
+    const options = {
+        method: method,
+        headers: new Headers({
+            'content-type': 'application/json',
+            'Authorization': "Basic " + btoa(username + ":" + password)
+        }),
+        mode: 'no-cors'
+    };
+
+    options.body = JSON.stringify(body);
+
+    fetch(url, options)
+        .then(res => res.json())
+        .then(
+            (result) => {
+                return result
+            },
+            (error) => {
+                return error
+            }
+        );
+}
 ```
 
 ## Endpoints
