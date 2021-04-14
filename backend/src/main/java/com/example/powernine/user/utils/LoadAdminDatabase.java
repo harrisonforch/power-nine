@@ -16,7 +16,7 @@ class LoadAdminDatabase {
     CommandLineRunner initDatabase(UserRepository repository) {
 
         repository.deleteAll();
-        // admin:welcome1
+        // admin:password1
         return args -> {
             log.info("Preloading " + repository.save(new User("admin", "$2a$10$AjHGc4x3Nez/p4ZpvFDWeO6FGxee/cVqj5KHHnHfuLnIOzC5ag4fm")));
         };
