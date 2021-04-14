@@ -34,9 +34,10 @@ public class UserController {
 
     @DeleteMapping("/users")
     void deleteUser(@RequestBody User user) {
+        user.setPassword(encoder.encode(user.getPassword()));
         User existingUser = repository.findByUsername(user.getUsername());
         if (existingUser != null) {
-            repository.delete(user);
+            repository.deleteById(user.getUID());
         } else {
             throw new UsernameNotFoundException(user.getUsername());
         }

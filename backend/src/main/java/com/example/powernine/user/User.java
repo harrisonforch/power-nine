@@ -11,8 +11,10 @@ import java.util.ArrayList;
 @Document(collection = "user")
 public class User {
 
+    private static Long count = 0L;
+
     @Id
-    private String UID;
+    private Long UID;
     private String username;
     private String password;
     private String role;
@@ -20,13 +22,15 @@ public class User {
     private ArrayList<Deck> decks;
 
     public User(String username, String password, String role) {
+        this.UID = count;
+        count += 1;
         this.username = username;
         this.password = password;
         this.decks = new ArrayList<>();
         this.role = role;
     }
 
-    public String getUID() {
+    public Long getUID() {
         return UID;
     }
 
