@@ -2,9 +2,6 @@ package com.example.powernine.user;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import java.security.SecureRandom;
 
 @Document(collection = "user")
 public class User {
@@ -44,16 +41,11 @@ public class User {
     }
 
     public boolean comparePasswords(String password) {
-        return this.password.equals(getPasswordHash(password));
-    }
-
-    static String getPasswordHash(String password) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10, new SecureRandom());
-        return encoder.encode(password);
+        return this.password.equals(getPassword());
     }
 
     @Override
     public String toString() {
-        return getUsername() + " " + getPasswordHash(getPassword());
+        return getUsername() + " " + getPassword();
     }
 }

@@ -3,7 +3,6 @@ package com.example.powernine.user;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class UserController {
@@ -27,10 +26,6 @@ public class UserController {
     @DeleteMapping("/users")
     void deleteUser(@RequestBody User user) {
         repository.delete(user);
-    }
-
-    private static boolean isPresent(Optional<User> user, String password) {
-        return user.isPresent() && user.get().comparePasswords(password);
     }
 
 }
