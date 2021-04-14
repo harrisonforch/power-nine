@@ -6,28 +6,29 @@ All endpoints require simple user:password authentication. This may be accomplis
 client side:
 
 ```
-sendRequest(url, method, body, username, password) {
-    const options = {
-        method: method,
-        headers: new Headers({
-            'content-type': 'application/json',
-            'Authorization': "Basic " + btoa(username + ":" + password)
-        }),
-        mode: 'no-cors'
-    };
-
-    options.body = JSON.stringify(body);
-
-    fetch(url, options)
-        .then(res => res.json())
-        .then(
-            (result) => {
-                return result
-            },
-            (error) => {
-                return error
-            }
-        );
+sendRequest(url, username, password) {
+    let options = {
+        mode: 'cors', // no-cors, *cors, same-origin
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: 'same-origin', // include, *same-origin, omit
+        headers: {
+            Authorization: "Basic " + btoa(username + ":" + password),
+            'Content-Type': 'application/json'
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        redirect: 'follow', // manual, *follow, error
+        referrerPolicy: 'no-referrer'
+    }
+    return fetch(url, options)
+        .then((res) => res.json())
+        .then((text) => {
+            console.log(text);
+            return text.length ? JSON.parse(text) : {};
+        })
+        .catch((error) => {
+            console.log(error);
+            throw error;
+        });
 }
 ```
 
