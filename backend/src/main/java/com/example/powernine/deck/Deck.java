@@ -32,4 +32,12 @@ public class Deck {
     public void setCards(ArrayList<Card> cards) {
         this.cards = cards;
     }
+
+    public void addCard(Card card) {
+        cards.add(card);
+    }
+
+    public void removeCard(Card card) {
+        cards.remove(card);
+    }
 }
