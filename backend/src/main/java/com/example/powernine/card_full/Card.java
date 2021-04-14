@@ -98,7 +98,6 @@ public class Card {
     public static Card fromJSON(String jsonString) throws JsonSyntaxException {
         Gson gson = new Gson();
         Type collectionType = new TypeToken<Card>(){}.getType();
-        // Populate file into HashMap
         return gson.fromJson(jsonString, collectionType);
     }
 
