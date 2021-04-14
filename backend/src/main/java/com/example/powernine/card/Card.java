@@ -31,7 +31,7 @@ public class Card {
     private Integer edhrec_rank;
     private Boolean foil;
 
-    public static Card fromJSON(String jsonData) {
-        return null;
+    public Long getId() {
+        return id;
     }
 }
