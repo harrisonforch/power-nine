@@ -23,11 +23,6 @@ public class UserLoginConfig extends WebSecurityConfigurerAdapter {
         builder.userDetailsService(userDetailsService);
     }
 
-    @Autowired
-    public void configAuthBuilder(AuthenticationManagerBuilder builder) throws Exception {
-        builder.authenticationProvider(new UserCustomAuthenticationProvider());
-    }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
