@@ -1,9 +1,14 @@
 package com.example.powernine.card_full;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @Document(collection = "card_full")
 public class Card {
@@ -89,6 +94,13 @@ public class Card {
     private Boolean variation;
     private String variation_of;
     private String watermark;
+
+    public static Card fromJSON(String jsonString) throws JsonSyntaxException {
+        Gson gson = new Gson();
+        Type collectionType = new TypeToken<Card>(){}.getType();
+        // Populate file into HashMap
+        return gson.fromJson(jsonString, collectionType);
+    }
 
     public String getId() {
         return id;
