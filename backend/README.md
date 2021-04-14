@@ -1,5 +1,28 @@
 # Back end API documentation
 
+## Authentication
+
+All endpoints require simple user:password authentication. This may be accomplished from the
+client side:
+
+```
+$.ajax({
+    url: "http://localhost:8080/users",
+    beforeSend: function(xhr) { 
+      xhr.setRequestHeader("Authorization", "Basic " + btoa("username:password")); 
+    },
+    type: 'GET',
+    dataType: 'json',
+    contentType: 'application/json',
+    success: function (data) {
+      alert(JSON.stringify(data));
+    },
+    error: function(){
+      alert("Cannot get data");
+    }
+});
+```
+
 ## Endpoints
 
 ### `/users`
