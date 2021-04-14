@@ -1,5 +1,6 @@
-package com.example.powernine.user;
+package com.example.powernine.user.utils;
 
+import com.example.powernine.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
