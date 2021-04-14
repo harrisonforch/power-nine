@@ -15,7 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 //@EnableWebSecurity
 public class UserLoginConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    CustomUserDetailsService userDetailsService;
+    MongoUserDetailsService userDetailsService;
 
     @Override
     public void configure(AuthenticationManagerBuilder builder)

@@ -14,7 +14,7 @@ import java.util.Collections;
 
 @Service
 @Component
-public class CustomUserDetailsService implements UserDetailsService {
+public class MongoUserDetailsService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
