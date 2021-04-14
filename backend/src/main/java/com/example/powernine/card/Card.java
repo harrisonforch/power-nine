@@ -22,7 +22,14 @@ public class Card {
     private String rulings_url;
     private String scryfall_uri;
     private String uri;
-
+    private ArrayList<RelatedCard> all_parts;
+    private ArrayList<CardFace> card_faces;
+    private Double cmc;
+    private ArrayList<String> color_identity;
+    private ArrayList<String> color_indicator;
+    private ArrayList<String> colors;
+    private Integer edhrec_rank;
+    private Boolean foil;
 
     public static Card fromJSON(String jsonData) {
         return null;
