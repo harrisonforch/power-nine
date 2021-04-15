@@ -17,7 +17,7 @@ View table:
 curl -i http://localhost:8080/users --user admin:welcome1
 ```
 
-```
+```javascript
 let options = {
     mode: 'cors',
     credentials: 'same-origin',
@@ -41,7 +41,7 @@ Add user:
 curl -i http://localhost:8080/users --user admin:welcome1 -X POST -H 'Content-type:application/json' -d '{"username": "user2", "password": "password"}'
 ```
 
-```
+```javascript
 let options = {
     mode: 'cors',
     credentials: 'same-origin',
@@ -70,7 +70,7 @@ Delete user:
 curl -i http://localhost:8080/users --user admin:welcome1 -X DELETE -H 'Content-type:application/json' -d '{"username": "user2", "password": "password"}'
 ```
 
-```
+```javascript
 let options = {
     mode: 'cors',
     credentials: 'same-origin',
