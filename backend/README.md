@@ -20,7 +20,7 @@ let options = {
 const body = null;  // Provide body here as needed
 if (body !== null)
     options.body = body;
-fetch(url, options)
+fetch("http://localhost:8080", options)
     .then((res) => res.json())
     .catch((error) => throw error);
 ```
