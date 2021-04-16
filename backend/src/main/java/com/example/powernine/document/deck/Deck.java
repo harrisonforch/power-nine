@@ -1,4 +1,4 @@
-package com.example.powernine.document;
+package com.example.powernine.document.deck;
 
 
 import com.example.powernine.document.card.Card;

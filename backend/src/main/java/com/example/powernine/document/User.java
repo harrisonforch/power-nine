@@ -1,12 +1,14 @@
 package com.example.powernine.document;
 
+import com.example.powernine.document.deck.Deck;
+import com.example.powernine.document.deck.DeckNotFoundException;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
 
-@Document(collection = "user")
+@Document(collection = "users")
 public class User {
 
     private static Long count = 0L;
