@@ -11,13 +11,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.util.Assert;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -38,6 +37,8 @@ class UserTests {
 	 * @throws IOException If unable to properly query scryfall API
 	 */
 	private Deck createUserWithDeck() throws IOException {
+		userRepository.deleteAll();
+		deckRepository.deleteAll();
 		User user = new User("User1", "password", "ROLE_USER");
 		Deck deck = new Deck("deck1", new ArrayList<>());
 		for (int i = 0; i < 5; i++) {
@@ -67,7 +68,7 @@ class UserTests {
 		} else {
 			throw new DeckNotFoundException(deck.getId());
 		}
-		assertEquals(deck, user.getDeckByID(0L));
+		assertEquals(deck, user.getDeckByID(deck.getId()));
 	}
 
 	/**
@@ -76,8 +77,13 @@ class UserTests {
 	 * Integers corresponding to invalid entries in the table should return an empty list.
 	 */
 	@Test
-	void testCase2() {
-
+	void testCase2() throws IOException {
+		createUserWithDeck();
+		User user = userRepository.findByUsername("User1");
+		Long id = 12312321L;
+		Optional<Deck> deckInRepo = deckRepository.findById(id);
+		assertFalse(deckInRepo.isPresent());
+		assertThrows(DeckNotFoundException.class, () -> user.getDeckByID(id));
 	}
 
 	/**
@@ -87,8 +93,16 @@ class UserTests {
 	 * table entry. The data that is returned should exactly correspond to the proper table entry.
 	 */
 	@Test
-	void testCase3() {
-
+	void testCase3() throws IOException {
+		createUserWithDeck();
+		User user = userRepository.findByUsername("User1");
+		Deck deck = user.getDeckByName("deck1");
+		Optional<Deck> deckInRepo = deckRepository.findById(deck.getId());
+		if (deckInRepo.isPresent()) {
+			assertEquals(deckInRepo.get(), deck);
+		} else {
+			throw new DeckNotFoundException("deck1");
+		}
 	}
 
 	/**
@@ -97,8 +111,9 @@ class UserTests {
 	 * Strings corresponding to invalid usernames in the User table will return an empty list.
 	 */
 	@Test
-	void testCase4() {
-
+	void testCase4() throws IOException {
+		createUserWithDeck();
+		assertNull(userRepository.findByUsername("user23423"));
 	}
 
 	/**
@@ -107,8 +122,10 @@ class UserTests {
 	 * An empty string should return an empty list.
 	 */
 	@Test
-	void testCase5() {
-
+	void testCase5() throws IOException {
+		createUserWithDeck();
+		User user = userRepository.findByUsername("User1");
+		assertThrows(DeckNotFoundException.class, () -> user.getDeckByName("deck13245"));
 	}
 
 }
