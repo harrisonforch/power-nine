@@ -1,7 +1,6 @@
 package com.example.powernine.deck;
 
 import com.example.powernine.card.Card;
-import com.example.powernine.deck.utils.DeckNotFoundException;
 import com.example.powernine.user.User;
 import com.example.powernine.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin
 @RestController

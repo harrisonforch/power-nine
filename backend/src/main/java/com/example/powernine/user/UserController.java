@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @CrossOrigin
@@ -41,6 +42,18 @@ public class UserController {
             repository.deleteById(user.getUID());
         } else {
             throw new UsernameNotFoundException(user.getUsername());
+        }
+    }
+
+    @PutMapping("/users/{id}")
+    User updateUser(@RequestBody User user) {
+        User existingUser = repository.findByUsername(user.getUsername());
+        if (existingUser != null) {
+            user.setPassword(encoder.encode(user.getPassword()));
+            user.setRole("ROLE_USER");
+            return repository.save(user);
+        } else {
+            throw new UserExistsException(user.getUsername());
         }
     }
 
