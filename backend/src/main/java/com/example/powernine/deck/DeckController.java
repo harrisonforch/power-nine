@@ -29,10 +29,16 @@ public class DeckController {
         return deckRepository.save(deck);
     }
 
-    @GetMapping("/decks/{id}")
+    @GetMapping("/decks/id/{id}")
     Deck getDeckByID(@PathVariable Long id, Principal principal) {
         User user = userRepository.findByUsername(principal.getName());
         return user.getDeckByID(id);
+    }
+
+    @GetMapping("/decks/name/{name}")
+    Deck getDeckByName(@PathVariable String name, Principal principal) {
+        User user = userRepository.findByUsername(principal.getName());
+        return user.getDeckByName(name);
     }
 
 }
