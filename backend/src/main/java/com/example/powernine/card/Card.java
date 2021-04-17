@@ -1,18 +1,18 @@
 package com.example.powernine.card;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @Document(collection = "card")
 public class Card {
@@ -114,8 +114,12 @@ public class Card {
         InputStream responseStream = connection.getInputStream();
 
         // Manually converting the response body InputStream to APOD using Jackson
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(responseStream, Card.class);
+        Gson gson = new Gson();
+        Type collectionType = new TypeToken<Card>(){}.getType();
+        String text = new BufferedReader(
+                new InputStreamReader(responseStream, StandardCharsets.UTF_8)).lines()
+                .collect(Collectors.joining("\n"));
+        return gson.fromJson(text, collectionType);
     }
 
     public String getId() {

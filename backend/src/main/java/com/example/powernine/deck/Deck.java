@@ -8,10 +8,18 @@ import java.util.ArrayList;
 
 @Document(collection = "deck")
 public class Deck {
+    private static long count = 0L;
     @Id
     private Long UID;
     private String deckName;
     private ArrayList<Card> cards;
+
+    public Deck(String deckName, ArrayList<Card> cards) {
+        this.UID = count;
+        count += 1;
+        this.deckName = deckName;
+        this.cards = cards;
+    }
 
     public Long getId() {
         return UID;
@@ -39,5 +47,13 @@ public class Deck {
 
     public void removeCard(Card card) {
         cards.remove(card);
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other instanceof Deck) {
+            return getId().equals(((Deck) other).getId());
+        }
+        return false;
     }
 }

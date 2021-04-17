@@ -1,23 +1,53 @@
 package com.example.powernine;
 
+import com.example.powernine.card.Card;
+import com.example.powernine.deck.Deck;
+import com.example.powernine.deck.DeckRepository;
+import com.example.powernine.deck.utils.DeckNotFoundException;
 import com.example.powernine.user.User;
 import com.example.powernine.user.UserController;
 import com.example.powernine.user.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.util.Assert;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
+@AutoConfigureMockMvc
 class UserTests {
 
 	@Autowired
 	UserController controller;
 
 	@Autowired
-	UserRepository repository;
+	UserRepository userRepository;
 
-	private static User createUserWithDeck() {
+	@Autowired
+	DeckRepository deckRepository;
 
+	/**
+	 * Create user with 5 random cards in database.
+	 *
+	 * @throws IOException If unable to properly query scryfall API
+	 */
+	private Deck createUserWithDeck() throws IOException {
+		User user = new User("User1", "password", "ROLE_USER");
+		Deck deck = new Deck("deck1", new ArrayList<>());
+		for (int i = 0; i < 5; i++) {
+			deck.addCard(Card.random());
+		}
+		ArrayList<Deck> decks = new ArrayList<>();
+		decks.add(deck);
+		user.setDecks(decks);
+		userRepository.save(user);
+		deckRepository.save(deck);
+		return deck;
 	}
 
 	/**
@@ -27,8 +57,10 @@ class UserTests {
 	 * The data that is returned should exactly correspond to the proper table entry.
 	 */
 	@Test
-	void testCast1() {
-
+	void testCast1() throws IOException, DeckNotFoundException {
+		Deck deck = createUserWithDeck();
+		User user = userRepository.findByUsername("User1");
+		assertEquals(deck, user.getDeckByID(0L));
 	}
 
 	/**

@@ -14,7 +14,7 @@ public class User {
     private static Long count = 0L;
 
     @Id
-    final private Long UID;
+    private Long UID;
     private String username;
     private String password;
     private String role;
@@ -28,6 +28,10 @@ public class User {
         this.password = password;
         this.decks = new ArrayList<>();
         this.role = role;
+    }
+
+    public void setUID(Long uid) {
+        this.UID = uid;
     }
 
     public Long getUID() {

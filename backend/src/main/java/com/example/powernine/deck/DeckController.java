@@ -50,7 +50,7 @@ public class DeckController {
         userRepository.save(user);
     }
 
-    @PutMapping("/decks/card/{id}")
+    @PutMapping("/decks/add/{id}")
     Card addCardToDeck(@RequestBody Card card, @PathVariable Long id, Principal principal) {
         User user = userRepository.findByUsername(principal.getName());
         Deck deck = user.getDeckByID(id);
@@ -60,7 +60,7 @@ public class DeckController {
         return card;
     }
 
-    @PutMapping("/decks/card/{id}")
+    @PutMapping("/decks/remove/{id}")
     Card removeCardFromDeck(@RequestBody Card card, @PathVariable Long id, Principal principal) {
         User user = userRepository.findByUsername(principal.getName());
         Deck deck = user.getDeckByID(id);
