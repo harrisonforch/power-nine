@@ -15,6 +15,7 @@ import org.springframework.util.Assert;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -60,6 +61,12 @@ class UserTests {
 	void testCast1() throws IOException, DeckNotFoundException {
 		Deck deck = createUserWithDeck();
 		User user = userRepository.findByUsername("User1");
+		Optional<Deck> deckInRepo = deckRepository.findById(deck.getId());
+		if (deckInRepo.isPresent()) {
+			assertEquals(deckInRepo.get(), deck);
+		} else {
+			throw new DeckNotFoundException(deck.getId());
+		}
 		assertEquals(deck, user.getDeckByID(0L));
 	}
 
