@@ -49,18 +49,27 @@ public class DeckController {
         User user = userRepository.findByUsername(principal.getName());
         user.getDecks().remove(deck);
         deckRepository.delete(deck);
+        userRepository.save(user);
     }
 
     @PutMapping("/decks/card/{id}")
     Card addCardToDeck(@RequestBody Card card, @PathVariable Long id, Principal principal) {
         User user = userRepository.findByUsername(principal.getName());
-        Optional<Deck> deck = deckRepository.findById(id);
-        if (deck.isPresent()) {
-            deck.get().addCard(card);
-            user.getDeckByID(id).addCard(card);
-            return card;
-        }
-        throw new DeckNotFoundException(id);
+        Deck deck = user.getDeckByID(id);
+        deck.addCard(card);
+        userRepository.save(user);
+        deckRepository.save(deck);
+        return card;
+    }
+
+    @PutMapping("/decks/card/{id}")
+    Card removeCardFromDeck(@RequestBody Card card, @PathVariable Long id, Principal principal) {
+        User user = userRepository.findByUsername(principal.getName());
+        Deck deck = user.getDeckByID(id);
+        deck.removeCard(card);
+        userRepository.save(user);
+        deckRepository.save(deck);
+        return card;
     }
 
 }
