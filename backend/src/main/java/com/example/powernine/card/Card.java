@@ -1,15 +1,20 @@
 package com.example.powernine.card;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 
-@Document(collection = "card_full")
+@Document(collection = "card")
 public class Card {
     // Core card fields
     @Id
@@ -98,6 +103,19 @@ public class Card {
         Gson gson = new Gson();
         Type collectionType = new TypeToken<Card>(){}.getType();
         return gson.fromJson(jsonString, collectionType);
+    }
+
+    public static Card random() throws IOException {
+        final String RANDOM_CARD_URL = "https://api.scryfall.com/cards/random";
+        URL url = new URL(RANDOM_CARD_URL);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestProperty("accept", "application/json");
+        // This line makes the request
+        InputStream responseStream = connection.getInputStream();
+
+        // Manually converting the response body InputStream to APOD using Jackson
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.readValue(responseStream, Card.class);
     }
 
     public String getId() {

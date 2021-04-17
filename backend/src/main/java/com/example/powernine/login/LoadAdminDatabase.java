@@ -1,5 +1,6 @@
 package com.example.powernine.login;
 
+import com.example.powernine.deck.DeckRepository;
 import com.example.powernine.user.User;
 import com.example.powernine.user.UserRepository;
 import org.slf4j.Logger;
@@ -14,12 +15,14 @@ class LoadAdminDatabase {
     private static final Logger log = LoggerFactory.getLogger(LoadAdminDatabase.class);
 
     @Bean
-    CommandLineRunner initDatabase(UserRepository repository) {
+    CommandLineRunner initDatabase(UserRepository userRepository, DeckRepository deckRepository) {
 
-        repository.deleteAll();
+        userRepository.deleteAll();
+        deckRepository.deleteAll();
+
         // admin:welcome1
         return args -> {
-            log.info("Preloading " + repository.save(new User("admin",
+            log.info("Preloading " + userRepository.save(new User("admin",
                     "$2a$10$AjHGc4x3Nez/p4ZpvFDWeO6FGxee/cVqj5KHHnHfuLnIOzC5ag4fm",
                     "ROLE_ADMIN")));
         };

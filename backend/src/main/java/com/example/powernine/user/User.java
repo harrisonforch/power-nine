@@ -14,7 +14,7 @@ public class User {
     private static Long count = 0L;
 
     @Id
-    private Long UID;
+    final private Long UID;
     private String username;
     private String password;
     private String role;
