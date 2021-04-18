@@ -125,7 +125,7 @@ class UserTests {
 	void testCase5() throws IOException {
 		createUserWithDeck();
 		User user = userRepository.findByUsername("User1");
-		assertThrows(DeckNotFoundException.class, () -> user.getDeckByName("deck13245"));
+		assertThrows(DeckNotFoundException.class, () -> user.getDeckByName(""));
 	}
 
 }

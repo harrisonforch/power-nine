@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin
 @RestController
@@ -45,9 +46,9 @@ public class UserController {
     }
 
     @PutMapping("/users/{id}")
-    User updateUser(@RequestBody User user) {
-        User existingUser = repository.findByUsername(user.getUsername());
-        if (existingUser != null) {
+    User updateUser(@RequestBody User user, @PathVariable Long id) {
+        Optional<User> existingUser = repository.findById(id);
+        if (existingUser.isPresent()) {
             user.setPassword(encoder.encode(user.getPassword()));
             user.setRole("ROLE_USER");
             return repository.save(user);

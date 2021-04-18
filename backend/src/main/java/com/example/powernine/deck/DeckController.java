@@ -26,7 +26,9 @@ public class DeckController {
     @PostMapping("/decks")
     Deck addDeck(@RequestBody Deck deck, Principal principal) {
         User user = userRepository.findByUsername(principal.getName());
-        user.getDecks().add(deck);
+        if (!user.getDecks().contains(deck))
+            user.getDecks().add(deck);
+        userRepository.save(user);
         return deckRepository.save(deck);
     }
 
@@ -61,13 +63,12 @@ public class DeckController {
     }
 
     @PutMapping("/decks/remove/{id}")
-    Card removeCardFromDeck(@RequestBody Card card, @PathVariable Long id, Principal principal) {
+    void removeCardFromDeck(@RequestBody Card card, @PathVariable Long id, Principal principal) {
         User user = userRepository.findByUsername(principal.getName());
         Deck deck = user.getDeckByID(id);
         deck.removeCard(card);
         userRepository.save(user);
         deckRepository.save(deck);
-        return card;
     }
 
 }

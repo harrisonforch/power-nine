@@ -52,7 +52,7 @@ public class Deck {
     @Override
     public boolean equals(Object other) {
         if (other instanceof Deck) {
-            return getId().equals(((Deck) other).getId());
+            return getDeckName().equals(((Deck) other).getDeckName());
         }
         return false;
     }
