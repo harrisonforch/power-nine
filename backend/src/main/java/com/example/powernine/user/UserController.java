@@ -20,7 +20,8 @@ public class UserController {
         User potentialUser = repository.findByUsername(user.getUsername());
         if (potentialUser != null) {
             if (encoder.matches(user.getPassword(), potentialUser.getPassword())) {
-                return user;
+                potentialUser.setPassword(user.getPassword());
+                return potentialUser;
             }
             throw new UserNotFoundException(user);
         }
@@ -63,6 +64,7 @@ public class UserController {
                 String preChange = user.getNewPassword();
                 user.setPassword(encoder.encode(preChange));
                 user.setRole("ROLE_USER");
+                user.setDecks(existingUser.getDecks());
                 repository.save(user);
                 user.setPassword(preChange);
                 return user;
