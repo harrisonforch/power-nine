@@ -42,7 +42,7 @@ Will return a User with deck of cards
 
 ```javascript
 request("http://localhost:8080/users/login", "admin", "welcome1", "POST",
-{username: "user", password: "password1"})
+    {username: "user", password: "password1"})
 ```
 
 ---
@@ -53,7 +53,7 @@ Will create a user and return the newly-created User.
 
 ```javascript
 request("http://localhost:8080/users", "admin", "welcome1", "POST",
-{username: "user", password: "password1"})
+    {username: "user", password: "password1"})
 ```
 
 ---
@@ -64,7 +64,7 @@ Changes User's password and returns new User object
 
 ```javascript
 request("http://localhost:8080/users", "admin", "welcome1", "PUT",
-{username: "user", password: "password1", newPassword: "newpassword"})
+    {username: "user", password: "password1", newPassword: "newpassword"})
 ```
 
 ---
@@ -75,5 +75,5 @@ Delete user from database.
 
 ```javascript
 request("http://localhost:8080/users", "admin", "welcome1", "DELETE",
-{username: "user", password: "password1"})
+    {username: "user", password: "password1"})
 ```
