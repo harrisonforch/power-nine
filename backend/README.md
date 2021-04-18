@@ -33,30 +33,39 @@ export default request;
 
 Access: admin only
 
----
-
-View table:
-```
-curl -i http://localhost:8080/users --user admin:welcome1
-```
-This will return a list of JSONified User objects.
 
 ---
 
-Add user:
+Login:
+```javascript
+request("http://localhost:8080/users/login", "admin", "welcome1", "POST",
+            {username: "user", password: "password1"})
 ```
-curl -i http://localhost:8080/users --user admin:welcome1 -X POST -H 'Content-type:application/json' -d '{"username": "user2", "password": "password"}'
-```
-
-This will return the newly created User as a JSON object.
+Will return a User with deck of cards
 
 ---
 
-Delete user:
+New User:
+```javascript
+request("http://localhost:8080/users", "admin", "welcome1", "POST",
+            {username: "user", password: "password1"})
 ```
-curl -i http://localhost:8080/users --user admin:welcome1 -X DELETE -H 'Content-type:application/json' -d '{"username": "user2", "password": "password"}'
-```
-
-This will respond with HTTP 200 status if properly processed.
+Will create a user and return the newly-created User.
 
 ---
+
+Update Password:
+```javascript
+request("http://localhost:8080/users", "admin", "welcome1", "PUT",
+            {username: "user", password: "password1", newPassword: "newpassword"})
+```
+Changes User's password and returns new User object
+
+---
+
+Delete User:
+```javascript
+request("http://localhost:8080/users", "admin", "welcome1", "DELETE",
+            {username: "user", password: "password1"})
+```
+Delete user from database.

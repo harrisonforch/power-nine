@@ -34,9 +34,8 @@ public class UserController {
             user.setPassword(encoder.encode(user.getPassword()));
             user.setRole("ROLE_USER");
             return repository.save(user);
-        } else {
-            throw new UserExistsException(user.getUsername());
         }
+        throw new UserExistsException(user.getUsername());
     }
 
     @DeleteMapping("/users")
@@ -44,22 +43,23 @@ public class UserController {
         user.setPassword(encoder.encode(user.getPassword()));
         User existingUser = repository.findByUsername(user.getUsername());
         if (existingUser != null) {
-            repository.deleteById(user.getUID());
-        } else {
-            throw new UsernameNotFoundException(user.getUsername());
+            if (encoder.matches(existingUser.getPassword(), user.getPassword()))
+                repository.deleteById(user.getUID());
         }
+        throw new UsernameNotFoundException(user.getUsername());
     }
 
-    @PutMapping("/users/{id}")
-    User updateUser(@RequestBody User user, @PathVariable Long id) {
-        Optional<User> existingUser = repository.findById(id);
-        if (existingUser.isPresent()) {
-            user.setPassword(encoder.encode(user.getPassword()));
-            user.setRole("ROLE_USER");
-            return repository.save(user);
-        } else {
-            throw new UserExistsException(user.getUsername());
+    @PutMapping("/users")
+    User updateUser(@RequestBody UpdatedUser user) {
+        User existingUser = repository.findByUsername(user.getUsername());
+        if (existingUser != null) {
+            if (encoder.matches(encoder.encode(user.getPassword()), existingUser.getPassword())) {
+                user.setPassword(encoder.encode(user.getNewPassword()));
+                user.setRole("ROLE_USER");
+                return repository.save(user);
+            }
         }
+        throw new UserExistsException(user.getUsername());
     }
 
 }
