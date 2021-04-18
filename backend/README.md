@@ -36,36 +36,44 @@ Access: admin only
 
 ---
 
-Login:
-```javascript
-request("http://localhost:8080/users/login", "admin", "welcome1", "POST",
-            {username: "user", password: "password1"})
-```
+#### Login:
+
 Will return a User with deck of cards
 
+```javascript
+request("http://localhost:8080/users/login", "admin", "welcome1", "POST",
+{username: "user", password: "password1"})
+```
+
 ---
 
-New User:
-```javascript
-request("http://localhost:8080/users", "admin", "welcome1", "POST",
-            {username: "user", password: "password1"})
-```
+#### New User:
+
 Will create a user and return the newly-created User.
 
+```javascript
+request("http://localhost:8080/users", "admin", "welcome1", "POST",
+{username: "user", password: "password1"})
+```
+
 ---
 
-Update Password:
-```javascript
-request("http://localhost:8080/users", "admin", "welcome1", "PUT",
-            {username: "user", password: "password1", newPassword: "newpassword"})
-```
+#### Update Password:
+
 Changes User's password and returns new User object
 
+```javascript
+request("http://localhost:8080/users", "admin", "welcome1", "PUT",
+{username: "user", password: "password1", newPassword: "newpassword"})
+```
+
 ---
 
-Delete User:
+#### Delete User:
+
+Delete user from database.
+
 ```javascript
 request("http://localhost:8080/users", "admin", "welcome1", "DELETE",
-            {username: "user", password: "password1"})
+{username: "user", password: "password1"})
 ```
-Delete user from database.
