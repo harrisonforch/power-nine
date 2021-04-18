@@ -6,7 +6,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin
@@ -18,8 +17,8 @@ public class UserController {
     private UserRepository repository;
 
     @GetMapping("/users")
-    List<User> all() {
-        return repository.findAll();
+    User login(@RequestBody User user) {
+        return repository.findByUsername(user.getUsername());
     }
 
     @PostMapping("/users")
