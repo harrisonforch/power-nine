@@ -1,12 +1,11 @@
 package com.example.powernine.user;
 
 import com.example.powernine.user.utils.UserExistsException;
+import com.example.powernine.user.utils.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @CrossOrigin
 @RestController
@@ -23,8 +22,9 @@ public class UserController {
             if (encoder.matches(user.getPassword(), potentialUser.getPassword())) {
                 return potentialUser;
             }
+            throw new UserNotFoundException(user);
         }
-        throw new UsernameNotFoundException(user.getUsername());
+        throw new UserNotFoundException(user);
     }
 
     @PostMapping("/users")
@@ -40,26 +40,30 @@ public class UserController {
 
     @DeleteMapping("/users")
     void deleteUser(@RequestBody User user) {
-        user.setPassword(encoder.encode(user.getPassword()));
         User existingUser = repository.findByUsername(user.getUsername());
         if (existingUser != null) {
-            if (encoder.matches(existingUser.getPassword(), user.getPassword()))
-                repository.deleteById(user.getUID());
+            if (encoder.matches(user.getPassword(), existingUser.getPassword())) {
+                repository.delete(user);
+                return;
+            }
+            throw new UserNotFoundException(user);
         }
-        throw new UsernameNotFoundException(user.getUsername());
+        throw new UserNotFoundException(user);
     }
 
     @PutMapping("/users")
     User updateUser(@RequestBody UpdatedUser user) {
         User existingUser = repository.findByUsername(user.getUsername());
         if (existingUser != null) {
-            if (encoder.matches(encoder.encode(user.getPassword()), existingUser.getPassword())) {
+            if (encoder.matches(user.getPassword(), existingUser.getPassword())) {
+                repository.delete(user);
                 user.setPassword(encoder.encode(user.getNewPassword()));
                 user.setRole("ROLE_USER");
                 return repository.save(user);
             }
+            throw new UserNotFoundException(user);
         }
-        throw new UserExistsException(user.getUsername());
+        throw new UserNotFoundException(user);
     }
 
 }

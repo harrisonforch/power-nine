@@ -1,7 +1,9 @@
 package com.example.powernine.user.utils;
 
-class UserNotFoundException extends RuntimeException {
-    UserNotFoundException(Long id) {
-        super("Could not find user id \n" + id);
+import com.example.powernine.user.User;
+
+public class UserNotFoundException extends RuntimeException {
+    public UserNotFoundException(User user) {
+        super("Could not find user " + user);
     }
 }
