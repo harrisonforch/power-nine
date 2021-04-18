@@ -16,9 +16,15 @@ public class UserController {
     @Autowired
     private UserRepository repository;
 
-    @GetMapping("/users")
+    @PostMapping("/users/login")
     User login(@RequestBody User user) {
-        return repository.findByUsername(user.getUsername());
+        User potentialUser = repository.findByUsername(user.getUsername());
+        if (potentialUser != null) {
+            if (encoder.matches(user.getPassword(), potentialUser.getPassword())) {
+                return potentialUser;
+            }
+        }
+        throw new UsernameNotFoundException(user.getUsername());
     }
 
     @PostMapping("/users")

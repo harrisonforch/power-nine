@@ -54,10 +54,6 @@ public class User {
         this.password = password;
     }
 
-    public boolean comparePasswords(User other) {
-        return this.password.equals(other.getPassword());
-    }
-
     @Override
     public String toString() {
         return getUsername() + " " + getPassword();
