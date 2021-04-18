@@ -20,7 +20,7 @@ public class UserController {
         User potentialUser = repository.findByUsername(user.getUsername());
         if (potentialUser != null) {
             if (encoder.matches(user.getPassword(), potentialUser.getPassword())) {
-                return potentialUser;
+                return user;
             }
             throw new UserNotFoundException(user);
         }
@@ -31,9 +31,12 @@ public class UserController {
     User newUser(@RequestBody User user) {
         User existingUser = repository.findByUsername(user.getUsername());
         if (existingUser == null) {
-            user.setPassword(encoder.encode(user.getPassword()));
+            String oldPassword = user.getPassword();
+            user.setPassword(encoder.encode(oldPassword));
             user.setRole("ROLE_USER");
-            return repository.save(user);
+            repository.save(user);
+            user.setPassword(oldPassword);
+            return user;
         }
         throw new UserExistsException(user.getUsername());
     }
@@ -57,9 +60,12 @@ public class UserController {
         if (existingUser != null) {
             if (encoder.matches(user.getPassword(), existingUser.getPassword())) {
                 repository.delete(user);
-                user.setPassword(encoder.encode(user.getNewPassword()));
+                String preChange = user.getNewPassword();
+                user.setPassword(encoder.encode(preChange));
                 user.setRole("ROLE_USER");
-                return repository.save(user);
+                repository.save(user);
+                user.setPassword(preChange);
+                return user;
             }
             throw new UserNotFoundException(user);
         }
