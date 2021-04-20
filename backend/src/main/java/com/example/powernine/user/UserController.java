@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin
 @RestController
 public class UserController {
@@ -15,6 +17,11 @@ public class UserController {
     private PasswordEncoder encoder;
     @Autowired
     private UserRepository repository;
+
+    @GetMapping("/users")
+    List<User> allUsers() {
+        return repository.findAll();
+    }
 
     @PostMapping("/users/login")
     User login(@RequestBody User user) {
@@ -48,7 +55,7 @@ public class UserController {
         User existingUser = repository.findByUsername(user.getUsername());
         if (existingUser != null) {
             if (encoder.matches(user.getPassword(), existingUser.getPassword())) {
-                repository.delete(user);
+                repository.delete(existingUser);
                 return;
             }
             throw new UserNotFoundException(user);
