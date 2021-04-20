@@ -116,7 +116,7 @@ Deck-names must be unique for a given user
 Get a user's deck by name
 
 ```javascript
-request("http://localhost:8080/decks/name/{deckname}", "user", "password1", "GET")
+request("http://localhost:8080/decks/{deckname}", "user", "password1", "GET")
 ```
 
 #### Delete deck
@@ -124,7 +124,7 @@ request("http://localhost:8080/decks/name/{deckname}", "user", "password1", "GET
 Delete a user's deck by deck name
 
 ```javascript
-request("http://localhost:8080/decks/delete/{deckname}", "user", "password1", "DELETE")
+request("http://localhost:8080/decks/{deckname}", "user", "password1", "DELETE")
 ```
 
 ---
@@ -134,7 +134,7 @@ request("http://localhost:8080/decks/delete/{deckname}", "user", "password1", "D
 Add a `Card` to a user's deck
 
 ```javascript
-request("http://localhost:8080/decks/add/{deckname}", "user", "password1", "PUT", 
+request("http://localhost:8080/decks/{deckname}", "user", "password1", "PUT", 
     card)
 ```
 

@@ -33,19 +33,19 @@ public class DeckController {
         return deckRepository.save(deck);
     }
 
-    @GetMapping("/decks/id/{id}")
-    Deck getDeckByID(@PathVariable Long id, Principal principal) {
-        User user = userRepository.findByUsername(principal.getName());
-        return user.getDeckByID(id);
-    }
+//    @GetMapping("/decks/id/{id}")
+//    Deck getDeckByID(@PathVariable Long id, Principal principal) {
+//        User user = userRepository.findByUsername(principal.getName());
+//        return user.getDeckByID(id);
+//    }
 
-    @GetMapping("/decks/name/{name}")
+    @GetMapping("/decks/{name}")
     Deck getDeckByName(@PathVariable String name, Principal principal) {
         User user = userRepository.findByUsername(principal.getName());
         return user.getDeckByName(name);
     }
 
-    @DeleteMapping("/decks/delete/{name}")
+    @DeleteMapping("/decks/{name}")
     void deleteDeck(@PathVariable String name, Principal principal) {
         User user = userRepository.findByUsername(principal.getName());
         Deck deck = user.getDeckByName(name);
@@ -54,7 +54,7 @@ public class DeckController {
         userRepository.save(user);
     }
 
-    @PutMapping("/decks/add/{name}")
+    @PutMapping("/decks/{name}")
     Card addCardToDeck(@RequestBody Card card, @PathVariable String name, Principal principal) {
         User user = userRepository.findByUsername(principal.getName());
         Deck deck = user.getDeckByName(name);
@@ -64,7 +64,7 @@ public class DeckController {
         return card;
     }
 
-    @PutMapping("/decks/delete-card/{id}")
+    @PutMapping("/decks/delete-card/{name}")
     void removeCardFromDeck(@RequestBody Card card, @PathVariable String name, Principal principal) {
         User user = userRepository.findByUsername(principal.getName());
         Deck deck = user.getDeckByName(name);
