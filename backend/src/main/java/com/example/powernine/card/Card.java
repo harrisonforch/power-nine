@@ -14,10 +14,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-@Document(collection = "card")
 public class Card {
     // Core card fields
-    @Id
     private String id;
     private Integer arena_id;
     private String land;
