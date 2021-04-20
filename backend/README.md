@@ -119,6 +119,8 @@ Get a user's deck by name
 request("http://localhost:8080/decks/{deckname}", "user", "password1", "GET")
 ```
 
+---
+
 #### Delete deck
 
 Delete a user's deck by deck name
