@@ -36,6 +36,16 @@ Access: admin only
 
 ---
 
+#### All users:
+
+View all users' info
+
+```javascript
+request("http://localhost:8080/users", "admin", "welcome1", "GET")
+```
+
+---
+
 #### Login:
 
 Will return a User with deck of cards
@@ -85,6 +95,9 @@ request("http://localhost:8080/users", "admin", "welcome1", "DELETE",
 Access: Any user. Information returned is user-specific.
 
 The `Card` object refers to the JSON blobs that are returned by the [scryfall API](https://scryfall.com/docs/api/cards/random).
+
+
+---
 
 #### Get all decks for user:
 
