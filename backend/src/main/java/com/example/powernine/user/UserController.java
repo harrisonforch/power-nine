@@ -1,5 +1,6 @@
 package com.example.powernine.user;
 
+import com.example.powernine.deck.Deck;
 import com.example.powernine.user.utils.UserExistsException;
 import com.example.powernine.user.utils.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +65,10 @@ public class UserController {
                 String preChange = user.getNewPassword();
                 user.setPassword(encoder.encode(preChange));
                 user.setRole("ROLE_USER");
-                user.setDecks(existingUser.getDecks());
+                for (Deck deck : existingUser.getDecks()) {
+                    if (!user.getDecks().contains(deck))
+                        user.addDeck(deck);
+                }
                 repository.save(user);
                 user.setPassword(preChange);
                 return user;

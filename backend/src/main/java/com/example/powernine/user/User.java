@@ -67,6 +67,11 @@ public class User {
         this.decks = decks;
     }
 
+    public void addDeck(Deck deck) {
+        if (!decks.contains(deck))
+            decks.add(deck);
+    }
+
     public Deck getDeckByID(Long id) {
         for (Deck deck: decks) {
             if (deck.getId().equals(id))
