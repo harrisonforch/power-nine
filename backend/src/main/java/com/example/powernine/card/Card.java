@@ -98,6 +98,13 @@ public class Card {
     private String variation_of;
     private String watermark;
 
+    @Override
+    public boolean equals(Object other) {
+        if (other instanceof Card)
+            return this.id.equals(((Card) other).getId());
+        return false;
+    }
+
     public static Card fromJSON(String jsonString) throws JsonSyntaxException {
         Gson gson = new Gson();
         Type collectionType = new TypeToken<Card>(){}.getType();

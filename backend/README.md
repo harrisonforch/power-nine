@@ -144,5 +144,5 @@ request("http://localhost:8080/decks/{deckname}", "user", "password1", "PUT", ca
 Delete `Card` from a user's deck
 
 ```javascript
-request("http://localhost:8080/decks/delete-card/{deckname}", "user", "password1", "PUT", card)
+request("http://localhost:8080/decks/delete-card/{deckname}", "user", "password1", "DELETE", card)
 ```
