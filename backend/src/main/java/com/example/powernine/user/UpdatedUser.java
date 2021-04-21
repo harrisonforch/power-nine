@@ -1,10 +1,13 @@
 package com.example.powernine.user;
 
+import com.mongodb.lang.NonNull;
+
 public class UpdatedUser extends User {
     private String newPassword;
 
-    public UpdatedUser(String username, String password, String role, String newPassword) {
-        super(username, password, role);
+    public UpdatedUser(@NonNull String username, @NonNull String password, String firstName, String lastName,
+                       String email, String role, String newPassword) {
+        super(username, password, firstName, lastName, email, role);
         this.newPassword = newPassword;
     }
 

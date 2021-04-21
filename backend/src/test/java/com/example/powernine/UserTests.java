@@ -39,7 +39,8 @@ class UserTests {
 	private Deck createUserWithDeck() throws IOException {
 		userRepository.deleteAll();
 		deckRepository.deleteAll();
-		User user = new User("User1", "password", "ROLE_USER");
+		User user = new User("User1", "password", "Tommy", "Trojan",
+				"tommyt@usc.edu", "ROLE_USER");
 		Deck deck = new Deck("deck1", new ArrayList<>());
 		for (int i = 0; i < 5; i++) {
 			deck.addCard(Card.random());

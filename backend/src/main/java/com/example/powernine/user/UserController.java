@@ -67,16 +67,31 @@ public class UserController {
         User existingUser = repository.findByUsername(user.getUsername());
         if (existingUser != null) {
             if (encoder.matches(user.getPassword(), existingUser.getPassword())) {
-                repository.delete(user);
-                String preChange = user.getNewPassword();
-                user.setPassword(encoder.encode(preChange));
+                repository.delete(existingUser);
                 user.setRole("ROLE_USER");
                 for (Deck deck : existingUser.getDecks()) {
                     if (!user.getDecks().contains(deck))
                         user.addDeck(deck);
                 }
+                String preChange = null;
+                if (user.getNewPassword() != null) {
+                    preChange = user.getNewPassword();
+                    user.setPassword(encoder.encode(preChange));
+                } else {
+                    user.setPassword(existingUser.getPassword());
+                }
+                if (user.getEmail() == null) {
+                    user.setEmail(existingUser.getEmail());
+                }
+                if (user.getFirstName() == null) {
+                    user.setFirstName(existingUser.getFirstName());
+                }
+                if (user.getLastName() == null) {
+                    user.setLastName(existingUser.getLastName());
+                }
                 repository.save(user);
-                user.setPassword(preChange);
+                if (preChange != null)
+                    user.setPassword(preChange);
                 return user;
             }
             throw new UserNotFoundException(user);

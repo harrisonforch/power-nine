@@ -2,6 +2,7 @@ package com.example.powernine.user;
 
 import com.example.powernine.deck.Deck;
 import com.example.powernine.deck.utils.DeckNotFoundException;
+import com.mongodb.lang.NonNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -19,11 +20,17 @@ public class User {
     @Indexed(unique = true)
     private String username;
     private String password;
+    private String firstName;
+    private String lastName;
+    private String email;
     private String role;
     @DBRef
     private ArrayList<Deck> decks;
 
-    public User(String username, String password, String role) {
+    public User(@NonNull String username, @NonNull String password, String firstName, String lastName, String email, String role) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
         this.UID = count;
         count += 1;
         this.username = username;
@@ -96,5 +103,29 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

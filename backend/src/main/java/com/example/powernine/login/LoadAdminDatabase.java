@@ -34,7 +34,7 @@ class LoadAdminDatabase {
         return args -> {
             log.info("Preloading " + userRepository.save(new User("admin",
                     "$2a$10$AjHGc4x3Nez/p4ZpvFDWeO6FGxee/cVqj5KHHnHfuLnIOzC5ag4fm",
-                    "ROLE_ADMIN")));
+                    "Admin-fname", "Admin-lname", "Admin-email", "ROLE_ADMIN")));
             User user = createTestUser(5, 5);
             log.info("Preloading " + userRepository.save(user));
             for (Deck deck: user.getDecks())
@@ -44,7 +44,8 @@ class LoadAdminDatabase {
     }
 
     private User createTestUser(int numDecks, int numCardsPerDeck) {
-        User user = new User("user", "password1", "ROLE_USER");
+        User user = new User("user", "password1", "Tommy", "Trojan",
+                "tommyt@usc.edu", "ROLE_USER");
         ArrayList<Deck> decks = new ArrayList<>();
         user.setPassword(encoder.encode(user.getPassword()));
         for (int i = 0; i < numDecks; i++) {

@@ -63,12 +63,12 @@ Will create a user and return the newly-created User
 
 ```javascript
 request("http://localhost:8080/users", "admin", "welcome1", "POST",
-    {username: "user", password: "password1"})
+    {username: "user", password: "password1", firstName: "fname", lastName: "lname", email: "address@email.com"})
 ```
 
 ---
 
-#### Update Password:
+#### Update Information:
 
 Changes User's password and returns new User object
 
