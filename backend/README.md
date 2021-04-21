@@ -33,12 +33,16 @@ export default request;
 
 Access: admin only
 
+HTTP 401 error for attempt to use non-admin account for these operations
+
 
 ---
 
 #### All users:
 
 View all users' info
+
+Success: JSON list
 
 ```javascript
 request("http://localhost:8080/users", "admin", "welcome1", "GET")
@@ -49,6 +53,10 @@ request("http://localhost:8080/users", "admin", "welcome1", "GET")
 #### Login:
 
 Will return a User with deck of cards
+
+Success: JSON object
+
+Failure: 404 if unable to validate user's login credentials
 
 ```javascript
 request("http://localhost:8080/users/login", "admin", "welcome1", "POST",
@@ -61,6 +69,10 @@ request("http://localhost:8080/users/login", "admin", "welcome1", "POST",
 
 Will create a user and return the newly-created User
 
+Success: User JSON object
+
+Failure: 409 if user already exists
+
 ```javascript
 request("http://localhost:8080/users", "admin", "welcome1", "POST",
     {username: "user", password: "password1", firstName: "fname", lastName: "lname", email: "address@email.com"})
@@ -70,7 +82,13 @@ request("http://localhost:8080/users", "admin", "welcome1", "POST",
 
 #### Update Information:
 
-Changes User's password and returns new User object
+Changes User's info and returns new User object
+
+Must provide `username` and `password` fields, can optionally update using `newPassword`, `firstName`, `lastName`, and `email`
+
+Success: Updated User JSON 
+
+Failure: 404 if unable to validate user's login credentials
 
 ```javascript
 request("http://localhost:8080/users", "admin", "welcome1", "PUT",
@@ -82,6 +100,10 @@ request("http://localhost:8080/users", "admin", "welcome1", "PUT",
 #### Delete User:
 
 Delete user from database
+
+Success: 200
+
+Failure: 404 if unable to validate user's login credentials
 
 ```javascript
 request("http://localhost:8080/users", "admin", "welcome1", "DELETE",
