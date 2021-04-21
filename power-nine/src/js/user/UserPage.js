@@ -1,6 +1,6 @@
 import '../../css/UserPage.css';
 import React from "react";
-import request from "../BackendAPI";
+import requestFromAPI from "../BackendAPI";
 import DeckDisplay from "./DeckDisplay";
 import UserNavbar from "./UserNavbar";
 import user_logo from "../../static/user-logo.png";
@@ -10,8 +10,8 @@ class UserPage extends React.Component {
         super(props);
         this.state = {
             user: {
-                username: "user",
-                password: "password1"
+                username: this.props.location.state !== undefined ? this.props.location.state.user.username : "user",
+                password: this.props.location.state !== undefined ? this.props.location.state.user.password : "password1"
             },
             isLoaded: false,
             error: null
@@ -19,7 +19,7 @@ class UserPage extends React.Component {
     }
 
     componentDidMount() {
-        request("http://localhost:8080/users/login", "admin", "welcome1", "POST",
+        requestFromAPI("http://localhost:8080/users/login", "admin", "welcome1", "POST",
             {username: this.state.user.username, password: this.state.user.password})
             .then(data => {
                 this.setState({

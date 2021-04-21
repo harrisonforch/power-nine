@@ -1,4 +1,4 @@
-async function request(url, username, password, method="get", body=null) {
+async function requestFromAPI(url, username, password, method="get", body=null) {
     let options = {
         mode: 'cors',
         credentials: 'same-origin',
@@ -16,4 +16,4 @@ async function request(url, username, password, method="get", body=null) {
     return response.json();
 }
 
-export default request;
+export default requestFromAPI;
