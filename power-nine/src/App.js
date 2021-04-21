@@ -4,9 +4,9 @@ import {
     Route
 } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Switch from "react-bootstrap/Switch";
 
 import UserPage from "./js/user/UserPage";
-import Switch from "react-bootstrap/Switch";
 
 export default function App() {
     return (
