@@ -26,7 +26,7 @@ public class searchRepository implements CardDAL{
     public List<Card> getSearch(Search search) {
         Query query= new Query();
         if (search.getName()!=null && !search.getName().equals("")){
-            query.addCriteria(Criteria.where("name").regex(".*"+search.getName()+".*"));
+            query.addCriteria(Criteria.where("name").regex(".*"+search.getName()+".*","i"));
         }
         if (search.getColor()!=null && search.getColor().length>0){
 
@@ -72,10 +72,10 @@ public class searchRepository implements CardDAL{
                 case "less":
                     query.addCriteria(Criteria.where(search.getStatType()).lt(search.getStat()));
                     break;
-                case "GreaterEqual":
+                case "greaterEqual":
                     query.addCriteria(Criteria.where(search.getStatType()).gte(search.getStat()));
                     break;
-                case "LessEqual":
+                case "lessEqual":
                     query.addCriteria(Criteria.where(search.getStatType()).lte(search.getStat()));
                     break;
             }
