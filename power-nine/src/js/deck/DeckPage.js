@@ -64,6 +64,7 @@ class DeckPage extends React.Component {
         }*/
 
         return <div>
+            {/*adding a new test comment*/}
             {/*Navbar*/}
             <DeckNavbar />
             <h2 className = "all-color">
