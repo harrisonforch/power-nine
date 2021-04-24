@@ -1,28 +1,59 @@
 import React from "react";
 import {Link} from "react-router-dom";
+import '../../css/DeckPage.css';
+import requestFromAPI from "../BackendAPI";
+//import DeckDisplay from "./DeckDisplay";
+import UserNavbar from "./DeckNavbar";
+import user_logo from "../../static/user-logo.png";
+import cardforDeckDisplay from "./cardforDeckDisplay";
 
 class DeckDisplay extends React.Component {
-    render() {
-        return <Link to={{
-            pathname: "/deck",
-            state: {
-                deck: this.props.deck
-            }
-        }}>
-            <div className={"card page-link"}>
-                {this.props.deck.cards.length > 0 ?
-                    <img className={"card-img-top"} src={this.props.deck.cards[0].image_uris.art_crop}  alt="Card in deck" /> :
-                    <img alt={"No cards stored!"} />
-                }
+    //call function to generate individal cards
 
-                <div className={"card-body"}>
-                    <h5 className={"card-title deck-card-display"}>{this.props.deck.deckName}</h5>
-                    <p className={"card-subtitle deck-card-display"}>
-                        Number of cards in deck: {this.props.deck.cards.length}
+
+    componentDidMount(){
+        //add calculations functions here
+    }
+    generateCardTables(){
+
+        const tableRows = [];
+        var cards = this.props.deck.cards
+        for (let i = 0; i < cards.length; i += 8) {
+            //var current = cards[i]
+            tableRows.push(
+                <div className={"row"}>
+                    <p>
+                        i
                     </p>
+                    {this.props.deck.cards.slice(i, i + 8).map(current =>
+                        <div className={"col-8"}>
+                            <cardforDeckDisplay card={current} />
+                        </div>
+                    )}
                 </div>
+            )
+            tableRows.push(<br />)
+        }
+        return tableRows;
+
+    }
+
+    totalCardTable(){
+        return (<div>
+            <div>
+                {this.generateCardTables()}
             </div>
-        </Link>
+        </div>);
+    }
+    render() {
+        return (<div>
+            <p>
+                {this.props.deck.deckName}
+            </p>
+            <div>
+                {this.totalCardTable()}
+            </div>
+        </div>);
     }
 }
 export default DeckDisplay;

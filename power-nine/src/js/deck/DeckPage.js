@@ -1,18 +1,18 @@
-import '../../css/UserPage.css';
+import '../../css/DeckPage.css';
 import React from "react";
 import requestFromAPI from "../BackendAPI";
 import DeckDisplay from "./DeckDisplay";
-import UserNavbar from "./UserNavbar";
 import user_logo from "../../static/user-logo.png";
+import DeckNavbar from "./DeckNavbar";
 
 class DeckPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            noDeck: false
+            noDeck: false,
             //unsure if this is true / needed
             //fix the ternary operator syntax
-            deck: this.props.location.state !== undefined ? this.state.noDeck: true,
+            deck: this.props.location.state !== undefined ? this.props.location.state.deck: null,
             isLoaded: false,
             error: null
         }
@@ -20,38 +20,9 @@ class DeckPage extends React.Component {
 
     componentDidMount() {
         //don't need to do this
-        requestFromAPI("http://localhost:8080/users/login", "admin", "welcome1", "POST",
-            {username: this.state.user.username, password: this.state.user.password})
-            .then(data => {
-                this.setState({
-                    isLoaded: true,
-                    user: data,
-                });
-            })
-            .catch(error => {
-                this.setState({
-                    isLoaded: true,
-                    error: error
-                })
-            })
     }
 
-    generateTable() {
-        const tableRows = [];
-        for (let i = 0; i < this.state.user.decks.length; i += 4) {
-            tableRows.push(
-                <div className={"row"}>
-                    {this.state.user.decks.slice(i, i + 4).map(deck =>
-                        <div className={"col-3"}>
-                            <DeckDisplay deck={deck} />
-                        </div>
-                    )}
-                </div>
-            )
-            tableRows.push(<br />)
-        }
-        return tableRows;
-    }
+    
 
     getUserDiv() {
         return (
@@ -80,6 +51,7 @@ class DeckPage extends React.Component {
     }
 
     render() {
+        /*
         if (!this.state.isLoaded)
             return <div />;
         if (this.state.error !== null) {
@@ -87,19 +59,21 @@ class DeckPage extends React.Component {
                 Error when loading <br />
                 {this.state.error}
             </div>;
-        }
+        }*/
 
         return <div>
             {/*Navbar*/}
-            <UserNavbar />
+            <DeckNavbar />
+            <p>
+                testing on the deck page
+            </p>
             {/*Left-side image and username*/}
-            {this.getUserDiv()}
-            {/*Table of deck objects*/}
-            {this.getDecksDiv()}
+            <DeckDisplay deck = {this.state.deck}/>
+
         </div>;
 
     }
 }
 
 
-export default UserPage;
+export default DeckPage;
