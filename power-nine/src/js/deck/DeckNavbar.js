@@ -21,4 +21,4 @@ class DeckNavbar extends React.Component {
         );
     }
 }
-export default UserNavbar
+export default DeckNavbar;
