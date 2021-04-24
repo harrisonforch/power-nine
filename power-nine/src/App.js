@@ -23,12 +23,9 @@ export default function App() {
                 <Route path={"/deck"} component={DeckPage} />
                 <Route path={"/profile"} component={UserPage} />
                 <Route path={"/search"} />
-                <Route path={"/logout"} />
-                <Route exact path={"/login"} component={Login}></Route>
-                <Route exact path={"/registration"} component={Registration}></Route>
-                <Route exact path={"/signupconfirmation"} component={SignupConfirm}></Route>
-                <Route exact path={"/loginconfirmation"} component={LoginConfirm}></Route>
-               
+                <Route path={"/logout"} component={Login} />
+                <Route exact path={"/login"} component={Login} />
+                <Route exact path={"/registration"} component={Registration} />
             </Switch>
         </Router>
     );
