@@ -1,4 +1,9 @@
 import React from "react";
+import Login from "./login.js";
+import Registration from "./registration.js";
+import SignupConfirm from "./SignupConfirm.js";
+import LoginConfirm from "./Loginconfirmation.js"
+
 import {
     BrowserRouter as Router,
     Route
@@ -19,8 +24,11 @@ export default function App() {
                 <Route path={"/profile"} component={UserPage} />
                 <Route path={"/search"} />
                 <Route path={"/logout"} />
-                <Route path={"/login"} />
-                <Route path={"/register"} />
+                <Route exact path={"/login"} component={Login}></Route>
+                <Route exact path={"/registration"} component={Registration}></Route>
+                <Route exact path={"/signupconfirmation"} component={SignupConfirm}></Route>
+                <Route exact path={"/loginconfirmation"} component={LoginConfirm}></Route>
+               
             </Switch>
         </Router>
     );
