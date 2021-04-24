@@ -23,11 +23,8 @@ function Registration() {
   const [errorMessagePwd, setErrorMessagePwd] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-
-
   const history = useHistory();
   
-
   function handleSubmit(event) {
     event.preventDefault();
     setErrorMessageFname("");
@@ -58,31 +55,15 @@ function Registration() {
       request("http://localhost:8080/users", "admin", "welcome1", "POST",
       {username: username, password: password, firstName: fname, lastName: lname, email: email})
       .then(data => {
-        // this.setState({
-        //   fname: data.fname.toString(),
-        //   lname: data.lname.toString(),
-        //   username: data.username.toString(),
-        //   email: data.email.toString(),
-        //   password: data.password.toString()
-        // });
-        console.log(data);
         setUsername(data.username.toString());
         setPassword(data.password.toString());
         setFname(data.firstName.toString());
         setLname(data.lastName.toString());
-        setEmail(data.email.toString());
-
-        console.log("user created");
-       
+        setEmail(data.email.toString()); 
         history.push("./profile", data);
       })
       .catch(error =>{
-        // this.setState({
-        //   errorMessage: "User already exists. Please try again."
-        // });
         setErrorMessage("User already exists. Please try again.");
-        console.log("unsucessful registration");
-
       })
     }
   }
@@ -184,11 +165,7 @@ function Registration() {
                 <Button block size ="lg">Log in</Button>
             </Link>
         </Form.Group>
-      
-
       </Form>
-
-    
     </div>
   );
 }
