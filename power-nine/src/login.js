@@ -20,9 +20,6 @@ function Login() {
   
 
   function handleSubmit(event) {
-    
-    // this.handleSubmit = this.handleSubmit.bind(this);
-
     event.preventDefault();
     setErrorMessageUser("");
     setErrorMessagePwd("");
@@ -41,24 +38,14 @@ function Login() {
       request("http://localhost:8080/users/login", "admin", "welcome1", "POST",
       {username: username, password: password})
       .then(data => {
-      // this.setState({
-      //   username: data.username.toString(),
-      //   password: data.password.toString()
-        
-      // });
-
-      setUsername(data.username.toString());
-      setPassword(data.password.toString());
-      console.log("successful login");
-      history.push("./profile", data);
+        setUsername(data.username.toString());
+        setPassword(data.password.toString());
+        console.log("successful login");
+        history.push("./profile", data);
       })
       .catch(error =>{
-        // this.setState({
-        //  errorMessage: "Incorrect username or password"
-        // });
         setErrorMessage("Incorrect username or password");
         console.log("unsuccessful login");
-      
       })
     }
   }

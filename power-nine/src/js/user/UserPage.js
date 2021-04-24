@@ -12,14 +12,8 @@ class UserPage extends React.Component {
         console.log(props.location);
         this.state = {
             user: {
-                // username: this.props.location.state !== undefined ? this.props.location.state.user.username : "user",
-                // password: this.props.location.state !== undefined ? this.props.location.state.user.password : "password1"
                 username: this.props.location !== undefined ? this.props.location.state.username : "user",
                 password: this.props.location !== undefined ? this.props.location.state.password : "password1"
-                // username: this.props.user.username,
-                // password: this.props.user.password
-
-                
             },
             isLoaded: false,
             error: null
