@@ -5,7 +5,8 @@ import requestFromAPI from "../BackendAPI";
 //import DeckDisplay from "./DeckDisplay";
 import UserNavbar from "./DeckNavbar";
 import user_logo from "../../static/user-logo.png";
-import cardforDeckDisplay from "./cardforDeckDisplay";
+import CardforDeckDisplay from "./cardforDeckDisplay";
+
 
 class DeckDisplay extends React.Component {
     //call function to generate individal cards
@@ -18,16 +19,14 @@ class DeckDisplay extends React.Component {
 
         const tableRows = [];
         var cards = this.props.deck.cards
+        //console.log(cards)
         for (let i = 0; i < cards.length; i += 8) {
             //var current = cards[i]
             tableRows.push(
-                <div className={"row"}>
-                    <p>
-                        i
-                    </p>
+                <div className={"row container"}>
                     {this.props.deck.cards.slice(i, i + 8).map(current =>
-                        <div className={"col-8"}>
-                            <cardforDeckDisplay card={current} />
+                        <div className={"col container"}>
+                            <CardforDeckDisplay card={current} />
                         </div>
                     )}
                 </div>
@@ -40,9 +39,9 @@ class DeckDisplay extends React.Component {
 
     totalCardTable(){
         return (<div>
-            <div>
+
                 {this.generateCardTables()}
-            </div>
+
         </div>);
     }
     render() {

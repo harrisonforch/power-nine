@@ -5,6 +5,7 @@ import DeckDisplay from "./DeckDisplay";
 import UserNavbar from "./UserNavbar";
 import user_logo from "../../static/user-logo.png";
 
+
 class UserPage extends React.Component {
     constructor(props) {
         super(props);
