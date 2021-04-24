@@ -4,6 +4,7 @@ import requestFromAPI from "../BackendAPI";
 import DeckDisplay from "./DeckDisplay";
 import user_logo from "../../static/user-logo.png";
 import DeckNavbar from "./DeckNavbar";
+import DeckStatsDisplay from "./deckStatsDisplay";
 
 
 class DeckPage extends React.Component {
@@ -65,10 +66,13 @@ class DeckPage extends React.Component {
         return <div>
             {/*Navbar*/}
             <DeckNavbar />
-            <p className = "all-color">
-                testing on the deck page
-            </p>
+            <h2 className = "all-color">
+                PAGE STILL BEING WORKED ON
+            </h2>
             {/*Left-side image and username*/}
+            <div>
+                <DeckStatsDisplay deck = {this.state.deck}/>
+            </div>
             <div>
                 <DeckDisplay deck = {this.state.deck}/>
             </div>

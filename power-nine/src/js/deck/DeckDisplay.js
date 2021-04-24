@@ -6,7 +6,7 @@ import requestFromAPI from "../BackendAPI";
 import UserNavbar from "./DeckNavbar";
 import user_logo from "../../static/user-logo.png";
 import CardforDeckDisplay from "./cardforDeckDisplay";
-
+import DeckStatsDisplay from "./deckStatsDisplay";
 
 class DeckDisplay extends React.Component {
     //call function to generate individal cards
@@ -49,7 +49,7 @@ class DeckDisplay extends React.Component {
             <p>
                 {this.props.deck.deckName}
             </p>
-            <div>
+            <div className = "all-cards">
                 {this.totalCardTable()}
             </div>
         </div>);

@@ -1,7 +1,19 @@
 .individual-card{
-    padding: 5 px;
+    padding: 20 px;
 }
 
 .all-color{
     background-color: red;
+}
+
+.all-cards{
+    margin-left: 26%;
+}
+
+.deckstats{
+    margin-right: 90%;
+}
+
+.mana-badge{
+    backgroundColor:aquamarine;
 }
