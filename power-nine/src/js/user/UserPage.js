@@ -4,7 +4,6 @@ import requestFromAPI from "../BackendAPI";
 import DeckDisplay from "./DeckDisplay";
 import UserNavbar from "./UserNavbar";
 import user_logo from "../../static/user-logo.png";
-import Login from "../../login";
 
 
 class UserPage extends React.Component {
@@ -12,9 +11,9 @@ class UserPage extends React.Component {
         super(props);
         if (this.props.history.location.state === undefined) {
             this.state = {
-                error: true,
                 user: null,
-                isLoaded: false
+                isLoaded: false,
+                error: null
             };
         } else {
             this.state = {
@@ -91,8 +90,8 @@ class UserPage extends React.Component {
     }
 
     render() {
-        if (this.state.error)
-            return <Login />
+        if (this.state.user === null)
+            this.props.history.push("/login")
         if (!this.state.isLoaded)
             return <div />;
         if (this.state.error !== null) {
