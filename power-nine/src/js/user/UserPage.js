@@ -4,23 +4,33 @@ import requestFromAPI from "../BackendAPI";
 import DeckDisplay from "./DeckDisplay";
 import UserNavbar from "./UserNavbar";
 import user_logo from "../../static/user-logo.png";
+import Login from "../../login";
 
 
 class UserPage extends React.Component {
     constructor(props) {
         super(props);
-        console.log(props.location);
-        this.state = {
-            user: {
-                username: this.props.location !== undefined ? this.props.location.state.username : "user",
-                password: this.props.location !== undefined ? this.props.location.state.password : "password1"
-            },
-            isLoaded: false,
-            error: null
+        if (this.props.history.location.state === undefined) {
+            this.state = {
+                error: true,
+                user: null,
+                isLoaded: false
+            };
+        } else {
+            this.state = {
+                user: {
+                    username: this.props.location.state.username,
+                    password: this.props.location.state.password
+                },
+                isLoaded: false,
+                error: null
+            };
         }
     }
 
     componentDidMount() {
+        if (this.state.error)
+            return;
         requestFromAPI("http://localhost:8080/users/login", "admin", "welcome1", "POST",
             {username: this.state.user.username, password: this.state.user.password})
             .then(data => {
@@ -81,6 +91,8 @@ class UserPage extends React.Component {
     }
 
     render() {
+        if (this.state.error)
+            return <Login />
         if (!this.state.isLoaded)
             return <div />;
         if (this.state.error !== null) {
