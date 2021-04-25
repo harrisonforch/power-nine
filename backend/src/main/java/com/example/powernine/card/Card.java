@@ -3,6 +3,8 @@ package com.example.powernine.card;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,8 +17,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+@Document(collection = "cards")
 public class Card {
     // Core card fields
+    @Id
     private String id;
     private Integer arena_id;
     private String land;

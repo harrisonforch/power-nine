@@ -27,9 +27,10 @@ public class UserLoginConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/").hasRole("USER")
                 .antMatchers("/users").hasRole("ADMIN")
                 .antMatchers("/decks").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/cards").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/").hasRole("USER")
                 .anyRequest().authenticated()
                 .and()
 //            .formLogin()
