@@ -1,7 +1,13 @@
 import React from 'react';
 import {Link} from "react-router-dom";
+import LoggedInUser from "./LoggedInUser";
 
 class UserNavbar extends React.Component {
+    handleLogout() {
+        // LoggedInUser.clearUser();
+        return <Link to={"/login"} className="nav-link">Logout</Link>;
+    }
+
     render() {
         return (
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -14,7 +20,7 @@ class UserNavbar extends React.Component {
                         <Link to={"/deck"} className="nav-link">User Decks</Link>
                     </ul>
                     <ul className="navbar-nav ml-auto">
-                        <Link to={"/logout"} className="nav-link">Logout</Link>
+                        {this.handleLogout()}
                     </ul>
                 </div>
             </nav>

@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import request from "./backend.js";
 import {useHistory} from 'react-router-dom';
 import "./login.css";
+import LoggedInUser from "./js/user/LoggedInUser";
 
 
 function Login() {
@@ -41,6 +42,7 @@ function Login() {
         setUsername(data.username.toString());
         setPassword(data.password.toString());
         console.log("successful login");
+        LoggedInUser.setUser(data);
         history.push("./profile", data);
       })
       .catch(error =>{

@@ -1,12 +1,10 @@
 import React from "react";
 import Login from "./login.js";
 import Registration from "./registration.js";
-import SignupConfirm from "./SignupConfirm.js";
-import LoginConfirm from "./Loginconfirmation.js"
-
 import {
     BrowserRouter as Router,
-    Route
+    Route,
+    Redirect
 } from "react-router-dom";
 import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import 'bootstrap/dist/css/bootstrap.min.css';

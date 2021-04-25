@@ -4,46 +4,39 @@ import requestFromAPI from "../BackendAPI";
 import DeckDisplay from "./DeckDisplay";
 import UserNavbar from "./UserNavbar";
 import user_logo from "../../static/user-logo.png";
-
+import LoggedInUser from "./LoggedInUser";
 
 class UserPage extends React.Component {
     constructor(props) {
         super(props);
-        if (this.props.history.location.state === undefined) {
-            this.state = {
-                user: null,
-                isLoaded: false,
-                error: null
-            };
-        } else {
-            this.state = {
-                user: {
-                    username: this.props.location.state.username,
-                    password: this.props.location.state.password
-                },
-                isLoaded: false,
-                error: null
-            };
-        }
+        if (!LoggedInUser.isLoggedIn())
+            return;
+        this.state = {
+            user: {
+                username: LoggedInUser.getUser().username,
+                password: LoggedInUser.getUser().password
+            },
+            isLoaded: false,
+            error: null
+        };
     }
 
     componentDidMount() {
-        if (this.state.error)
-            return;
-        requestFromAPI("http://localhost:8080/users/login", "admin", "welcome1", "POST",
-            {username: this.state.user.username, password: this.state.user.password})
-            .then(data => {
-                this.setState({
-                    isLoaded: true,
-                    user: data,
-                });
-            })
-            .catch(error => {
-                this.setState({
-                    isLoaded: true,
-                    error: error
+        if (LoggedInUser.isLoggedIn())
+            requestFromAPI("http://localhost:8080/users/login", "admin", "welcome1", "POST",
+                {username: this.state.user.username, password: this.state.user.password})
+                .then(data => {
+                    this.setState({
+                        isLoaded: true,
+                        user: data,
+                    });
                 })
-            })
+                .catch(error => {
+                    this.setState({
+                        isLoaded: true,
+                        error: error
+                    })
+                })
     }
 
     generateTable() {
@@ -90,26 +83,26 @@ class UserPage extends React.Component {
     }
 
     render() {
-        if (this.state.user === null)
-            this.props.history.push("/login")
-        if (!this.state.isLoaded)
-            return <div />;
-        if (this.state.error !== null) {
+        if (LoggedInUser.isLoggedIn()) {
+            if (!this.state.isLoaded)
+                return <div />;
+            if (this.state.error !== null) {
+                return <div>
+                    Error when loading <br />
+                    {this.state.error}
+                </div>;
+            }
+
             return <div>
-                Error when loading <br />
-                {this.state.error}
+                {/*Navbar*/}
+                <UserNavbar />
+                {/*Left-side image and username*/}
+                {this.getUserDiv()}
+                {/*Table of deck objects*/}
+                {this.getDecksDiv()}
             </div>;
         }
-
-        return <div>
-            {/*Navbar*/}
-            <UserNavbar />
-            {/*Left-side image and username*/}
-            {this.getUserDiv()}
-            {/*Table of deck objects*/}
-            {this.getDecksDiv()}
-        </div>;
-
+        return LoggedInUser.redirect();
     }
 }
 
