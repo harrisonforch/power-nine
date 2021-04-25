@@ -1,10 +1,8 @@
 import React from 'react';
 import {Link} from "react-router-dom";
-import LoggedInUser from "./LoggedInUser";
 
 class UserNavbar extends React.Component {
     handleLogout() {
-        // LoggedInUser.clearUser();
         return <Link to={"/login"} className="nav-link">Logout</Link>;
     }
 
@@ -15,9 +13,8 @@ class UserNavbar extends React.Component {
 
                 <div className="collapse navbar-collapse">
                     <ul className="navbar-nav mr-auto">
-                        <Link to={"/"} className="nav-link active">Home</Link>
+                        <Link to={"/profile"} className="nav-link active">Profile</Link>
                         <Link to={"/search"} className="nav-link">Search</Link>
-                        <Link to={"/deck"} className="nav-link">User Decks</Link>
                     </ul>
                     <ul className="navbar-nav ml-auto">
                         {this.handleLogout()}
