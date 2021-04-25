@@ -30,6 +30,7 @@ public class UserLoginConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").hasRole("USER")
                 .antMatchers("/users").hasRole("ADMIN")
                 .antMatchers("/decks").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/cards").hasAnyRole("ADMIN", "USER")
                 .anyRequest().authenticated()
                 .and()
 //            .formLogin()
