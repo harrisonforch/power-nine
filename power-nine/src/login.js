@@ -37,7 +37,7 @@ function Login() {
      
     } 
     else {
-      request("http://localhost:8080/users/login", "admin", "welcome1", "POST",
+      request("Powernine-env.eba-3vv5mxtg.us-east-2.elasticbeanstalk.com/users/login", "admin", "welcome1", "POST",
       {username: username, password: password})
       .then(data => {
         setUsername(data.username.toString());

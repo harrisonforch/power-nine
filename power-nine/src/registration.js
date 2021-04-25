@@ -52,7 +52,7 @@ function Registration() {
       }
     }
     else {
-      request("http://localhost:8080/users", "admin", "welcome1", "POST",
+      request("Powernine-env.eba-3vv5mxtg.us-east-2.elasticbeanstalk.com/users", "admin", "welcome1", "POST",
       {username: username, password: password, firstName: fname, lastName: lname, email: email})
       .then(data => {
         setUsername(data.username.toString());
