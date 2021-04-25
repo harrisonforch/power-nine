@@ -3,8 +3,7 @@ import Login from "./login.js";
 import Registration from "./registration.js";
 import {
     BrowserRouter as Router,
-    Route,
-    Redirect
+    Route
 } from "react-router-dom";
 import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import 'bootstrap/dist/css/bootstrap.min.css';

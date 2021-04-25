@@ -11,11 +11,11 @@ let LoggedInUser = (function() {
     }
 
     let isLoggedIn = () => {
-        return localStorage.getItem("user") !== "none";
+        return localStorage.getItem("user") !== null && localStorage.getItem("user") !== "none";
     }
 
     let clearUser = () => {
-        localStorage.setItem("user", "none");
+        localStorage.removeItem("user");
     }
 
     let redirect = () => {
