@@ -81,7 +81,6 @@ class DeckPage extends React.Component {
         //e.preventDefault();
         var currentcards = this.state.deck.cards;
         var returnedCards = [];
-        var returnedDeck = this.state.deck;
         for (var i = 0; i < currentcards.length; i++){
             var cardType = currentcards[i].type_line;
             if (cardType.includes("land")){
@@ -89,8 +88,7 @@ class DeckPage extends React.Component {
             }
 
         }
-        returnedDeck.cards = returnedCards
-        this.setState({editedDeck: returnedDeck});
+        this.setState({editedDeck: returnedCards});
         // this.state.editedDeck.cards = returnedCards;
 
     }
