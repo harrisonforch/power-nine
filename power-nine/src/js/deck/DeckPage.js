@@ -210,6 +210,7 @@ class DeckPage extends React.Component {
         var requestWorked = false;
         //insert in value for search deck string
         //need code to extract current deck value from the form below
+        //
         var currDeckName = document.getElementsByTagName("compareText").value
         //currDeckName = {this.state.compareText}
         console.log("CURRENT DECK NAME: " + currDeckName)
@@ -218,6 +219,7 @@ class DeckPage extends React.Component {
         requestFromAPI(requestLink, "admin", "welcome1", "GET")
             .then(data => {
                 //return data.decks[0];
+                console.log(data.status)
                 alert(JSON.stringify(data))
                 this.setState({
                     requestWorked: true,
@@ -233,10 +235,11 @@ class DeckPage extends React.Component {
         
             if (requestWorked == true){
                 //need code to redirect with coparison passing in both decks as deck1 and deck2 respectively
-                /*return  <Redirect  to="/posts/"{{
-                    pathname : "/Compare"
-                    deck1: 
-                }} />*/
+                return  <Redirect to={{ 
+                    pathname : "/compare",
+                    deck1: this.state.deck,
+                    deck2: this.state.compareDeck
+                }} />
                 alert("The request to API worked!");
             }
             else{

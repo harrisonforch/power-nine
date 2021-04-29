@@ -26,6 +26,7 @@ class DeckDisplay extends React.Component {
                 <div className={"row container"}>
                     {this.props.deck.cards.slice(i, i + 6).map(current =>
                         <div className={"col container"}>
+                            {console.log(current)}
                             <CardforDeckDisplay card={current} />
                         </div>
                     )}
