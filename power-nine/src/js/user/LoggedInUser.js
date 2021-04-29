@@ -25,7 +25,8 @@ let LoggedInUser = (function() {
 
     let updateUser = async () => {
         let user = getUser();
-        requestFromAPI("/api/user", user.username, user.password)
+        requestFromAPI("/api/users/login", null, null, "POST",
+            {username: user.username, password: user.password})
             .then(user => {
                 this.setUser(user)
             })

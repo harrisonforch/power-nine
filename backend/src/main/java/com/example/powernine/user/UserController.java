@@ -1,8 +1,10 @@
 package com.example.powernine.user;
 
 import com.example.powernine.deck.Deck;
+import com.example.powernine.deck.DeckRatingsRepository;
 import com.example.powernine.user.utils.UserExistsException;
 import com.example.powernine.user.utils.UserNotFoundException;
+import com.example.powernine.user.utils.UserWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,8 @@ public class UserController {
     private PasswordEncoder encoder;
     @Autowired
     private UserRepository repository;
+    @Autowired
+    private DeckRatingsRepository deckRatingsRepository;
 
     @GetMapping("/users")
     List<User> allUsers() {
@@ -23,12 +27,12 @@ public class UserController {
     }
 
     @PostMapping("/users/login")
-    User login(@RequestBody User user) {
+    UserWrapper login(@RequestBody User user) {
         User potentialUser = repository.findByUsername(user.getUsername());
         if (potentialUser != null) {
             if (encoder.matches(user.getPassword(), potentialUser.getPassword())) {
                 potentialUser.setPassword(user.getPassword());
-                return potentialUser;
+                return new UserWrapper(potentialUser, deckRatingsRepository);
             }
             throw new UserNotFoundException(user);
         }
@@ -36,7 +40,7 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    User newUser(@RequestBody User user) {
+    UserWrapper newUser(@RequestBody User user) {
         User existingUser = repository.findByUsername(user.getUsername());
         if (existingUser == null) {
             String oldPassword = user.getPassword();
@@ -44,7 +48,7 @@ public class UserController {
             user.setRole("ROLE_USER");
             repository.save(user);
             user.setPassword(oldPassword);
-            return user;
+            return new UserWrapper(user, deckRatingsRepository);
         }
         throw new UserExistsException(user.getUsername());
     }
@@ -63,7 +67,7 @@ public class UserController {
     }
 
     @PutMapping("/users")
-    User updateUser(@RequestBody UpdatedUser user) {
+    UserWrapper updateUser(@RequestBody UpdatedUser user) {
         User existingUser = repository.findByUsername(user.getUsername());
         if (existingUser != null) {
             if (encoder.matches(user.getPassword(), existingUser.getPassword())) {
@@ -92,7 +96,7 @@ public class UserController {
                 repository.save(user);
                 if (preChange != null)
                     user.setPassword(preChange);
-                return user;
+                return new UserWrapper(user, deckRatingsRepository);
             }
             throw new UserNotFoundException(user);
         }
