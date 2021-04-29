@@ -15,17 +15,26 @@ class DeckPage extends React.Component {
             noDeck: false,
             //unsure if this is true / needed
             //fix the ternary operator syntax
-            //deck: this.props.location.state !== undefined ? this.props.location.state.deck: null,
-            deck: null,
+            deck: this.props.location.state !== undefined ? this.props.location.state.deck: null,
+            //deck: null,
             editedDeck: null,
             isLoaded: false,
             error: null
         }
+        this.returnDefault = this.returnDefault.bind(this);
         this.returnLand = this.returnLand.bind(this);
+        this.returnCreature = this.returnCreature.bind(this);
+        this.returnSorcery = this.returnSorcery.bind(this);
+        this.returnInstant = this.returnInstant.bind(this);
+        this.returnEnchantment = this.returnEnchantment.bind(this);
+        this.returnArtifact = this.returnArtifact.bind(this);
     }
 
     componentDidMount() {
-        this.loadFakeDeck();
+        //this.loadFakeDeck();
+        this.setState({
+            isLoaded: true
+        });
     }
 
     loadFakeDeck(){
@@ -76,14 +85,29 @@ class DeckPage extends React.Component {
             </div>
         </div>);
     }
+    returnDefault(e){
+        //e.preventDefault();
+        var currentcards = this.state.deck.cards;
+        var returnedCards = [];
+        for (var i = 0; i < currentcards.length; i++){
+            var cardType = currentcards[i].type_line;
+            if (cardType.includes("creature") || cardType.includes("Creature")){
+                returnedCards.push(currentcards[i]);
+            }
 
+        }
+        this.setState({editedDeck: currentcards});
+        // this.state.editedDeck.cards = returnedCards;
+
+    }
+    
     returnLand(e){
         //e.preventDefault();
         var currentcards = this.state.deck.cards;
         var returnedCards = [];
         for (var i = 0; i < currentcards.length; i++){
             var cardType = currentcards[i].type_line;
-            if (cardType.includes("land")){
+            if (cardType.includes("land") || cardType.includes("Land")){
                 returnedCards.push(currentcards[i]);
             }
 
@@ -92,6 +116,88 @@ class DeckPage extends React.Component {
         // this.state.editedDeck.cards = returnedCards;
 
     }
+
+    returnCreature(e){
+        //e.preventDefault();
+        var currentcards = this.state.deck.cards;
+        var returnedCards = [];
+        for (var i = 0; i < currentcards.length; i++){
+            var cardType = currentcards[i].type_line;
+            if (cardType.includes("creature") || cardType.includes("Creature")){
+                returnedCards.push(currentcards[i]);
+            }
+
+        }
+        this.setState({editedDeck: returnedCards});
+        // this.state.editedDeck.cards = returnedCards;
+
+    }
+
+    returnEnchantment(e){
+        //e.preventDefault();
+        var currentcards = this.state.deck.cards;
+        var returnedCards = [];
+        for (var i = 0; i < currentcards.length; i++){
+            var cardType = currentcards[i].type_line;
+            if (cardType.includes("enchantment") || cardType.includes("Enchantment")){
+                returnedCards.push(currentcards[i]);
+            }
+
+        }
+        this.setState({editedDeck: returnedCards});
+        // this.state.editedDeck.cards = returnedCards;
+
+    }
+
+    returnArtifact(e){
+        //e.preventDefault();
+        var currentcards = this.state.deck.cards;
+        var returnedCards = [];
+        for (var i = 0; i < currentcards.length; i++){
+            var cardType = currentcards[i].type_line;
+            if (cardType.includes("artifact") || cardType.includes("Artifact")){
+                returnedCards.push(currentcards[i]);
+            }
+
+        }
+        this.setState({editedDeck: returnedCards});
+        // this.state.editedDeck.cards = returnedCards;
+
+    }
+
+    returnInstant(e){
+        //e.preventDefault();
+        var currentcards = this.state.deck.cards;
+        var returnedCards = [];
+        for (var i = 0; i < currentcards.length; i++){
+            var cardType = currentcards[i].type_line;
+            if (cardType.includes("instant") || cardType.includes("Instant")){
+                returnedCards.push(currentcards[i]);
+            }
+
+        }
+        this.setState({editedDeck: returnedCards});
+        // this.state.editedDeck.cards = returnedCards;
+
+    }
+
+    returnSorcery(e){
+        //e.preventDefault();
+        var currentcards = this.state.deck.cards;
+        var returnedCards = [];
+        for (var i = 0; i < currentcards.length; i++){
+            var cardType = currentcards[i].type_line;
+            if (cardType.includes("sorcer") || cardType.includes("Sorcer")){
+                returnedCards.push(currentcards[i]);
+            }
+
+        }
+        this.setState({editedDeck: returnedCards});
+        // this.state.editedDeck.cards = returnedCards;
+
+    }
+
+
 
     render() {
         if (!this.state.isLoaded)
@@ -114,25 +220,28 @@ class DeckPage extends React.Component {
             {/*adding a new test comment*/}
             {/*Navbar*/}
             <DeckNavbar />
-            <h2 className = "all-color">
-                PAGE STILL BEING WORKED ON
-            </h2>
+            <br></br>
             {/*Left-side image and username*/}
-            <div >
-                <div className = "right-align">
-                    <Button variant="outline-primary" onClick = {this.returnLand}>Land</Button>{' '}
-                    <Button variant="outline-secondary">Creatures</Button>{' '}
-                    <Button variant="outline-success">Enchantments</Button>{' '}
-                    <Button variant="outline-warning">Warning</Button>{' '}
-                    <Button variant="outline-danger">Artifacts</Button>{' '}
-                    <Button variant="outline-info">Instants</Button>{' '}
-                    <Button variant="outline-light">Sorceries</Button>{' '}
-                    
+            <div className = "flex-container" >
+                <div className = "left-align">
+                    <DeckStatsDisplay deck = {this.state.deck}/>
                 </div>
-                <DeckStatsDisplay deck = {deck}/>
+                <div className = "right-align">
+                    <Button variant="outline-dark" onClick = {this.returnDefault}>Default</Button>{' '}
+                    <Button variant="outline-primary" onClick = {this.returnLand}>Land</Button>{' '}
+                    <Button variant="outline-secondary" onClick = {this.returnCreature}>Creatures</Button>{' '}
+                    <Button variant="outline-success" onClick = {this.returnEnchantment}>Enchantments</Button>{' '}
+                    <Button variant="outline-warning" onClick = {this.returnArtifact}>Artifacts</Button>{' '}
+                    <Button variant="outline-danger" onClick = {this.returnInstant}>Instants</Button>{' '}
+                    <Button variant="outline-info" onClick = {this.returnSorcery}>Sorceries</Button>{' '}
+                    <br></br>
+                    <DeckDisplay deck = {deck}/>
+
+                </div>
+                
             </div>
             <div>
-                <DeckDisplay deck = {deck}/>
+                
             </div>
 
         </div>);

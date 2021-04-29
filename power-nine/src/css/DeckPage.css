@@ -1,5 +1,6 @@
 .individual-card{
     padding: 20 px;
+    align-items: center;
 }
 
 .all-color{
@@ -7,7 +8,8 @@
 }
 
 .all-cards{
-    margin-left: 26%;
+
+    font-size: 12px;
 }
 
 .deckstats{
@@ -20,9 +22,32 @@
 }
 
 .right-align{
-    margin-left: 26%;
+
+    width: 75%;
+    height: 100vh;
+}
+
+.left-align{
+    width: 25%;
+    height: 100vh;
+
 }
 
 .mana-badge{
     backgroundColor:aquamarine;
+}
+
+.centering{
+    display: flex;
+    align-content: center;
+    align-self: center;
+    align-items: center;
+    vertical-align: middle;
+}
+
+
+
+.flex-container{
+    display: flex;
+    flex-direction: row;
 }

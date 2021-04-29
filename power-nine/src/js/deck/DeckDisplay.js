@@ -47,9 +47,7 @@ class DeckDisplay extends React.Component {
     }
     render() {
         return (<div>
-            <p>
-                {this.props.deck.deckName}
-            </p>
+            <br></br>
             <div className = "all-cards">
                 {this.totalCardTable()}
             </div>
