@@ -19,6 +19,8 @@ public class DeckController {
     private UserRepository userRepository;
     @Autowired
     private DeckRepository deckRepository;
+    @Autowired
+    private DeckRatingsRepository deckRatingsRepository;
 
     @GetMapping("/decks")
     List<Deck> getDecks() {
@@ -26,12 +28,12 @@ public class DeckController {
     }
 
     @PostMapping("/decks")
-    Deck addDeck(@RequestBody Deck deck, Principal principal) {
+    void addDeck(@RequestBody Deck deck, Principal principal) {
         User user = userRepository.findByUsername(principal.getName());
         if (!user.getDecks().contains(deck))
             user.getDecks().add(deck);
         userRepository.save(user);
-        return deckRepository.save(deck);
+        deckRepository.save(deck);
     }
 
     @GetMapping("/decks/{name}")
@@ -64,13 +66,12 @@ public class DeckController {
     }
 
     @PutMapping("/decks/{name}")
-    Card addCardToDeck(@RequestBody Card card, @PathVariable String name, Principal principal) {
+    void addCardToDeck(@RequestBody Card card, @PathVariable String name, Principal principal) {
         User user = userRepository.findByUsername(principal.getName());
         Deck deck = user.getDeckByName(name);
         deck.addCard(card);
         userRepository.save(user);
         deckRepository.save(deck);
-        return card;
     }
 
     @DeleteMapping("/decks/delete-card/{name}")
@@ -80,6 +81,18 @@ public class DeckController {
         deck.removeCard(card);
         userRepository.save(user);
         deckRepository.save(deck);
+    }
+
+    @PostMapping("/decks/rate/{name}/{username}/{rating}")
+    void rateDeck(@PathVariable String name, @PathVariable String username, @PathVariable Integer rating) {
+        User user = userRepository.findByUsername(username);
+        if (user != null) {
+            for (Deck deck: user.getDecks()) {
+                if (deck.getDeckName().equals(name))
+                    deckRatingsRepository.save(new DeckRatings(deck.getId(), rating));
+            }
+        }
+        throw new UsernameNotFoundException(username);
     }
 
 }
