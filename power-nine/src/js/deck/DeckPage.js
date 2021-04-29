@@ -21,6 +21,7 @@ class DeckPage extends React.Component {
             isLoaded: false,
             error: null
         }
+        this.returnLand = this.returnLand.bind(this);
     }
 
     componentDidMount() {
@@ -86,7 +87,12 @@ class DeckPage extends React.Component {
                 returnedCards.push(currentcards[i]);
             }
 
-        }
+        };
+        var editedDeckReturned = this.state.deck;
+        editedDeckReturned.cards = returnedCards;
+        this.setState({
+            editedDeck: editedDeckReturned
+        })
         this.state.editedDeck.cards = returnedCards;
 
     }
