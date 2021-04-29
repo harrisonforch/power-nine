@@ -5,6 +5,11 @@ import DeckDisplay from "./DeckDisplay";
 import user_logo from "../../static/user-logo.png";
 import DeckNavbar from "./DeckNavbar";
 import DeckStatsDisplay from "./deckStatsDisplay";
+import Button from 'react-bootstrap/Button';
+//import FormControl from 'react-boostrap/lib/FormControl';
+import { InputGroup } from 'react-bootstrap';
+import { FormControl } from 'react-bootstrap';
+import { Redirect } from 'react-router-dom';
 
 
 class DeckPage extends React.Component {
@@ -15,13 +20,49 @@ class DeckPage extends React.Component {
             //unsure if this is true / needed
             //fix the ternary operator syntax
             deck: this.props.location.state !== undefined ? this.props.location.state.deck: null,
+            //deck: null,
+            editedDeck: null,
             isLoaded: false,
-            error: null
+            error: null,
+            compareDeck: null,
+            compareText: null
         }
+        this.returnDefault = this.returnDefault.bind(this);
+        this.returnLand = this.returnLand.bind(this);
+        this.returnCreature = this.returnCreature.bind(this);
+        this.returnSorcery = this.returnSorcery.bind(this);
+        this.returnInstant = this.returnInstant.bind(this);
+        this.returnEnchantment = this.returnEnchantment.bind(this);
+        this.returnArtifact = this.returnArtifact.bind(this);
+        this.submitComparison = this.submitComparison.bind(this);
     }
 
     componentDidMount() {
-        //don't need to do this
+        //this.loadFakeDeck();
+        this.setState({
+            isLoaded: true
+        });
+    }
+
+    loadFakeDeck(){
+        requestFromAPI("http://localhost:8080/users/login", "admin", "welcome1", "POST",
+            {username: "user", password: "password1"})
+            .then(data => {
+                //return data.decks[0];
+                this.setState({
+                    isLoaded: true,
+                    deck: data.decks[0],
+                    editedDeck: null,
+                });
+            })
+            .catch(error => {
+                this.setState({
+                    isLoaded: true,
+                    error: error,
+                    editedDeck: null,
+                })
+            })
+
     }
 
     
@@ -51,33 +92,225 @@ class DeckPage extends React.Component {
             </div>
         </div>);
     }
+    returnDefault(e){
+        //e.preventDefault();
+        var currentcards = this.state.deck.cards;
+        var returnedCards = [];
+        for (var i = 0; i < currentcards.length; i++){
+            var cardType = currentcards[i].type_line;
+            if (cardType.includes("creature") || cardType.includes("Creature")){
+                returnedCards.push(currentcards[i]);
+            }
+
+        }
+        this.setState({editedDeck: currentcards});
+        // this.state.editedDeck.cards = returnedCards;
+
+    }
+    
+    returnLand(e){
+        //e.preventDefault();
+        var currentcards = this.state.deck.cards;
+        var returnedCards = [];
+        for (var i = 0; i < currentcards.length; i++){
+            var cardType = currentcards[i].type_line;
+            if (cardType.includes("land") || cardType.includes("Land")){
+                returnedCards.push(currentcards[i]);
+            }
+
+        }
+        this.setState({editedDeck: returnedCards});
+        // this.state.editedDeck.cards = returnedCards;
+
+    }
+
+    returnCreature(e){
+        //e.preventDefault();
+        var currentcards = this.state.deck.cards;
+        var returnedCards = [];
+        for (var i = 0; i < currentcards.length; i++){
+            var cardType = currentcards[i].type_line;
+            if (cardType.includes("creature") || cardType.includes("Creature")){
+                returnedCards.push(currentcards[i]);
+            }
+
+        }
+        this.setState({editedDeck: returnedCards});
+        // this.state.editedDeck.cards = returnedCards;
+
+    }
+
+    returnEnchantment(e){
+        //e.preventDefault();
+        var currentcards = this.state.deck.cards;
+        var returnedCards = [];
+        for (var i = 0; i < currentcards.length; i++){
+            var cardType = currentcards[i].type_line;
+            if (cardType.includes("enchantment") || cardType.includes("Enchantment")){
+                returnedCards.push(currentcards[i]);
+            }
+
+        }
+        this.setState({editedDeck: returnedCards});
+        // this.state.editedDeck.cards = returnedCards;
+
+    }
+
+    returnArtifact(e){
+        //e.preventDefault();
+        var currentcards = this.state.deck.cards;
+        var returnedCards = [];
+        for (var i = 0; i < currentcards.length; i++){
+            var cardType = currentcards[i].type_line;
+            if (cardType.includes("artifact") || cardType.includes("Artifact")){
+                returnedCards.push(currentcards[i]);
+            }
+
+        }
+        this.setState({editedDeck: returnedCards});
+        // this.state.editedDeck.cards = returnedCards;
+
+    }
+
+    returnInstant(e){
+        //e.preventDefault();
+        var currentcards = this.state.deck.cards;
+        var returnedCards = [];
+        for (var i = 0; i < currentcards.length; i++){
+            var cardType = currentcards[i].type_line;
+            if (cardType.includes("instant") || cardType.includes("Instant")){
+                returnedCards.push(currentcards[i]);
+            }
+
+        }
+        this.setState({editedDeck: returnedCards});
+        // this.state.editedDeck.cards = returnedCards;
+
+    }
+
+    returnSorcery(e){
+        //e.preventDefault();
+        var currentcards = this.state.deck.cards;
+        var returnedCards = [];
+        for (var i = 0; i < currentcards.length; i++){
+            var cardType = currentcards[i].type_line;
+            if (cardType.includes("sorcer") || cardType.includes("Sorcer")){
+                returnedCards.push(currentcards[i]);
+            }
+
+        }
+        this.setState({editedDeck: returnedCards});
+        // this.state.editedDeck.cards = returnedCards;
+
+    }
+
+    submitComparison(){
+
+        var requestWorked = false;
+        //insert in value for search deck string
+        //need code to extract current deck value from the form below
+        var currDeckName = document.getElementsByTagName("compareText").value
+        //currDeckName = {this.state.compareText}
+        console.log("CURRENT DECK NAME: " + currDeckName)
+        let requestLink = "http://localhost:8080/decks/" + currDeckName
+        console.log("REQUEST LINK: " + requestLink)
+        requestFromAPI(requestLink, "admin", "welcome1", "GET")
+            .then(data => {
+                //return data.decks[0];
+                alert(JSON.stringify(data))
+                this.setState({
+                    requestWorked: true,
+                    compareDeck: data, 
+                });
+                
+            })
+            .catch(error => {
+                this.setState({
+                    error: error
+                })
+            })
+        
+            if (requestWorked == true){
+                //need code to redirect with coparison passing in both decks as deck1 and deck2 respectively
+                /*return  <Redirect  to="/posts/"{{
+                    pathname : "/Compare"
+                    deck1: 
+                }} />*/
+                alert("The request to API worked!");
+            }
+            else{
+                alert("That deck does not exist in our database");
+            }
+        //call API for new deck
+        //send them to other page with the updated state of decks
+    }
+
+
 
     render() {
-        /*
         if (!this.state.isLoaded)
             return <div />;
         if (this.state.error !== null) {
-            return <div>
-                Error when loading <br />
+            return (<div>
+                Error when loading <br/>
                 {this.state.error}
-            </div>;
-        }*/
+            </div>);
+        }
+        let deck = this.state.editedDeck;
+        if (deck === null) {
+            deck = this.state.deck;
+        } else {
+            deck = {cards: deck}
+        }
 
-        return <div>
+
+        return (<div>
+            {/*adding a new test comment*/}
             {/*Navbar*/}
             <DeckNavbar />
-            <h2 className = "all-color">
-                PAGE STILL BEING WORKED ON
-            </h2>
+            <br></br>
             {/*Left-side image and username*/}
-            <div>
-                <DeckStatsDisplay deck = {this.state.deck}/>
+            <div className = "flex-container" >
+                <div className = "left-align">
+                    <DeckStatsDisplay deck = {this.state.deck}/>
+                </div>
+                <div className = "right-align">
+                    <Button variant="outline-dark" onClick = {this.returnDefault}>Default</Button>{' '}
+                    <Button variant="outline-primary" onClick = {this.returnLand}>Land</Button>{' '}
+                    <Button variant="outline-secondary" onClick = {this.returnCreature}>Creatures</Button>{' '}
+                    <Button variant="outline-success" onClick = {this.returnEnchantment}>Enchantments</Button>{' '}
+                    <Button variant="outline-warning" onClick = {this.returnArtifact}>Artifacts</Button>{' '}
+                    <Button variant="outline-danger" onClick = {this.returnInstant}>Instants</Button>{' '}
+                    <Button variant="outline-info" onClick = {this.returnSorcery}>Sorceries</Button>{' '}
+                    <br></br>
+                    <br></br>
+                    <InputGroup className="mb-3 spacing">
+                        <InputGroup.Prepend>
+                        <InputGroup.Text id="basic-addon1">Compare</InputGroup.Text>
+                        </InputGroup.Prepend>
+                        <FormControl
+                        placeholder="Enter Deck Name"
+                        aria-label="compareDeckName"
+                        aria-describedby="basic-addon1"
+                        id = "compareText"
+                        tagName = "compareText"
+                        value = {this.state.compareText}
+                        />
+                        <InputGroup.Append>
+                             <Button variant="outline-secondary" onClick = {this.submitComparison}>Submit</Button>
+                        </InputGroup.Append>
+                    </InputGroup>
+                    <div className = "errorMessage"></div>
+                    <DeckDisplay deck = {deck}/>
+
+                </div>
+                
             </div>
             <div>
-                <DeckDisplay deck = {this.state.deck}/>
+                
             </div>
 
-        </div>;
+        </div>);
 
     }
 }

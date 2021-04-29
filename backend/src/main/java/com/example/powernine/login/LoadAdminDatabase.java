@@ -37,7 +37,11 @@ class LoadAdminDatabase {
             log.info("Preloading " + userRepository.save(new User("admin",
                     "$2a$10$AjHGc4x3Nez/p4ZpvFDWeO6FGxee/cVqj5KHHnHfuLnIOzC5ag4fm",
                     "Admin-fname", "Admin-lname", "Admin-email", "ROLE_ADMIN")));
+<<<<<<< HEAD
             User user = createTestUser(3, 10);
+=======
+            User user = createTestUser(3, 60);
+>>>>>>> deck_detail
             log.info("Preloading " + userRepository.save(user));
             for (Deck deck: user.getDecks())
                 deckRepository.save(deck);

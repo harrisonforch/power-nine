@@ -3,10 +3,8 @@ import {Link} from "react-router-dom";
 import '../../css/DeckPage.css';
 import requestFromAPI from "../BackendAPI";
 //import DeckDisplay from "./DeckDisplay";
-import UserNavbar from "./DeckNavbar";
 import user_logo from "../../static/user-logo.png";
 import CardforDeckDisplay from "./cardforDeckDisplay";
-import DeckStatsDisplay from "./deckStatsDisplay";
 
 class DeckDisplay extends React.Component {
     //call function to generate individal cards
@@ -16,16 +14,17 @@ class DeckDisplay extends React.Component {
         //add calculations functions here
     }
     generateCardTables(){
-
+        console.log("TESTING DECK DISPLAY")
+        console.log(this.props)
         const tableRows = [];
         var cards = this.props.deck.cards
-        console.log(this.props)
+        
         //console.log(cards)
-        for (let i = 0; i < cards.length; i += 5) {
+        for (let i = 0; i < cards.length; i +=6) {
             //var current = cards[i]
             tableRows.push(
                 <div className={"row container"}>
-                    {this.props.deck.cards.slice(i, i + 5).map(current =>
+                    {this.props.deck.cards.slice(i, i + 6).map(current =>
                         <div className={"col container"}>
                             <CardforDeckDisplay card={current} />
                         </div>
