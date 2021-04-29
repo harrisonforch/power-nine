@@ -11,7 +11,8 @@ class AdvancedSearch extends Component{
             color:'',
             rarity:'',
             isSubmitted: false,
-            cardData: []
+            cardData: [],
+            isCompleted: false
         }
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
@@ -24,12 +25,12 @@ class AdvancedSearch extends Component{
         const { name, color, rarity } = this.state
         event.preventDefault()
         this.setState({isSubmitted: true})
-        alert(`
-        ____Your Search____\n
-        Name : ${name}
-        Color : ${color}
-        Rarity : ${rarity}
-	    `)
+        // alert(`
+        // ____Your Search____\n
+        // Name : ${name}
+        // Color : ${color}
+        // Rarity : ${rarity}
+	    // `)
         fetch(`https://api.scryfall.com/cards/search?q=${name}+c%3A${color}+r%3A${rarity}`,{
             method: "GET",
             dataType: "JSON",
@@ -43,7 +44,8 @@ class AdvancedSearch extends Component{
                 this.setState({cardData: []})
                 for(let i = 0; i < data.total_cards; i++) {
                     this.setState(prevState => ({
-                        cardData: [...prevState.cardData, data.data[i]]
+                        cardData: [...prevState.cardData, data.data[i]],
+                        isCompleted: true
                     }));
                 }
             })
@@ -64,10 +66,16 @@ class AdvancedSearch extends Component{
     createDeck(event){
         const ind = event.target.value
         const user = LoggedInUser.getUser();
+        // TODO: Replace with drop-down of possible decks
         const enteredName = prompt('Please enter the name of your new deck')
         requestFromAPI("http://localhost:8080/decks", user.username, user.password, "POST",
             {deckName: enteredName, cards: []})
-        requestFromAPI(`http://localhost:8080/decks/${enteredName}`, user.username, user.password, "PUT", this.state.cardData[ind])
+            .then(() => {
+                requestFromAPI(`http://localhost:8080/decks/${enteredName}`, user.username, user.password, "PUT", this.state.cardData[ind])
+                    .then(() => {
+                        alert("Deck" + enteredName + " created!")
+                    });
+            });
     }
 
     addToDeck(event){
@@ -75,13 +83,16 @@ class AdvancedSearch extends Component{
         const user = LoggedInUser.getUser();
         const namedDeck = prompt('Please enter the name of the deck')
         requestFromAPI(`http://localhost:8080/decks/${namedDeck}`, user.username, user.password, "PUT", this.state.cardData[ind])
+            .then(() => {
+                alert("Card added to deck " + namedDeck)
+            })
     }
 
     renderSearchResults(i){
         if(this.state.cardData.length > i) {
             if(this.state.cardData[i].layout == 'transform' || this.state.cardData[i].layout == 'modal_dfc') {
                 return(
-                    <div margin="20px">
+                    <div margin="20px" className={"col"}>
                         <button onClick={this.addToDeck} value={i}>Add to deck</button>
                         <button onClick={this.createDeck} value={i}>Create a new deck with this card</button>
 
@@ -95,7 +106,7 @@ class AdvancedSearch extends Component{
                 )
             }
             return (
-                <div margin="20px">
+                <div margin="20px" className={"col"}>
                     <button onClick={this.addToDeck} value={i}>Add to 'new-deck' (test)</button>
                     <button onClick={this.createDeck} value={i}>Create 'new-deck' with this card</button>
                     <a href={this.state.cardData[i].scryfall_uri}>
@@ -113,6 +124,14 @@ class AdvancedSearch extends Component{
 // input field not stored in DOM values are exist
 // in react component itself as state
     render(){
+        let i = 0;
+        if (this.state.isSubmitted && !this.state.isCompleted)
+            return (
+                <div>
+                    <UserNavbar />
+                    <div>Loading...</div>
+                </div>
+            )
         return(
             <div>
                 <UserNavbar />
@@ -150,57 +169,12 @@ class AdvancedSearch extends Component{
                         <button>Search</button>
                     </div>
                 </form>
-                <div class = "row">
-                    {this.state.isSubmitted && this.renderSearchResults(1)}
-                    {this.state.isSubmitted && this.renderSearchResults(2)}
-                    {this.state.isSubmitted && this.renderSearchResults(3)}
-                    {this.state.isSubmitted && this.renderSearchResults(4)}
-                    {this.state.isSubmitted && this.renderSearchResults(5)}
-                    {this.state.isSubmitted && this.renderSearchResults(6)}
-                    {this.state.isSubmitted && this.renderSearchResults(7)}
-                    {this.state.isSubmitted && this.renderSearchResults(8)}
-                    {this.state.isSubmitted && this.renderSearchResults(9)}
-                    {this.state.isSubmitted && this.renderSearchResults(10)}
-                    {this.state.isSubmitted && this.renderSearchResults(11)}
-                    {this.state.isSubmitted && this.renderSearchResults(12)}
-                    {this.state.isSubmitted && this.renderSearchResults(13)}
-                    {this.state.isSubmitted && this.renderSearchResults(14)}
-                    {this.state.isSubmitted && this.renderSearchResults(15)}
-                    {this.state.isSubmitted && this.renderSearchResults(16)}
-                    {this.state.isSubmitted && this.renderSearchResults(17)}
-                    {this.state.isSubmitted && this.renderSearchResults(18)}
-                    {this.state.isSubmitted && this.renderSearchResults(19)}
-                    {this.state.isSubmitted && this.renderSearchResults(20)}
-                    {this.state.isSubmitted && this.renderSearchResults(21)}
-                    {this.state.isSubmitted && this.renderSearchResults(22)}
-                    {this.state.isSubmitted && this.renderSearchResults(23)}
-                    {this.state.isSubmitted && this.renderSearchResults(24)}
-                    {this.state.isSubmitted && this.renderSearchResults(25)}
-                    {this.state.isSubmitted && this.renderSearchResults(26)}
-                    {this.state.isSubmitted && this.renderSearchResults(27)}
-                    {this.state.isSubmitted && this.renderSearchResults(28)}
-                    {this.state.isSubmitted && this.renderSearchResults(29)}
-                    {this.state.isSubmitted && this.renderSearchResults(30)}
-                    {this.state.isSubmitted && this.renderSearchResults(31)}
-                    {this.state.isSubmitted && this.renderSearchResults(32)}
-                    {this.state.isSubmitted && this.renderSearchResults(33)}
-                    {this.state.isSubmitted && this.renderSearchResults(34)}
-                    {this.state.isSubmitted && this.renderSearchResults(35)}
-                    {this.state.isSubmitted && this.renderSearchResults(36)}
-                    {this.state.isSubmitted && this.renderSearchResults(37)}
-                    {this.state.isSubmitted && this.renderSearchResults(38)}
-                    {this.state.isSubmitted && this.renderSearchResults(39)}
-                    {this.state.isSubmitted && this.renderSearchResults(40)}
-                    {this.state.isSubmitted && this.renderSearchResults(41)}
-                    {this.state.isSubmitted && this.renderSearchResults(42)}
-                    {this.state.isSubmitted && this.renderSearchResults(43)}
-                    {this.state.isSubmitted && this.renderSearchResults(44)}
-                    {this.state.isSubmitted && this.renderSearchResults(45)}
-                    {this.state.isSubmitted && this.renderSearchResults(46)}
-                    {this.state.isSubmitted && this.renderSearchResults(47)}
-                    {this.state.isSubmitted && this.renderSearchResults(48)}
-                    {this.state.isSubmitted && this.renderSearchResults(49)}
-                    {this.state.isSubmitted && this.renderSearchResults(50)}
+                <div class = "container container-fluid">
+                    {Array(50).fill(0).map(() => {
+                        i += 1;
+                        return i % 10 === 0 ? this.state.isSubmitted && this.renderSearchResults(i) :
+                            this.state.isSubmitted && (<div>{this.renderSearchResults(i)}</div>)
+                    })}
                 </div>
             </div>
 
@@ -208,5 +182,5 @@ class AdvancedSearch extends Component{
     }
 }
 
-export default AdvancedSearch
+export default AdvancedSearch;
 
