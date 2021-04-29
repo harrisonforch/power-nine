@@ -3,6 +3,7 @@ import requestFromAPI from "../BackendAPI";
 import LoggedInUser from "../user/LoggedInUser";
 import UserNavbar from "../user/UserNavbar";
 import DeckDisplay from "../user/DeckDisplay";
+import "../../css/AdvancedSearch.css"
 
 class AdvancedSearch extends Component{
     constructor(props){
@@ -92,20 +93,37 @@ class AdvancedSearch extends Component{
             })
     }
 
+    renderDecksNamesMenu() {
+        const user = LoggedInUser.getUser();
+        return (<div className="btn-group" id={"menu"}>
+            <button className="btn btn-secondary btn-lg dropdown-toggle" type="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                Select deck
+            </button>
+            <div className="dropdown-menu">
+                {user.decks.map(deck => deck.deckName)}
+            </div>
+        </div>);
+    }
+
     renderSearchResults(){
         const tableRows = [];
         for (let i = 0; i < this.state.cardData.length; i = i + 3) {
             if (i >= 50)
                 return tableRows;
             tableRows.push(
-                <div margin="20px" className={"row"}>
+                <div className={"row justify-content-center"}>
                     {this.state.cardData.slice(i, i + 3).map((_, k) => {
                         let j = k + i;
                         if (this.state.cardData[j] === undefined)
                             return;
-                        return (<div>
-                            <button onClick={this.addToDeck} value={j}>Add to deck</button>
-                            <button onClick={this.createDeck} value={j}>Create a new deck with this card</button>
+                        return (<div className={"col-3 pl-md-4 pr-md-4 justify-content-center"}>
+                            {
+                                LoggedInUser.isLoggedIn() ?
+                                    (<span><button onClick={this.addToDeck} value={j}>Add to deck</button>
+                                        <button onClick={this.createDeck} value={j}>Create a new deck with this card</button></span>) :
+                                    <div></div>
+                            }
 
                             <a href={this.state.cardData[j].scryfall_uri}>
                                 <figure>
@@ -169,11 +187,13 @@ class AdvancedSearch extends Component{
                             <option rarity="mythic">Mythic</option>
                         </select>
                     </div>
-                    <div>
+                    <div className={"pb-1"}>
                         <button>Search</button>
                     </div>
                 </form>
-                {this.state.isCompleted && this.renderSearchResults()}
+                <div className={"border rounded container container-flexible justify-content-center"}>
+                    {this.state.isCompleted && this.renderSearchResults()}
+                </div>
             </div>
 
         )
