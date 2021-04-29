@@ -23,13 +23,14 @@ class DeckPage extends React.Component {
 
     componentDidMount() {
         //don't need to do this
+        // this.loadFakeDeck();
     }
 
     loadFakeDeck(){
         requestFromAPI("http://localhost:8080/users/login", "admin", "welcome1", "POST",
-            {username: "user", password: "passsword1"})
+            {username: "user", password: "password1"})
             .then(data => {
-                return data.decks[0];
+                // return data.decks[0];
                 this.setState({
                     isLoaded: true,
                     deck: data.decks[0],
@@ -73,18 +74,17 @@ class DeckPage extends React.Component {
     }
 
     render() {
-        this.loadFakeDeck();
-        /*
+        this.loadFakeDeck()
         if (!this.state.isLoaded)
             return <div />;
         if (this.state.error !== null) {
-            return <div>
-                Error when loading <br />
+            return (<div>
+                Error when loading <br/>
                 {this.state.error}
-            </div>;
-        }*/
+            </div>);
+        }
 
-        return <div>
+        return (<div>
             {/*adding a new test comment*/}
             {/*Navbar*/}
             <DeckNavbar />
@@ -99,7 +99,7 @@ class DeckPage extends React.Component {
                 <DeckDisplay deck = {this.state.deck}/>
             </div>
 
-        </div>;
+        </div>);
 
     }
 }
