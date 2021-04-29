@@ -11,7 +11,6 @@ import LoggedInUser from "./js/user/LoggedInUser";
 
 
 function Login() {
-  LoggedInUser.clearUser();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessageUser, setErrorMessageUser] = useState("");
@@ -19,10 +18,13 @@ function Login() {
   const [errorMessage, setErrorMessage] = useState("");
 
   const history = useHistory();
-  
+
+    if (LoggedInUser.isLoggedIn())
+        history.push("./profile");
+
 
   function handleSubmit(event) {
-    event.preventDefault();
+      event.preventDefault();
     setErrorMessageUser("");
     setErrorMessagePwd("");
     setErrorMessageUser("");

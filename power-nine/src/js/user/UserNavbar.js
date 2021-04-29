@@ -1,9 +1,12 @@
 import React from 'react';
 import {Link} from "react-router-dom";
+import LoggedInUser from "./LoggedInUser";
 
 class UserNavbar extends React.Component {
     handleLogout() {
-        return <Link to={"/login"} className="nav-link">Logout</Link>;
+        if (LoggedInUser.isLoggedIn())
+            return <Link to={"/login"} className="nav-link">Logout</Link>;
+        return <Link to={"/login"} className="nav-link">Login</Link>;
     }
 
     render() {
@@ -13,8 +16,13 @@ class UserNavbar extends React.Component {
 
                 <div className="collapse navbar-collapse">
                     <ul className="navbar-nav mr-auto">
-                        <Link to={"/profile"} className="nav-link active">Profile</Link>
+                        {
+                            LoggedInUser.isLoggedIn() ?
+                                <Link to={"/profile"} className="nav-link active">Profile</Link> :
+                                <div></div>
+                        }
                         <Link to={"/search"} className="nav-link">Search</Link>
+                        <Link to={"/alldecks"} className="nav-link">All decks</Link>
                     </ul>
                     <ul className="navbar-nav ml-auto">
                         {this.handleLogout()}

@@ -1,0 +1,75 @@
+import React from "react";
+import BackendAPI from "../BackendAPI";
+import DeckDisplay from "./DeckDisplay";
+import LoggedInUser from "./LoggedInUser";
+import UserNavbar from "./UserNavbar";
+
+class AllDecksDisplay extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isLoaded: false,
+            error: null,
+            decks: null
+        }
+    }
+
+    componentDidMount() {
+        let user = LoggedInUser.getUser();
+        BackendAPI("http://localhost:8080/decks", user.username, user.password, "GET")
+            .then(data => {
+                console.log(JSON.stringify(data))
+                this.setState({
+                    isLoaded: true,
+                    decks: data
+                })
+            })
+            .catch(error => {
+                this.setState({
+                    error: error,
+                    isLoaded: true
+                })
+            });
+    }
+
+    generateTable() {
+        const tableRows = [];
+        for (let i = 0; i < this.state.decks.length; i += 4) {
+            tableRows.push(
+                <div className={"row d-flex m-3"}>
+                    {this.state.decks.slice(i, i + 4).map((deck, k) => {
+                        let j = i + k;
+                        return <div className={"col-3 p-3 justify-content-center"}>
+                            <DeckDisplay deck={this.state.decks[j]} />
+                            <select className={"btn dropdown-toggle"} name="cars" id="cars">
+                                <option value="5">5</option>
+                                <option value="4">4</option>
+                                <option value="3">3</option>
+                                <option value="2">2</option>
+                                <option value="1">1</option>
+                            </select>
+                        </div>;
+                    })}
+                </div>
+            )
+            tableRows.push(<br />)
+        }
+        return tableRows;
+    }
+
+    render() {
+        if (!this.state.isLoaded)
+            return <div>
+                <UserNavbar />
+                Loading...
+        </div>;
+        if (this.state.error !== null)
+            return <div>There was an error while loading!</div>
+        return <div className={"container"}>
+            <UserNavbar />
+            {this.generateTable()}
+        </div>;
+    }
+
+}
+export default AllDecksDisplay;

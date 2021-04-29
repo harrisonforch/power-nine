@@ -13,6 +13,7 @@ class DeckStatsDisplay extends React.Component {
     constructor(props){
         super(props);
         this.deck = this.props.deck;
+        console.log(this.deck);
         this.cards = this.deck.cards;
         this.aCMC = "";
         this.CB = 0;
@@ -22,6 +23,12 @@ class DeckStatsDisplay extends React.Component {
         this.aCMC = this.average_cmc();
         this.aPower = this.average_power();
         this.aToughness = this.average_toughness();
+        this.lands = this.getLands();
+        this.creatures = this.getCreatures();
+        this.enchantments = this.getEnchantments();
+        this.artifacts = this.getArtifacts();
+        this.sorceries = this.getSorceries();
+        this.instants = this.getInstants();
 
     }
     average_power(){
@@ -37,6 +44,7 @@ class DeckStatsDisplay extends React.Component {
             
         }
         averagepower = averagepower / count;
+        averagepower = averagepower.toFixed(2);
         //console.log(averageCMC);
         return String(averagepower);
 
@@ -48,7 +56,105 @@ class DeckStatsDisplay extends React.Component {
             averageCMC += this.cards[i].cmc
         }
         averageCMC = averageCMC / this.cards.length;
+        averageCMC = averageCMC.toFixed(2);
+
         return String(averageCMC);
+
+    }
+
+    getLands(){
+        var lands = 0;
+        var currentcards = this.cards;
+        var returnedCards = [];
+        for (var i = 0; i < currentcards.length; i++){
+            var cardType = currentcards[i].type_line;
+            if (cardType.includes("land") || cardType.includes("Land")){
+                lands = lands + 1;
+            }
+
+        }
+
+        return String(lands);
+
+    }
+
+    getCreatures(){
+        var lands = 0;
+        var currentcards = this.cards;
+        var returnedCards = [];
+        for (var i = 0; i < currentcards.length; i++){
+            var cardType = currentcards[i].type_line;
+            if (cardType.includes("creature") || cardType.includes("Creature")){
+                lands = lands + 1;
+            }
+
+        }
+
+        return String(lands);
+
+    }
+
+    getInstants(){
+        var lands = 0;
+        var currentcards = this.cards;
+        var returnedCards = [];
+        for (var i = 0; i < currentcards.length; i++){
+            var cardType = currentcards[i].type_line;
+            if (cardType.includes("instant") || cardType.includes("Instant")){
+                lands = lands + 1;
+            }
+
+        }
+
+        return String(lands);
+
+    }
+
+    getSorceries(){
+        var lands = 0;
+        var currentcards = this.cards;
+        var returnedCards = [];
+        for (var i = 0; i < currentcards.length; i++){
+            var cardType = currentcards[i].type_line;
+            if (cardType.includes("sorcer") || cardType.includes("Sorcer")){
+                lands = lands + 1;
+            }
+
+        }
+
+        return String(lands);
+
+    }
+
+    getEnchantments(){
+        var lands = 0;
+        var currentcards = this.cards;
+        var returnedCards = [];
+        for (var i = 0; i < currentcards.length; i++){
+            var cardType = currentcards[i].type_line;
+            if (cardType.includes("enchantment") || cardType.includes("Enchantment")){
+                lands = lands + 1;
+            }
+
+        }
+
+        return String(lands);
+
+    }
+
+    getArtifacts(){
+        var lands = 0;
+        var currentcards = this.cards;
+        var returnedCards = [];
+        for (var i = 0; i < currentcards.length; i++){
+            var cardType = currentcards[i].type_line;
+            if (cardType.includes("artifact") || cardType.includes("Artifact")){
+                lands = lands + 1;
+            }
+
+        }
+
+        return String(lands);
 
     }
     componentDidMount(){
@@ -83,6 +189,7 @@ class DeckStatsDisplay extends React.Component {
             
         }
         averagetoughness = averagetoughness / count;
+        averagetoughness = averagetoughness.toFixed(2);
         //console.log(averageCMC);
         return String(averagetoughness);
 
@@ -91,16 +198,40 @@ class DeckStatsDisplay extends React.Component {
     render() {
         return (<div classname = "deckstats container row">
             <h1>
-                Stats for {this.props.deck.deckName}
+                {this.props.deck.deckName}
             </h1>
-            <Badge classname = " mana-badge " color = "danger">Average Mana Cost: {this.aCMC}
+            <h2>
+                Statistics:
+            </h2>
+            <h3>
+            <Badge classname = " mana-badge " color = "danger" variant = "dark"> Average Mana Cost: {this.aCMC}
             </Badge>{' '}
             <br></br>
-            <Badge classname = " mana-badge " color = "dangprimer" variant= "danger">Average Power: {this.aPower}
+            <Badge classname = " mana-badge " color = "dangprimer" variant= "dark">Average Power: {this.aPower}
             </Badge>{' '}
             <br></br>
-            <Badge classname = " mana-badge " color = "dangprimer" variant= "danger">Average Toughness: {this.aToughness}
+            <Badge classname = " mana-badge " color = "dangprimer" variant= "dark">Average Toughness: {this.aToughness}
             </Badge>{' '}
+            <br></br>
+            <hr></hr>
+            <Badge variant= "primary">Land Cards: {this.lands}
+            </Badge>{' '}
+            <br></br>
+            <Badge variant= "secondary">Creature Cards: {this.creatures}
+            </Badge>{' '}
+            <br></br>
+            <Badge variant= "success">Enchantment Cards: {this.enchantments}
+            </Badge>{' '}
+            <br></br>
+            <Badge variant= "warning">Artifact Cards: {this.artifacts}
+            </Badge>{' '}
+            <br></br>
+            <Badge variant= "danger">Instant Cards: {this.instants}
+            </Badge>{' '}
+            <br></br>
+            <Badge variant= "info">Sorcery Cards: {this.sorceries}
+            </Badge>{' '}
+            </h3>
         </div>);
     }
 }

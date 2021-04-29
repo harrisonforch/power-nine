@@ -31,6 +31,8 @@ public class UserLoginConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/decks").permitAll()
                 .antMatchers("/decks/**").permitAll()
                 .antMatchers("/decks/**/**").permitAll()
+                .antMatchers("/decks/**/**/**").permitAll()
+                .antMatchers("/decks/**/**/**/**").permitAll()
                 .antMatchers("/cards").permitAll()
                 .antMatchers("/").hasRole("USER")
                 .anyRequest().authenticated()

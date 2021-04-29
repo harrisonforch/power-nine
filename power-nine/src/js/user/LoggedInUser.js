@@ -1,5 +1,6 @@
 import {Redirect} from "react-router-dom";
 import React from "react";
+import requestFromAPI from "../BackendAPI";
 
 let LoggedInUser = (function() {
     let getUser = () => {
@@ -22,12 +23,26 @@ let LoggedInUser = (function() {
         return <Redirect to="/login" />;
     }
 
+    let updateUser = async () => {
+        let user = getUser();
+        requestFromAPI("/api/users/login", null, null, "POST",
+            {username: user.username, password: user.password})
+            .then(user => {
+                this.setUser(user)
+            })
+            .catch(error => {
+                console.log("Error: " + error);
+            });
+        return Promise.resolve(getUser());
+    }
+
     return {
         getUser: getUser,
         setUser: setUser,
         isLoggedIn: isLoggedIn,
         clearUser: clearUser,
-        redirect: redirect
+        redirect: redirect,
+        updateUser: updateUser
     }
 })();
 export default LoggedInUser;

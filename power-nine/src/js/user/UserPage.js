@@ -10,7 +10,7 @@ class UserPage extends React.Component {
     constructor(props) {
         super(props);
         if (!LoggedInUser.isLoggedIn())
-            return;
+            return LoggedInUser.redirect();
         this.state = {
             user: {
                 username: LoggedInUser.getUser().username,
@@ -22,9 +22,9 @@ class UserPage extends React.Component {
     }
 
     componentDidMount() {
-        if (LoggedInUser.isLoggedIn())
+        LoggedInUser.updateUser().then(user => {
             requestFromAPI("http://localhost:8080/users/login", "admin", "welcome1", "POST",
-                {username: this.state.user.username, password: this.state.user.password})
+                {username: user.username, password: user.password})
                 .then(data => {
                     this.setState({
                         isLoaded: true,
@@ -37,6 +37,7 @@ class UserPage extends React.Component {
                         error: error
                     })
                 })
+        });
     }
 
     generateTable() {
@@ -44,11 +45,12 @@ class UserPage extends React.Component {
         for (let i = 0; i < this.state.user.decks.length; i += 4) {
             tableRows.push(
                 <div className={"row"}>
-                    {this.state.user.decks.slice(i, i + 4).map(deck =>
-                        <div className={"col-3"}>
-                            <DeckDisplay deck={deck} />
+                    {this.state.user.decks.slice(i, i + 4).map((deck, k) => {
+                        let j = i + k;
+                        return <div className={"col-3"}>
+                            <DeckDisplay deck={this.state.user.decks[j]} />
                         </div>
-                    )}
+                    })}
                 </div>
             )
             tableRows.push(<br />)
@@ -85,7 +87,7 @@ class UserPage extends React.Component {
     render() {
         if (LoggedInUser.isLoggedIn()) {
             if (!this.state.isLoaded)
-                return <div />;
+                return <div>Loading...</div>;
             if (this.state.error !== null) {
                 return <div>
                     Error when loading <br />
