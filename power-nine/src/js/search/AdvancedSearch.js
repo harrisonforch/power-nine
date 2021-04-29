@@ -91,15 +91,13 @@ class AdvancedSearch extends Component{
 
     renderSearchResults(){
         const tableRows = [];
-        for (let i = 0; i < this.state.cardData.length; i+=3) {
-            let card = this.state.cardData[i];
-            if (card === undefined)
-                continue;
-            if (i === 50)
+        for (let i = 0; i < this.state.cardData.length; i = i + 3) {
+            if (i >= 50)
                 return tableRows;
             tableRows.push(
                 <div margin="20px" className={"row"}>
-                    {this.state.cardData.slice(i, i + 3).map((_card, j) => {
+                    {this.state.cardData.slice(i, i + 3).map((_, k) => {
+                        let j = k + i;
                         if (this.state.cardData[j] === undefined)
                             return;
                         return (<div>
