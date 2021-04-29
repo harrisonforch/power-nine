@@ -151,12 +151,12 @@ class AdvancedSearch extends Component{
             if (i >= 50)
                 return tableRows;
             tableRows.push(
-                <div margin="20px" className={"row"}>
+                <div className={"row justify-content-center"}>
                     {this.state.cardData.slice(i, i + 3).map((_, k) => {
                         let j = k + i;
                         if (this.state.cardData[j] === undefined)
                             return;
-                        return (<div>
+                        return (<div className={"col-3 pl-md-4 pr-md-4 justify-content-center"}>
                             {
                                 LoggedInUser.isLoggedIn() ?
                                     (<span><button onClick={this.addToDeck} value={j}>Add to deck</button>
@@ -258,7 +258,9 @@ class AdvancedSearch extends Component{
                         <button style={{marginBottom: '10px', marginTop: '5px'}}>Search</button>
                     </div>
                 </form>
-                {this.state.isCompleted && this.renderSearchResults()}
+                <div className={"border rounded container container-flexible justify-content-center"}>
+                    {this.state.isCompleted && this.renderSearchResults()}
+                </div>
             </div>
         )
     }
