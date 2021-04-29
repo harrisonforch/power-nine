@@ -15,7 +15,6 @@ class DeckRatingDisplay extends React.Component {
         let deckName = this.props.deck.deckName;
         let e = document.getElementById("rating-selector");
         let rating = e.options[e.selectedIndex].value;
-        alert("http://localhost:8080/decks/rate/" + deckName + "/" + deckUser + "/" + rating);
         BackendAPI("http://localhost:8080/decks/rate/" + deckName + "/" + deckUser + "/" + rating, user.username, user.password, "POST")
             .then(result => {
                 alert("Deck rated!")
@@ -23,6 +22,7 @@ class DeckRatingDisplay extends React.Component {
             .catch(error => {
 
             });
+        alert("Deck rated!")
     }
 
     render() {
