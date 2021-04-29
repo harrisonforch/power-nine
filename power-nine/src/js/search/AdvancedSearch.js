@@ -141,8 +141,28 @@ class AdvancedSearch extends Component{
 
     addToDeck(event){
         const ind = event.target.value
-        requestFromAPI(`http://localhost:8080/decks/${this.state.targetDeck}`, this.state.user.username, this.state.user.password, "PUT", this.state.cardData[ind])
-        alert(`Added to deck '${this.state.targetDeck}'`)
+        const user = LoggedInUser.getUser();
+        const namedDeck = prompt('Please enter the name of the deck')
+        requestFromAPI(`http://localhost:8080/decks/${namedDeck}`, user.username, user.password, "PUT", this.state.cardData[ind])
+            .then(() => {
+                alert("Card added to deck " + namedDeck)
+            })
+            .catch(() => {
+                alert("Unable to add card to deck " + namedDeck)
+            })
+    }
+
+    renderDecksNamesMenu() {
+        const user = LoggedInUser.getUser();
+        return (<div className="btn-group" id={"menu"}>
+            <button className="btn btn-secondary btn-lg dropdown-toggle" type="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                Select deck
+            </button>
+            <div className="dropdown-menu">
+                {user.decks.map(deck => deck.deckName)}
+            </div>
+        </div>);
     }
 
     renderSearchResults(i){
