@@ -28,8 +28,10 @@ public class UserLoginConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/users").hasRole("ADMIN")
-                .antMatchers("/decks").hasAnyRole("ADMIN", "USER")
-                .antMatchers("/cards").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/decks").permitAll()
+                .antMatchers("/decks/**").permitAll()
+                .antMatchers("/decks/**/**").permitAll()
+                .antMatchers("/cards").permitAll()
                 .antMatchers("/").hasRole("USER")
                 .anyRequest().authenticated()
                 .and()
