@@ -1,4 +1,4 @@
-//import '../../css/DeckPage.css';
+import '../../css/ComparePage.css';
 import React from "react";
 import requestFromAPI from "../BackendAPI";
 import DeckDisplay from "./DeckDisplay";
@@ -46,7 +46,7 @@ class ComparePage extends React.Component {
             .then(data => {
                 //return data.decks[0];
                 console.log("DATA RECEIVED")
-                this.returnDefault(data.decks[0].cards, data.decks[1].cards);
+                this.returnDefault(data.decks[1].cards, data.decks[2].cards);
 
             })
             
@@ -154,13 +154,14 @@ class ComparePage extends React.Component {
             <CompareNavBar />
             <br></br>
             {/*Left-side image and username*/}
-                <div className = "flex-container" >
+             
 
                     <Button variant="outline-dark" onClick = {this.returnDefault}>All</Button>{' '}
                     <Button variant="outline-primary" onClick = {this.returnSame}>Same</Button>{' '}
                     <Button variant="outline-warning" onClick = {this.returnDifferent}>Different</Button>{' '}
                     <br></br>
                     <br></br>
+                    <div className = "flex-container" >
                     <DeckDisplay deck = {deck}/>
 
                 </div>

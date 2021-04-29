@@ -20,11 +20,11 @@ class DeckDisplay extends React.Component {
         var cards = this.props.deck.cards
         
         //console.log(cards)
-        for (let i = 0; i < cards.length; i += 8) {
+        for (let i = 0; i < cards.length; i +=6) {
             //var current = cards[i]
             tableRows.push(
                 <div className={"row container"}>
-                    {this.props.deck.cards.slice(i, i + 8).map(current =>
+                    {this.props.deck.cards.slice(i, i + 6).map(current =>
                         <div className={"col container"}>
                             <CardforDeckDisplay card={current} />
                         </div>
