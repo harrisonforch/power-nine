@@ -1,9 +1,12 @@
 package com.example.powernine.deck;
 
 import com.example.powernine.card.Card;
+import com.example.powernine.deck.utils.DeckNotFoundException;
 import com.example.powernine.user.User;
 import com.example.powernine.user.UserRepository;
+import com.example.powernine.user.utils.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -18,9 +21,8 @@ public class DeckController {
     private DeckRepository deckRepository;
 
     @GetMapping("/decks")
-    List<Deck> getDecks(Principal principal) {
-        User user = userRepository.findByUsername(principal.getName());
-        return user.getDecks();
+    List<Deck> getDecks() {
+        return deckRepository.findAll();
     }
 
     @PostMapping("/decks")
@@ -33,9 +35,23 @@ public class DeckController {
     }
 
     @GetMapping("/decks/{name}")
-    Deck getDeckByName(@PathVariable String name, Principal principal) {
-        User user = userRepository.findByUsername(principal.getName());
-        return user.getDeckByName(name);
+    Deck getDeckByName(@PathVariable String name) {
+        Deck deck = deckRepository.findByDeckName(name);
+        if (deck == null)
+            throw new DeckNotFoundException("Deck name not found");
+        return deck;
+    }
+
+    @GetMapping("/decks/{name}/{username}")
+    Deck getUserDeckByName(@PathVariable String name, @PathVariable String username) {
+        User user = userRepository.findByUsername(username);
+        if (user == null)
+            throw new UsernameNotFoundException(username);
+        for (Deck deck: user.getDecks()) {
+            if (deck.getDeckName().equals(name))
+                return deck;
+        }
+        throw new DeckNotFoundException("Deck name for user not found");
     }
 
     @DeleteMapping("/decks/{name}")
