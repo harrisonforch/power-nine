@@ -14,7 +14,8 @@ class DeckPage extends React.Component {
             noDeck: false,
             //unsure if this is true / needed
             //fix the ternary operator syntax
-            deck: this.props.location.state !== undefined ? this.props.location.state.deck: null,
+            //deck: this.props.location.state !== undefined ? this.props.location.state.deck: null,
+            deck: this.loadFakeDeck(),
             isLoaded: false,
             error: null
         }
@@ -22,6 +23,25 @@ class DeckPage extends React.Component {
 
     componentDidMount() {
         //don't need to do this
+    }
+
+    loadFakeDeck(){
+        requestFromAPI("http://localhost:8080/users/login", "admin", "welcome1", "POST",
+            {username: "user", password: "passsword1"})
+            .then(data => {
+                return data.decks[0];
+                this.setState({
+                    isLoaded: true,
+                    deck: data.decks[0],
+                });
+            })
+            .catch(error => {
+                this.setState({
+                    isLoaded: true,
+                    error: error
+                })
+            })
+
     }
 
     
@@ -53,6 +73,7 @@ class DeckPage extends React.Component {
     }
 
     render() {
+        this.loadFakeDeck();
         /*
         if (!this.state.isLoaded)
             return <div />;
