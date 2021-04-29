@@ -9,6 +9,7 @@ import Button from 'react-bootstrap/Button';
 import { InputGroup } from 'react-bootstrap';
 import { FormControl } from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
+import LoggedInUser from '../user/LoggedInUser';
 
 
 class ComparePage extends React.Component {
@@ -18,8 +19,8 @@ class ComparePage extends React.Component {
             noDeck: false,
             //unsure if this is true / needed
             //fix the ternary operator syntax
-            deck1: this.props.location.state !== undefined ? this.props.location.state.deck: null,
-            deck2: null,
+            deck1: this.props.location.state !== undefined ? this.props.location.state.deck1: null,
+            deck2: this.props.location.state !== undefined ? this.props.location.state.deck2: null,
             //deck: null,
             combinedDeck: null,
             isLoaded: false,
@@ -27,40 +28,20 @@ class ComparePage extends React.Component {
         }
         this.returnDefault = this.returnDefault.bind(this);
         //this.returnSame = this.returnSame.bind(this);
-        //this.returnDifferent = this.returnDifferent.bind(this);
+        this.returnDiff = this.returnDiff.bind(this);
     }
 
 
 
 
     componentDidMount() {
-        this.loadFakeDecks();
+        //this.loadFakeDecks();(
+        this.returnDefault(this.props.location.state.deck1, this.props.location.state.deck2)
         //initializing default decks
        // console.log(this.state.deck1);
         
     }
 
-    loadFakeDecks(){
-        requestFromAPI("http://localhost:8080/users/login", "admin", "welcome1", "POST",
-            {username: "user", password: "password1"})
-            .then(data => {
-                //return data.decks[0];
-                console.log("DATA RECEIVED")
-                this.returnDefault(data.decks[1].cards, data.decks[2].cards);
-
-            })
-            
-            .catch(error => {
-                this.setState({
-                    isLoaded: false,
-                    error: error
-                })
-                console.log("ERROR")
-            })
-            console.log("DECK 1")
-            console.log(this.state.deck1)
-
-    }
 
     getDecksDiv() {
         return (<div className={"decks-div border rounded"}>
@@ -100,6 +81,42 @@ class ComparePage extends React.Component {
         console.log(returnedCards)
         //var returnDeck = this.state.deck1
         //returnDeck.cards = returnedCards
+        this.setState({
+            deck1: cards1,
+            deck2: cards2,
+            combinedDeck: returnedCards,
+            isLoaded: true
+        });
+        console.log("TESTING COMBINED DECK")
+        console.log(this.state.combinedDeck)
+        // this.state.editedDeck.cards = returnedCards;
+
+    }
+
+    returnDiff(){
+        //e.preventDefault();
+        var cards1 = this.state.deck1.cards
+        console.log(this.state.deck1)
+        console.log(this.state.deck2)
+        var cards2 = this.state.deck2.cards
+        console.log(cards1)
+        console.log(cards2)
+        var returnedCards = []
+        console.log("single cards")
+        console.log(cards1)
+        returnedCards = []
+        for (var i = 0; i < cards1.length; i++){
+            var hasSame = false;
+            for (var j = 0; j < cards2.length; j++){
+                if (cards1[i].name === cards2[j].name){
+                    hasSame = true
+                    break;
+                }
+            }
+            if (hasSame == true){
+                returnedCards.push(cards1[i])
+            }
+        }
         this.setState({
             deck1: cards1,
             deck2: cards2,
@@ -155,10 +172,8 @@ class ComparePage extends React.Component {
             <br></br>
             {/*Left-side image and username*/}
              
-
-                    <Button variant="outline-dark" onClick = {this.returnDefault}>All</Button>{' '}
-                    <Button variant="outline-primary" onClick = {this.returnSame}>Same</Button>{' '}
-                    <Button variant="outline-warning" onClick = {this.returnDifferent}>Different</Button>{' '}
+                    <Button variant="outline-primary" onClick = {this.returnDefault}>Same</Button>{' '}
+                    <Button variant="outline-warning" onClick = {this.returnDiff}>Different</Button>{' '}
                     <br></br>
                     <br></br>
                     <div className = "flex-container" >
