@@ -11,6 +11,7 @@ import Switch from "react-bootstrap/Switch";
 
 import UserPage from "./js/user/UserPage";
 import DeckPage from "./js/deck/DeckPage";
+import AdvancedSearch from "./js/search/AdvancedSearch";
 
 export default function App() {
     return (
@@ -19,7 +20,7 @@ export default function App() {
                 <Route exact path={"/"} />
                 <Route path={"/deck"} component={DeckPage} />
                 <Route path={"/profile"} component={UserPage} />
-                <Route path={"/search"} />
+                <Route path={"/search"} component={AdvancedSearch} />
                 <Route path={"/logout"} component={Login} />
                 <Route exact path={"/login"} component={Login} />
                 <Route exact path={"/registration"} component={Registration} />
