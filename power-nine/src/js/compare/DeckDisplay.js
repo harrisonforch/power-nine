@@ -14,10 +14,11 @@ class DeckDisplay extends React.Component {
         //add calculations functions here
     }
     generateCardTables(){
-
+        console.log("TESTING DECK DISPLAY")
+        console.log(this.props)
         const tableRows = [];
         var cards = this.props.deck.cards
-        console.log(this.props)
+        
         //console.log(cards)
         for (let i = 0; i < cards.length; i += 8) {
             //var current = cards[i]

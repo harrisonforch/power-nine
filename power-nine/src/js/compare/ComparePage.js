@@ -25,7 +25,6 @@ class ComparePage extends React.Component {
             isLoaded: false,
             error: null,
         }
-        this.loadFakeDecks();
         this.returnDefault = this.returnDefault.bind(this);
         //this.returnSame = this.returnSame.bind(this);
         //this.returnDifferent = this.returnDifferent.bind(this);
@@ -53,7 +52,10 @@ class ComparePage extends React.Component {
 
                 });
                 console.log("DATA RECEIVED")
+                this.returnDefault();
+
             })
+            
             .catch(error => {
                 this.setState({
                     isLoaded: true,
@@ -105,8 +107,8 @@ class ComparePage extends React.Component {
         }
         console.log("TESTING RETURNED CARDS")
         console.log(returnedCards)
-        var returnDeck = this.state.deck1
-        returnDeck.cards = returnedCards
+        //var returnDeck = this.state.deck1
+        //returnDeck.cards = returnedCards
         this.setState({
             combinedDeck: returnedCards,
             isLoaded: true
@@ -130,13 +132,20 @@ class ComparePage extends React.Component {
                 {this.state.error}
             </div>);
         }
-        this.returnDefault();
-        let deck = this.state.combinedDeck;
+        var deck = this.state.combinedDeck
+        if (this.state.combinedDeck == null){
+            deck = this.state.combinedDeck;
+        }
+        else{
+            deck = this.state.deck1
+        }
+        
+        
  
         //deck = {cards: deck}
         
         console.log("TESTING COMBINED DECK")
-        console.log(this.state.combinedDeck)
+        console.log(this.state)
         console.log("TESTED COMBINED DECK")
         /*if (deck === null) {
             deck = this.state.deck;
