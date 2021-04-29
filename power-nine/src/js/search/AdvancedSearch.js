@@ -62,16 +62,18 @@ class AdvancedSearch extends Component{
 
     createDeck(event){
         const ind = event.target.value
+        const user = LoggedInUser.getUser();
         const enteredName = prompt('Please enter the name of your new deck')
-        requestFromAPI("http://localhost:8080/decks", "admin", "welcome1", "POST",
+        requestFromAPI("http://localhost:8080/decks", user.username, user.password, "POST",
             {deckName: enteredName, cards: []})
-        requestFromAPI(`http://localhost:8080/decks/${enteredName}`, "admin", "welcome1", "PUT", this.state.cardData[ind])
+        requestFromAPI(`http://localhost:8080/decks/${enteredName}`, user.username, user.password, "PUT", this.state.cardData[ind])
     }
 
     addToDeck(event){
         const ind = event.target.value
+        const user = LoggedInUser.getUser();
         const namedDeck = prompt('Please enter the name of the deck')
-        requestFromAPI(`http://localhost:8080/decks/${namedDeck}`, "admin", "welcome1", "PUT", this.state.cardData[ind])
+        requestFromAPI(`http://localhost:8080/decks/${namedDeck}`, user.username, user.password, "PUT", this.state.cardData[ind])
     }
 
     renderSearchResults(i){

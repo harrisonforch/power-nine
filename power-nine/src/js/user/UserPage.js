@@ -11,6 +11,7 @@ class UserPage extends React.Component {
         super(props);
         if (!LoggedInUser.isLoggedIn())
             return;
+        LoggedInUser.updateUser()
         this.state = {
             user: {
                 username: LoggedInUser.getUser().username,
