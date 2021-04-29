@@ -52,6 +52,7 @@ class LoadAdminDatabase {
         user.setPassword(encoder.encode(user.getPassword()));
         for (int i = 0; i < numDecks; i++) {
             Deck deck = new Deck("deck" + i, new ArrayList<>());
+            deck.setUserUID(user.getUID());
             for (int j = 0; j < numCardsPerDeck; j++) {
                 try {
                     deck.addCard(Card.random());

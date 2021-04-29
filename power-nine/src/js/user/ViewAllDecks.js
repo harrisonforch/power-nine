@@ -3,6 +3,7 @@ import BackendAPI from "../BackendAPI";
 import DeckDisplay from "./DeckDisplay";
 import LoggedInUser from "./LoggedInUser";
 import UserNavbar from "./UserNavbar";
+import DeckRatingDisplay from "./DeckRatingDisplay";
 
 class AllDecksDisplay extends React.Component {
     constructor(props) {
@@ -40,14 +41,7 @@ class AllDecksDisplay extends React.Component {
                     {this.state.decks.slice(i, i + 4).map((deck, k) => {
                         let j = i + k;
                         return <div className={"col-3 p-3 justify-content-center"}>
-                            <DeckDisplay deck={this.state.decks[j]} />
-                            <select className={"btn dropdown-toggle"} name="cars" id="cars">
-                                <option value="5">5</option>
-                                <option value="4">4</option>
-                                <option value="3">3</option>
-                                <option value="2">2</option>
-                                <option value="1">1</option>
-                            </select>
+                            <DeckRatingDisplay deck={this.state.decks[j]} />
                         </div>;
                     })}
                 </div>

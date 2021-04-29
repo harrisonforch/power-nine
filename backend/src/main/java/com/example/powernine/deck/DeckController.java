@@ -33,6 +33,7 @@ public class DeckController {
         if (principal == null)
             throw new UsernameNotFoundException("Unable to load principal user");
         User user = userRepository.findByUsername(principal.getName());
+        deck.setUserUID(user.getUID());
         if (!user.getDecks().contains(deck))
             user.getDecks().add(deck);
         userRepository.save(user);

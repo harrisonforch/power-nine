@@ -15,12 +15,21 @@ public class Deck {
     private Long UID;
     private String deckName;
     private ArrayList<Card> cards;
+    private Long userUID;
 
     public Deck(String deckName, ArrayList<Card> cards) {
         this.UID = count;
         count += 1;
         this.deckName = deckName;
         this.cards = cards;
+    }
+
+    public Deck(String deckName, ArrayList<Card> cards, Long userUID) {
+        this.UID = count;
+        count += 1;
+        this.deckName = deckName;
+        this.cards = cards;
+        this.userUID = userUID;
     }
 
     public Long getId() {
@@ -57,5 +66,13 @@ public class Deck {
             return getDeckName().equals(((Deck) other).getDeckName());
         }
         return false;
+    }
+
+    public Long getUserUID() {
+        return userUID;
+    }
+
+    public void setUserUID(Long userUID) {
+        this.userUID = userUID;
     }
 }
