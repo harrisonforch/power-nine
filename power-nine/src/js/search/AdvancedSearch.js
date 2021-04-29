@@ -1,16 +1,34 @@
 import React, {Component} from "react";
 import requestFromAPI from "../BackendAPI";
 import LoggedInUser from "../user/LoggedInUser";
+import UserNavbar from "../user/UserNavbar";
+import DeckDisplay from "../user/DeckDisplay";
 
 class AdvancedSearch extends Component{
     constructor(props){
         super(props)
         this.state = {
             name:'',
-            color:'',
+            isWhite:'',
+            isBlue:'',
+            isBlack:'',
+            isRed:'',
+            isGreen:'',
+            colorMatching:'3D',
+            statInteger:'',
+            statMatching:'d',
+            statType:'cmc',
             rarity:'',
             isSubmitted: false,
-            cardData: []
+            cardData: [],
+            user: {
+                username: LoggedInUser.getUser().username,
+                password: LoggedInUser.getUser().password
+            },
+            isLoaded: false,
+            error: null,
+            targetDeck:'',
+            isCompleted: false
         }
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
@@ -18,18 +36,56 @@ class AdvancedSearch extends Component{
         this.createDeck = this.createDeck.bind(this)
     }
 
+    componentDidMount() {
+        if (LoggedInUser.isLoggedIn())
+            requestFromAPI("http://localhost:8080/users/login", "admin", "welcome1", "POST",
+                {username: this.state.user.username, password: this.state.user.password})
+                .then(data => {
+                    this.setState({
+                        isLoaded: true,
+                        user: data,
+                    });
+                })
+                .catch(error => {
+                    this.setState({
+                        isLoaded: true,
+                        error: error
+                    })
+                })
+    }
+
 // Form submitting logic, prevent default page refresh
     handleSubmit(event){
-        const { name, color, rarity } = this.state
+        const { name, isWhite, isBlue, isBlack, isRed, isGreen, colorMatching, statInteger, statMatching, statType, rarity } = this.state
         event.preventDefault()
         this.setState({isSubmitted: true})
         alert(`
-        ____Your Search____\n
-        Name : ${name}
-        Color : ${color}
-        Rarity : ${rarity}
+        Your Search\n
+        Name: ${name}
+        Color: ${isWhite}, ${isBlue}, ${isBlack}, ${isRed}, ${isGreen}
+        Color Matching: ${colorMatching}
+        Stats: ${statInteger}, ${statMatching}, ${statType}
+        Rarity: ${rarity}
 	    `)
-        fetch(`https://api.scryfall.com/cards/search?q=${name}+c%3A${color}+r%3A${rarity}`,{
+        let nameParam = ''
+        if(name != null) {
+            nameParam = `${name}+`
+        }
+        let colorParam = ''
+        if(isWhite !== '' || isBlue !== '' || isBlack !== '' || isRed !== '' || isGreen !== ''){
+            colorParam = `c%${colorMatching}${isWhite}${isBlue}${isBlack}${isRed}${isGreen}+`
+        }
+        let statsParam = ''
+        if(statInteger !== '' && statMatching !== '' && statType != ''){
+            statsParam = `${statType}%3${statMatching}${statInteger}+`
+        }
+        let rarityParam = ''
+        if(rarity !== ''){
+            rarityParam = `r%3a${rarity}`
+        }
+
+        fetch(`https://api.scryfall.com/cards/search?q=${nameParam}${colorParam}${statsParam}${rarityParam}`,
+            {
             method: "GET",
             dataType: "JSON",
             headers: {
@@ -45,6 +101,7 @@ class AdvancedSearch extends Component{
                         cardData: [...prevState.cardData, data.data[i]]
                     }));
                 }
+                this.setState({isCompleted: true})
             })
     }
 
@@ -53,6 +110,15 @@ class AdvancedSearch extends Component{
 // input changes of all the input field using ES6
 // javascript feature computed property names
     handleChange(event){
+        let nam = event.target.name;
+        let val = event.target.value;
+        if(nam === "statInteger"){
+            if(!Number(val)){
+                alert("The value must be a number.")
+                this.setState({[event.target.name] : ""})
+                return
+            }
+        }
         this.setState({
             // Computed property names
             // keys of the objects are computed dynamically
@@ -62,144 +128,136 @@ class AdvancedSearch extends Component{
 
     createDeck(event){
         const ind = event.target.value
+        const user = LoggedInUser.getUser();
+        // TODO: Replace with drop-down of possible decks
         const enteredName = prompt('Please enter the name of your new deck')
-        requestFromAPI("http://localhost:8080/decks", "admin", "welcome1", "POST",
-            {deckName: enteredName, cards: []})
-        requestFromAPI(`http://localhost:8080/decks/${enteredName}`, "admin", "welcome1", "PUT", this.state.cardData[ind])
+        requestFromAPI("http://localhost:8080/decks", user.username, user.password, "POST",
+            {deckName: enteredName, cards: [this.state.cardData[ind]]})
+            .then(() => {
+                alert("Deck " + enteredName + " created!")
+            })
+            .catch(() => {
+                alert("Unable to create new deck with name " + enteredName);
+            });
     }
 
     addToDeck(event){
         const ind = event.target.value
-        const namedDeck = prompt('Please enter the name of the deck')
-        requestFromAPI(`http://localhost:8080/decks/${namedDeck}`, "admin", "welcome1", "PUT", this.state.cardData[ind])
+        requestFromAPI(`http://localhost:8080/decks/${this.state.targetDeck}`, this.state.user.username, this.state.user.password, "PUT", this.state.cardData[ind])
+        alert(`Added to deck '${this.state.targetDeck}'`)
     }
 
     renderSearchResults(i){
-        if(this.state.cardData.length > i) {
-            if(this.state.cardData[i].layout == 'transform' || this.state.cardData[i].layout == 'modal_dfc') {
-                return(
-                    <div margin="20px">
-                        <button onClick={this.addToDeck} value={i}>Add to deck</button>
-                        <button onClick={this.createDeck} value={i}>Create a new deck with this card</button>
+        const tableRows = [];
+        for (let i = 0; i < this.state.cardData.length; i = i + 3) {
+            if (i >= 50)
+                return tableRows;
+            tableRows.push(
+                <div margin="20px" className={"row"}>
+                    {this.state.cardData.slice(i, i + 3).map((_, k) => {
+                        let j = k + i;
+                        if (this.state.cardData[j] === undefined)
+                            return;
+                        return (<div>
+                            <button onClick={this.addToDeck} value={j}>Add to deck</button>
+                            <button onClick={this.createDeck} value={j}>Create a new deck with this card</button>
 
-                        <a href={this.state.cardData[i].scryfall_uri}>
-                            <figure>
-                                <img src={this.state.cardData[i].card_faces[1].image_uris.small}/>
-                                <figcaption>{this.state.cardData[i].name}</figcaption>
-                            </figure>
-                        </a>
-                    </div>
-                )
-            }
-            return (
-                <div margin="20px">
-                    <button onClick={this.addToDeck} value={i}>Add to 'new-deck' (test)</button>
-                    <button onClick={this.createDeck} value={i}>Create 'new-deck' with this card</button>
-                    <a href={this.state.cardData[i].scryfall_uri}>
-                        <figure>
-                            <img src={this.state.cardData[i].image_uris.small}/>
-                            <figcaption>{this.state.cardData[i].name}</figcaption>
-                        </figure>
-                    </a>
+                            <a href={this.state.cardData[j].scryfall_uri}>
+                                <figure>
+                                    {this.state.cardData[j].layout === 'transform' || this.state.cardData[j].layout === 'modal_dfc' ?
+                                        <img src={this.state.cardData[j].card_faces[1].image_uris.small}/> :
+                                        <img src={this.state.cardData[j].image_uris.small}/>
+                                    }
+                                    <figcaption>{this.state.cardData[j].name}</figcaption>
+                                </figure>
+                            </a>
+                        </div>)
+                    })}
                 </div>
-            )
+            );
         }
+        return tableRows;
     }
 
 // Return a controlled form i.e. values of the
 // input field not stored in DOM values are exist
 // in react component itself as state
     render(){
+        let i = 0;
+        if (this.state.isSubmitted && !this.state.isCompleted) {
+            return (
+                <div>
+                    <UserNavbar/>
+                    <div>Loading...</div>
+                </div>
+            )
+        }
         return(
             <div>
+                <UserNavbar />
                 <form onSubmit={this.handleSubmit}>
                     <div>
-                        <label htmlFor='name'>Name</label>
+                        <label htmlFor='name' style={{marginRight: '10px', marginTop: '10px'}}>Card Name</label>
                         <input
                             name='name'
-                            placeholder='Name'
+                            placeholder='Any text in the name'
                             value={this.state.name}
                             onChange={this.handleChange}
                         />
                     </div>
                     <div>
-                        <label htmlFor='color'>Color</label>
-                        <select name='color' value={this.state.color} onChange={this.handleChange}>
-                            <option value="w">White</option>
-                            <option value="u">Blue</option>
-                            <option value="b">Black</option>
-                            <option value="r">Red</option>
-                            <option value="g">Green</option>
-                            <option value="c">Colorless</option>
+                        <input type="checkbox" id="whiteCheckbox" name="isWhite" value="w" onChange={this.handleChange}></input>
+                        <label htmlFor="whiteCheckbox" style={{marginRight: '12px', marginLeft: '3px'}}>White</label>
+                        <input type="checkbox" id="blueCheckbox" name="isBlue" value="u" onChange={this.handleChange}></input>
+                        <label htmlFor="blueCheckbox" style={{marginRight: '12px', marginLeft: '3px' }}>Blue</label>
+                        <input type="checkbox" id="blackCheckbox" name="isBlack" value="b" onChange={this.handleChange}></input>
+                        <label htmlFor="blackCheckbox" style={{marginRight: '12px', marginLeft: '3px'}}>Black</label>
+                        <input type="checkbox" id="redCheckbox" name="isRed" value="r" onChange={this.handleChange}></input>
+                        <label htmlFor="redCheckbox" style={{marginRight: '12px', marginLeft: '3px'}}>Red</label>
+                        <input type="checkbox" id="greenCheckbox" name="isGreen" value="g" onChange={this.handleChange}></input>
+                        <label htmlFor="greenCheckbox" style={{marginRight: '12px', marginLeft: '3px'}}>Green</label>
+                        <select name='colorMatching' value={this.state.colorMatching} onChange={this.handleChange}>
+                            <option default value="3D">Exactly these colors</option>
+                            <option value="3A">Including these colors</option>
                         </select>
                     </div>
                     <div>
-                        <label htmlFor='rarity'>Rarity</label>
+                        <label htmlFor='rarity' style={{marginRight: '8px'}}>Rarity</label>
                         <select name='rarity' value={this.state.rarity} onChange={this.handleChange}>
-                            <option rarity="common">Common</option>
-                            <option rarity="uncommon">Uncommon</option>
-                            <option rarity="rare">Rare</option>
-                            <option rarity="mythic">Mythic</option>
+                            <option value="" disabled selected>Select rarity</option>
+                            <option value="common">Common</option>
+                            <option value="uncommon">Uncommon</option>
+                            <option value="rare">Rare</option>
+                            <option value="mythic">Mythic Rare</option>
                         </select>
                     </div>
                     <div>
-                        <button>Search</button>
+                        <select name='statType' value={this.state.statType} onChange={this.handleChange} style={{marginRight: '5px'}}>
+                            <option default value="cmc">CMC</option>
+                            <option value="pow">Power</option>
+                            <option value="tou">Toughness</option>
+                            <option value="loy">Loyalty</option>
+                        </select>
+                        <select name='statMatching' value={this.state.statMatching} onChange={this.handleChange} style={{marginRight: '5px'}}>
+                            <option default value="d">Equal to</option>
+                            <option value="c">Less than</option>
+                            <option value="e">Greater than</option>
+                            <option value="c%3d">Less than or equal to</option>
+                            <option value="e%3d">Greater than or equal to</option>
+                        </select>
+                        <input
+                            name='statInteger'
+                            value={this.state.statInteger}
+                            placeholder='Value'
+                            onChange={this.handleChange}
+                        />
+                    </div>
+                    <div>
+                        <button style={{marginBottom: '10px', marginTop: '5px'}}>Search</button>
                     </div>
                 </form>
-                <div class = "row">
-                    {this.state.isSubmitted && this.renderSearchResults(1)}
-                    {this.state.isSubmitted && this.renderSearchResults(2)}
-                    {this.state.isSubmitted && this.renderSearchResults(3)}
-                    {this.state.isSubmitted && this.renderSearchResults(4)}
-                    {this.state.isSubmitted && this.renderSearchResults(5)}
-                    {this.state.isSubmitted && this.renderSearchResults(6)}
-                    {this.state.isSubmitted && this.renderSearchResults(7)}
-                    {this.state.isSubmitted && this.renderSearchResults(8)}
-                    {this.state.isSubmitted && this.renderSearchResults(9)}
-                    {this.state.isSubmitted && this.renderSearchResults(10)}
-                    {this.state.isSubmitted && this.renderSearchResults(11)}
-                    {this.state.isSubmitted && this.renderSearchResults(12)}
-                    {this.state.isSubmitted && this.renderSearchResults(13)}
-                    {this.state.isSubmitted && this.renderSearchResults(14)}
-                    {this.state.isSubmitted && this.renderSearchResults(15)}
-                    {this.state.isSubmitted && this.renderSearchResults(16)}
-                    {this.state.isSubmitted && this.renderSearchResults(17)}
-                    {this.state.isSubmitted && this.renderSearchResults(18)}
-                    {this.state.isSubmitted && this.renderSearchResults(19)}
-                    {this.state.isSubmitted && this.renderSearchResults(20)}
-                    {this.state.isSubmitted && this.renderSearchResults(21)}
-                    {this.state.isSubmitted && this.renderSearchResults(22)}
-                    {this.state.isSubmitted && this.renderSearchResults(23)}
-                    {this.state.isSubmitted && this.renderSearchResults(24)}
-                    {this.state.isSubmitted && this.renderSearchResults(25)}
-                    {this.state.isSubmitted && this.renderSearchResults(26)}
-                    {this.state.isSubmitted && this.renderSearchResults(27)}
-                    {this.state.isSubmitted && this.renderSearchResults(28)}
-                    {this.state.isSubmitted && this.renderSearchResults(29)}
-                    {this.state.isSubmitted && this.renderSearchResults(30)}
-                    {this.state.isSubmitted && this.renderSearchResults(31)}
-                    {this.state.isSubmitted && this.renderSearchResults(32)}
-                    {this.state.isSubmitted && this.renderSearchResults(33)}
-                    {this.state.isSubmitted && this.renderSearchResults(34)}
-                    {this.state.isSubmitted && this.renderSearchResults(35)}
-                    {this.state.isSubmitted && this.renderSearchResults(36)}
-                    {this.state.isSubmitted && this.renderSearchResults(37)}
-                    {this.state.isSubmitted && this.renderSearchResults(38)}
-                    {this.state.isSubmitted && this.renderSearchResults(39)}
-                    {this.state.isSubmitted && this.renderSearchResults(40)}
-                    {this.state.isSubmitted && this.renderSearchResults(41)}
-                    {this.state.isSubmitted && this.renderSearchResults(42)}
-                    {this.state.isSubmitted && this.renderSearchResults(43)}
-                    {this.state.isSubmitted && this.renderSearchResults(44)}
-                    {this.state.isSubmitted && this.renderSearchResults(45)}
-                    {this.state.isSubmitted && this.renderSearchResults(46)}
-                    {this.state.isSubmitted && this.renderSearchResults(47)}
-                    {this.state.isSubmitted && this.renderSearchResults(48)}
-                    {this.state.isSubmitted && this.renderSearchResults(49)}
-                    {this.state.isSubmitted && this.renderSearchResults(50)}
-                </div>
+                {this.state.isCompleted && this.renderSearchResults()}
             </div>
-
         )
     }
 }
