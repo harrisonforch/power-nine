@@ -3,6 +3,14 @@ import {Link} from "react-router-dom";
 
 class DeckDisplay extends React.Component {
     render() {
+        let idxOfImage = -1;
+        for (let i = 0; i < this.props.deck.cards.length; i++) {
+            let card = this.props.deck.cards[i];
+            if (card.image_uris !== undefined && card.image_uris.art_crop !== undefined) {
+                idxOfImage = i;
+                break;
+            }
+        }
         return <Link to={{
             pathname: "/deck",
             state: {
@@ -10,8 +18,8 @@ class DeckDisplay extends React.Component {
             }
         }}>
             <div className={"card page-link"}>
-                {this.props.deck.cards.length > 0 ?
-                    <img className={"card-img-top"} src={this.props.deck.cards[0].image_uris.art_crop}  alt="Card in deck" /> :
+                {idxOfImage !== -1 ?
+                    <img className={"card-img-top"} src={this.props.deck.cards[idxOfImage].image_uris.art_crop}  alt="Card in deck" /> :
                     <img alt={"No cards stored!"} />
                 }
 
