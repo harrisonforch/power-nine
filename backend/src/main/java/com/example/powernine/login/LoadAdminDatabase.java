@@ -34,9 +34,9 @@ class LoadAdminDatabase {
 
         // admin:welcome1
         return args -> {
-//            log.info("Preloading " + userRepository.save(new User("admin",
-//                    "$2a$10$AjHGc4x3Nez/p4ZpvFDWeO6FGxee/cVqj5KHHnHfuLnIOzC5ag4fm",
-//                    "Admin-fname", "Admin-lname", "Admin-email", "ROLE_ADMIN")));
+            log.info("Preloading " + userRepository.save(new User("admin",
+                    "$2a$10$AjHGc4x3Nez/p4ZpvFDWeO6FGxee/cVqj5KHHnHfuLnIOzC5ag4fm",
+                    "Admin-fname", "Admin-lname", "Admin-email", "ROLE_ADMIN")));
 //            User user = createTestUser(3, 60, deckRepository);
 //            log.info("Preloading " + userRepository.save(user));
 ////            for (Deck deck: user.getDecks())
