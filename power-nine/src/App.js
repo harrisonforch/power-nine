@@ -13,6 +13,7 @@ import UserPage from "./js/user/UserPage";
 import DeckPage from "./js/deck/DeckPage";
 import AdvancedSearch from "./js/search/AdvancedSearch";
 import LoggedInUser from "./js/user/LoggedInUser";
+import AllDecksDisplay from "./js/user/ViewAllDecks"
 
 export default function App() {
     let homeRoute = <Route exact path={"/"} component={AdvancedSearch} />
@@ -28,6 +29,7 @@ export default function App() {
                 <Route path={"/logout"} component={Login} />
                 <Route exact path={"/login"} component={Login} />
                 <Route exact path={"/registration"} component={Registration} />
+                <Route exact path={"/alldecks"} component={AllDecksDisplay} />
             </Switch>
         </Router>
     );
