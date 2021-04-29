@@ -48,7 +48,7 @@ class UserPage extends React.Component {
                     {this.state.user.decks.slice(i, i + 4).map((deck, k) => {
                         let j = i + k;
                         return <div className={"col-3"}>
-                            <DeckDisplay deck={this.state.user.decks[j]} />
+                            <DeckDisplay deck={this.state.user.decks[j]} rating={this.state.user.deckRatings[j]} />
                         </div>
                     })}
                 </div>

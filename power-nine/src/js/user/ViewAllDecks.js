@@ -19,7 +19,6 @@ class AllDecksDisplay extends React.Component {
         let user = LoggedInUser.getUser();
         BackendAPI("http://localhost:8080/decks", user.username, user.password, "GET")
             .then(data => {
-                console.log(JSON.stringify(data))
                 this.setState({
                     isLoaded: true,
                     decks: data

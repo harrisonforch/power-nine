@@ -37,30 +37,30 @@ class LoadAdminDatabase {
             log.info("Preloading " + userRepository.save(new User("admin",
                     "$2a$10$AjHGc4x3Nez/p4ZpvFDWeO6FGxee/cVqj5KHHnHfuLnIOzC5ag4fm",
                     "Admin-fname", "Admin-lname", "Admin-email", "ROLE_ADMIN")));
-            User user = createTestUser(3, 60);
+            User user = createTestUser(3, 5, deckRepository);
             log.info("Preloading " + userRepository.save(user));
-            for (Deck deck: user.getDecks())
-                deckRepository.save(deck);
+//            for (Deck deck: user.getDecks())
+//                deckRepository.save(deck);
             log.info("Done");
         };
     }
 
-    private User createTestUser(int numDecks, int numCardsPerDeck) {
+    private User createTestUser(int numDecks, int numCardsPerDeck, DeckRepository deckRepository) {
         User user = new User("user", "password1", "Tommy", "Trojan",
                 "tommyt@usc.edu", "ROLE_USER");
         ArrayList<Deck> decks = new ArrayList<>();
         user.setPassword(encoder.encode(user.getPassword()));
         for (int i = 0; i < numDecks; i++) {
-            Deck deck = new Deck("deck" + i, new ArrayList<>());
-            deck.setUserUID(user.getUID());
+            Deck preDeck = new Deck("deck" + i, new ArrayList<>());
+            preDeck.setUserUID(user.getUID());
             for (int j = 0; j < numCardsPerDeck; j++) {
                 try {
-                    deck.addCard(Card.random());
+                    preDeck.addCard(Card.random());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-            decks.add(deck);
+            decks.add(deckRepository.save(preDeck));
         }
         user.setDecks(decks);
         return user;

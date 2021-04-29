@@ -9,14 +9,16 @@ class DeckRatingDisplay extends React.Component {
         this.sendRating = this.sendRating.bind(this);
     }
 
-    sendRating(event) {
+    sendRating() {
         let user = LoggedInUser.getUser();
         let deckUser = this.props.deck.userUID;
         let deckName = this.props.deck.deckName;
-        let rating = event.target.value;
+        let e = document.getElementById("rating-selector");
+        let rating = e.options[e.selectedIndex].value;
+        alert("http://localhost:8080/decks/rate/" + deckName + "/" + deckUser + "/" + rating);
         BackendAPI("http://localhost:8080/decks/rate/" + deckName + "/" + deckUser + "/" + rating, user.username, user.password, "POST")
             .then(result => {
-                alert(result);
+                alert("Deck rated!")
             })
             .catch(error => {
 
@@ -32,33 +34,36 @@ class DeckRatingDisplay extends React.Component {
                 break;
             }
         }
-        return <Link to={{
-            pathname: "/deck",
-            state: {
-                deck: this.props.deck
-            }
-        }}>
+        return (
             <div className={"card page-link"}>
-                {idxOfImage !== -1 ?
-                    <img className={"card-img-top"} src={this.props.deck.cards[idxOfImage].image_uris.art_crop}  alt="Card in deck" /> :
-                    <img alt={"No cards stored!"} />
-                }
+                <Link to={{
+                    pathname: "/deck",
+                    state: {
+                        deck: this.props.deck
+                    }
+                }}>
+                    {idxOfImage !== -1 ?
+                        <img className={"card-img-top"} src={this.props.deck.cards[idxOfImage].image_uris.art_crop}  alt="Card in deck" /> :
+                        <img alt={"No cards stored!"} />
+                    }
+                </Link>
 
                 <div className={"card-body"}>
                     <h5 className={"card-title deck-card-display"}>{this.props.deck.deckName}</h5>
                     <p className={"card-subtitle deck-card-display"}>
                         Number of cards in deck: {this.props.deck.cards.length}
                     </p>
-                    <select className={"btn dropdown-toggle container"} id={"rating-selector"} onSelect={this.sendRating}>
+                    <select className={"btn dropdown-toggle container"} id={"rating-selector"}>
                         <option value="5">5</option>
                         <option value="4">4</option>
                         <option value="3">3</option>
                         <option value="2">2</option>
                         <option value="1">1</option>
                     </select>
+                    <button type={"btn"} onClick={this.sendRating}>Rate deck</button>
                 </div>
             </div>
-        </Link>
+        )
     }
 }
 export default DeckRatingDisplay;

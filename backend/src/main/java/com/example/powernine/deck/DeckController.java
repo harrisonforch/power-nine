@@ -6,11 +6,14 @@ import com.example.powernine.deck.utils.DeckRatingException;
 import com.example.powernine.user.User;
 import com.example.powernine.user.UserRepository;
 import com.example.powernine.user.utils.UserNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin
@@ -22,6 +25,8 @@ public class DeckController {
     private DeckRepository deckRepository;
     @Autowired
     private DeckRatingsRepository deckRatingsRepository;
+
+    private static final Logger logger = LoggerFactory.getLogger(DeckController.class);
 
     @GetMapping("/decks")
     List<Deck> getDecks() {
@@ -93,13 +98,15 @@ public class DeckController {
         deckRepository.save(deck);
     }
 
-    @PostMapping("/decks/rate/{name}/{username}/{rating}")
-    void rateDeck(@PathVariable String name, @PathVariable String username, @PathVariable Integer rating, Principal principal) {
+    @PostMapping("/decks/rate/{name}/{uid}/{rate}")
+    void rateDeck(@PathVariable String name, @PathVariable String uid, @PathVariable String rate, Principal principal) {
         if (principal == null)
             throw new UsernameNotFoundException("Unable to load principal user");
+        Integer rating = Integer.parseInt(rate);
+        Long userUID = Long.parseLong(uid);
         if (rating < 0 || rating > 5)
             throw new DeckRatingException("Unable to store value");
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByUID(userUID);
         User userMakingRating = userRepository.findByUsername(principal.getName());
         if (user != null) {
             for (Deck deck: user.getDecks()) {
@@ -110,7 +117,7 @@ public class DeckController {
             }
             throw new DeckNotFoundException(name);
         }
-        throw new UsernameNotFoundException(username);
+        throw new UsernameNotFoundException(String.valueOf(userUID));
     }
 
     @GetMapping("/decks/rate/{name}/{username}")

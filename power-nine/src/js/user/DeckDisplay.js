@@ -27,6 +27,9 @@ class DeckDisplay extends React.Component {
                     <h5 className={"card-title deck-card-display"}>{this.props.deck.deckName}</h5>
                     <p className={"card-subtitle deck-card-display"}>
                         Number of cards in deck: {this.props.deck.cards.length}
+                    </p> <br/>
+                    <p className={"card-subtitle deck-card-display"}>
+                        Average rating: {this.props.rating}
                     </p>
                 </div>
             </div>

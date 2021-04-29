@@ -19,8 +19,8 @@ function Login() {
 
   const history = useHistory();
 
-    if (LoggedInUser.isLoggedIn())
-        history.push("./profile");
+    // if (LoggedInUser.isLoggedIn())
+    //     history.push("./profile");
 
 
   function handleSubmit(event) {
