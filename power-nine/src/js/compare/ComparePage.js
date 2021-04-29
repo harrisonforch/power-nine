@@ -34,7 +34,7 @@ class ComparePage extends React.Component {
 
 
     componentDidMount() {
-        //this.loadFakeDecks();
+        this.loadFakeDecks();
         //initializing default decks
        // console.log(this.state.deck1);
         
@@ -45,20 +45,14 @@ class ComparePage extends React.Component {
             {username: "user", password: "password1"})
             .then(data => {
                 //return data.decks[0];
-                this.setState({
-                    isLoaded: true,
-                    deck1: data.decks[0],
-                    deck2: data.decks[1]
-
-                });
                 console.log("DATA RECEIVED")
-                this.returnDefault();
+                this.returnDefault(data.decks[0].cards, data.decks[1].cards);
 
             })
             
             .catch(error => {
                 this.setState({
-                    isLoaded: true,
+                    isLoaded: false,
                     error: error
                 })
                 console.log("ERROR")
@@ -75,15 +69,12 @@ class ComparePage extends React.Component {
             </div>
         </div>);
     }
-    returnDefault(){
+    returnDefault(cards1, cards2){
         //e.preventDefault();
-        console.log(this.state)
-        var length1 = this.state.deck1.cards.length;
-        var length2 = this.state.deck2.cards.length;
         var returnedCards = []
-        var cards1 = this.state.deck1.cards
-        var cards2 = this.state.deck2.cards
-        for (var i = 0; i < length1; i++){
+        console.log("single cards")
+        console.log(cards1)
+        for (var i = 0; i < cards1.length; i++){
             var inDeck = false
             for (var j = 0; j < returnedCards.length; j++){
                 if (cards1[i].name === returnedCards[j].name){
@@ -94,7 +85,7 @@ class ComparePage extends React.Component {
                 returnedCards.push(cards1[i])
             }
         }
-        for (var i = 0; i < length2; i++){
+        for (var i = 0; i < cards2.length; i++){
             var inDeck = false
             for (var j = 0; j < returnedCards.length; j++){
                 if (cards2[i].name === returnedCards[j].name){
@@ -110,6 +101,8 @@ class ComparePage extends React.Component {
         //var returnDeck = this.state.deck1
         //returnDeck.cards = returnedCards
         this.setState({
+            deck1: cards1,
+            deck2: cards2,
             combinedDeck: returnedCards,
             isLoaded: true
         });
@@ -123,22 +116,23 @@ class ComparePage extends React.Component {
 
 
     render() {
-        this.loadFakeDecks();
+        // this.loadFakeDecks();
         if (!this.state.isLoaded)
-            return <div />;
+            return <div>Loading</div>;
         if (this.state.error !== null) {
             return (<div>
                 Error when loading <br/>
                 {this.state.error}
             </div>);
         }
-        var deck = this.state.combinedDeck
-        if (this.state.combinedDeck == null){
+        let deck = null
+        if (this.state.combinedDeck !== null){
             deck = this.state.combinedDeck;
         }
         else{
             deck = this.state.deck1
         }
+        deck = {cards: deck}
         
         
  
