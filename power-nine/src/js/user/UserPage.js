@@ -45,11 +45,12 @@ class UserPage extends React.Component {
         for (let i = 0; i < this.state.user.decks.length; i += 4) {
             tableRows.push(
                 <div className={"row"}>
-                    {this.state.user.decks.slice(i, i + 4).map(deck =>
-                        <div className={"col-3"}>
-                            <DeckDisplay deck={deck} />
+                    {this.state.user.decks.slice(i, i + 4).map((deck, k) => {
+                        let j = i + k;
+                        return <div className={"col-3"}>
+                            <DeckDisplay deck={this.state.user.decks[j]} />
                         </div>
-                    )}
+                    })}
                 </div>
             )
             tableRows.push(<br />)
