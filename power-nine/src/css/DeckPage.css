@@ -11,7 +11,16 @@
 }
 
 .deckstats{
-    margin-right: 90%;
+    margin-right: 75%;
+}
+
+.center{
+    text-align: center;
+    float: center;
+}
+
+.right-align{
+    margin-left: 26%;
 }
 
 .mana-badge{

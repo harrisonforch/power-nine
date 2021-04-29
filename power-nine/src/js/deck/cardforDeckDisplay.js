@@ -13,7 +13,7 @@ class CardforDeckDisplay extends React.Component {
         console.log(this.props)
         return (<div classname = "card individual-card card-link container">
 
-            <Badge variant="success">{this.props.card.name}</Badge>{' '}
+            <Badge class = "center" variant="success">{this.props.card.name} {this.props.card.type_line}</Badge>{' '}
             <br></br>
             <div>
                 <img classname = "card-image" src = {this.props.card.image_uris.small} alt ="Not able to render!"/>

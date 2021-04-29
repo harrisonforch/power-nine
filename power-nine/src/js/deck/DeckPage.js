@@ -5,6 +5,7 @@ import DeckDisplay from "./DeckDisplay";
 import user_logo from "../../static/user-logo.png";
 import DeckNavbar from "./DeckNavbar";
 import DeckStatsDisplay from "./deckStatsDisplay";
+import Button from 'react-bootstrap/Button';
 
 
 class DeckPage extends React.Component {
@@ -15,7 +16,8 @@ class DeckPage extends React.Component {
             //unsure if this is true / needed
             //fix the ternary operator syntax
             //deck: this.props.location.state !== undefined ? this.props.location.state.deck: null,
-            deck: this.loadFakeDeck(),
+            deck: null,
+            editedDeck: null,
             isLoaded: false,
             error: null
         }
@@ -30,10 +32,11 @@ class DeckPage extends React.Component {
         requestFromAPI("http://localhost:8080/users/login", "admin", "welcome1", "POST",
             {username: "user", password: "password1"})
             .then(data => {
-                // return data.decks[0];
+                //return data.decks[0];
                 this.setState({
                     isLoaded: true,
                     deck: data.decks[0],
+                    editedDeck: data.decks[0]
                 });
             })
             .catch(error => {
@@ -73,8 +76,23 @@ class DeckPage extends React.Component {
         </div>);
     }
 
+    returnLand(e){
+        e.preventDefault();
+        var currentcards = this.state.deck.cards;
+        var returnedCards = [];
+        for (var i = 0; i < currentcards.length; i++){
+            var cardType = currentcards[i].type_line;
+            if (cardType.includes("land")){
+                returnedCards.push(currentcards[i]);
+            }
+
+        }
+        this.state.editedDeck.cards = returnedCards;
+
+    }
+
     render() {
-        this.loadFakeDeck()
+        this.loadFakeDeck();
         if (!this.state.isLoaded)
             return <div />;
         if (this.state.error !== null) {
@@ -92,11 +110,20 @@ class DeckPage extends React.Component {
                 PAGE STILL BEING WORKED ON
             </h2>
             {/*Left-side image and username*/}
-            <div>
-                <DeckStatsDisplay deck = {this.state.deck}/>
+            <div >
+                <div className = "right-align">
+                    <Button variant="outline-primary" onClick = {this.returnLand}>Land</Button>{' '}
+                    <Button variant="outline-secondary">Creatures</Button>{' '}
+                    <Button variant="outline-success">Enchantments</Button>{' '}
+                    <Button variant="outline-warning">Warning</Button>{' '}
+                    <Button variant="outline-danger">Artifacts</Button>{' '}
+                    <Button variant="outline-info">Instants</Button>{' '}
+                    <Button variant="outline-light">Sorceries</Button>{' '}
+                </div>
+                <DeckStatsDisplay deck = {this.state.editedDeck}/>
             </div>
             <div>
-                <DeckDisplay deck = {this.state.deck}/>
+                <DeckDisplay deck = {this.state.editedDeck}/>
             </div>
 
         </div>);

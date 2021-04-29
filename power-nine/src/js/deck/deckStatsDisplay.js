@@ -13,6 +13,7 @@ class DeckStatsDisplay extends React.Component {
     constructor(props){
         super(props);
         this.deck = this.props.deck;
+        console.log(this.deck);
         this.cards = this.deck.cards;
         this.aCMC = "";
         this.CB = 0;
@@ -91,9 +92,12 @@ class DeckStatsDisplay extends React.Component {
     render() {
         return (<div classname = "deckstats container row">
             <h1>
-                Stats for {this.props.deck.deckName}
+                {this.props.deck.deckName}
             </h1>
-            <Badge classname = " mana-badge " color = "danger">Average Mana Cost: {this.aCMC}
+            <h2>
+                Statistics:
+            </h2>
+            <Badge classname = " mana-badge " color = "danger" variant = "danger"> Average Mana Cost: {this.aCMC}
             </Badge>{' '}
             <br></br>
             <Badge classname = " mana-badge " color = "dangprimer" variant= "danger">Average Power: {this.aPower}
