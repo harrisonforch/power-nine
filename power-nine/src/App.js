@@ -9,6 +9,7 @@ import Switch from "react-bootstrap/Switch";
 
 import UserPage from "./js/user/UserPage";
 import DeckPage from "./js/deck/DeckPage";
+import ComparePage from "./js/compare/ComparePage";
 
 export default function App() {
     return (
@@ -21,6 +22,7 @@ export default function App() {
                 <Route path={"/logout"} />
                 <Route path={"/login"} />
                 <Route path={"/register"} />
+                <Route path={"/compare"} component = {ComparePage}/>
             </Switch>
         </Router>
     );

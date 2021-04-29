@@ -6,6 +6,10 @@ import user_logo from "../../static/user-logo.png";
 import DeckNavbar from "./DeckNavbar";
 import DeckStatsDisplay from "./deckStatsDisplay";
 import Button from 'react-bootstrap/Button';
+//import FormControl from 'react-boostrap/lib/FormControl';
+import { InputGroup } from 'react-bootstrap';
+import { FormControl } from 'react-bootstrap';
+import { Redirect } from 'react-router-dom';
 
 
 class DeckPage extends React.Component {
@@ -19,7 +23,9 @@ class DeckPage extends React.Component {
             //deck: null,
             editedDeck: null,
             isLoaded: false,
-            error: null
+            error: null,
+            compareDeck: null,
+            compareText: null
         }
         this.returnDefault = this.returnDefault.bind(this);
         this.returnLand = this.returnLand.bind(this);
@@ -197,6 +203,40 @@ class DeckPage extends React.Component {
 
     }
 
+    submitComparison(){
+        var requestWorked = false;
+        //insert in value for search deck string
+        //need code to extract current deck value from the form below
+        var currDeckName = document.getElementsByTagName("compareText").value
+        //currDeckName = {this.state.compareText}
+        console.log("CURRENT DECK NAME: " + currDeckName)
+        let requestLink = "http://localhost:8080/decks/" + currDeckName
+        console.log(requestLink)
+        requestFromAPI(requestLink, "admin", "welcome1", "GET")
+            .then(data => {
+                //return data.decks[0];
+                this.setState({
+                    requestWorked: true,
+                    compareDeck: data
+                });
+            })
+            .catch(error => {
+                this.setState({
+                    error: error
+                })
+            })
+        
+            if (requestWorked == true){
+                //need code to redirect with coparison passing in both decks as deck1 and deck2 respectively
+                return  <Redirect  to="/posts/" />
+            }
+            else{
+                alert("That deck does not exist in our database");
+            }
+        //call API for new deck
+        //send them to other page with the updated state of decks
+    }
+
 
 
     render() {
@@ -235,6 +275,24 @@ class DeckPage extends React.Component {
                     <Button variant="outline-danger" onClick = {this.returnInstant}>Instants</Button>{' '}
                     <Button variant="outline-info" onClick = {this.returnSorcery}>Sorceries</Button>{' '}
                     <br></br>
+                    <br></br>
+                    <InputGroup className="mb-3 spacing">
+                        <InputGroup.Prepend>
+                        <InputGroup.Text id="basic-addon1">Compare</InputGroup.Text>
+                        </InputGroup.Prepend>
+                        <FormControl
+                        placeholder="Enter Deck Name"
+                        aria-label="compareDeckName"
+                        aria-describedby="basic-addon1"
+                        id = "compareText"
+                        tagName = "compareText"
+                        value = {this.state.compareText}
+                        />
+                        <InputGroup.Append>
+                             <Button variant="outline-secondary" onClick = {this.submitComparison}>Submit</Button>
+                        </InputGroup.Append>
+                    </InputGroup>
+                    <div className = "errorMessage"></div>
                     <DeckDisplay deck = {deck}/>
 
                 </div>
