@@ -36,14 +36,14 @@ class DeckPage extends React.Component {
                 this.setState({
                     isLoaded: true,
                     deck: data.decks[0],
-                    editedDeck: null
+                    editedDeck: null,
                 });
             })
             .catch(error => {
                 this.setState({
                     isLoaded: true,
                     error: error,
-                    editedDeck: null
+                    editedDeck: null,
                 })
             })
 
@@ -78,17 +78,19 @@ class DeckPage extends React.Component {
     }
 
     returnLand(e){
-        // e.preventDefault();
+        //e.preventDefault();
         var currentcards = this.state.deck.cards;
         var returnedCards = [];
+        var returnedDeck = this.state.deck;
         for (var i = 0; i < currentcards.length; i++){
             var cardType = currentcards[i].type_line;
-            if (cardType.includes("Creature")){
+            if (cardType.includes("land")){
                 returnedCards.push(currentcards[i]);
             }
 
         }
-        this.setState({editedDeck: returnedCards});
+        returnedDeck.cards = returnedCards
+        this.setState({editedDeck: returnedDeck});
         // this.state.editedDeck.cards = returnedCards;
 
     }
@@ -127,6 +129,7 @@ class DeckPage extends React.Component {
                     <Button variant="outline-danger">Artifacts</Button>{' '}
                     <Button variant="outline-info">Instants</Button>{' '}
                     <Button variant="outline-light">Sorceries</Button>{' '}
+                    
                 </div>
                 <DeckStatsDisplay deck = {deck}/>
             </div>
