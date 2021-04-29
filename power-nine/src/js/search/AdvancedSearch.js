@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import requestFromAPI from "../BackendAPI";
 import LoggedInUser from "../user/LoggedInUser";
 import UserNavbar from "../user/UserNavbar";
+import DeckDisplay from "../user/DeckDisplay";
 
 class AdvancedSearch extends Component{
     constructor(props){
@@ -45,9 +46,9 @@ class AdvancedSearch extends Component{
                 for(let i = 0; i < data.total_cards; i++) {
                     this.setState(prevState => ({
                         cardData: [...prevState.cardData, data.data[i]],
-                        isCompleted: true
                     }));
                 }
+                this.setState({isCompleted: true})
             })
     }
 
@@ -88,36 +89,38 @@ class AdvancedSearch extends Component{
             })
     }
 
-    renderSearchResults(i){
-        if(this.state.cardData.length > i) {
-            if(this.state.cardData[i].layout == 'transform' || this.state.cardData[i].layout == 'modal_dfc') {
-                return(
-                    <div margin="20px" className={"col"}>
-                        <button onClick={this.addToDeck} value={i}>Add to deck</button>
-                        <button onClick={this.createDeck} value={i}>Create a new deck with this card</button>
+    renderSearchResults(){
+        const tableRows = [];
+        for (let i = 0; i < this.state.cardData.length; i+=3) {
+            let card = this.state.cardData[i];
+            if (card === undefined)
+                continue;
+            if (i === 50)
+                return tableRows;
+            tableRows.push(
+                <div margin="20px" className={"row"}>
+                    {this.state.cardData.slice(i, i + 3).map((_card, j) => {
+                        if (this.state.cardData[j] === undefined)
+                            return;
+                        return (<div>
+                            <button onClick={this.addToDeck} value={j}>Add to deck</button>
+                            <button onClick={this.createDeck} value={j}>Create a new deck with this card</button>
 
-                        <a href={this.state.cardData[i].scryfall_uri}>
-                            <figure>
-                                <img src={this.state.cardData[i].card_faces[1].image_uris.small}/>
-                                <figcaption>{this.state.cardData[i].name}</figcaption>
-                            </figure>
-                        </a>
-                    </div>
-                )
-            }
-            return (
-                <div margin="20px" className={"col"}>
-                    <button onClick={this.addToDeck} value={i}>Add to 'new-deck' (test)</button>
-                    <button onClick={this.createDeck} value={i}>Create 'new-deck' with this card</button>
-                    <a href={this.state.cardData[i].scryfall_uri}>
-                        <figure>
-                            <img src={this.state.cardData[i].image_uris.small}/>
-                            <figcaption>{this.state.cardData[i].name}</figcaption>
-                        </figure>
-                    </a>
+                            <a href={this.state.cardData[j].scryfall_uri}>
+                                <figure>
+                                    {this.state.cardData[j].layout == 'transform' || this.state.cardData[j].layout == 'modal_dfc' ?
+                                        <img src={this.state.cardData[j].card_faces[1].image_uris.small}/> :
+                                        <img src={this.state.cardData[j].image_uris.small}/>
+                                    }
+                                    <figcaption>{this.state.cardData[j].name}</figcaption>
+                                </figure>
+                            </a>
+                        </div>)
+                    })}
                 </div>
-            )
+            );
         }
+        return tableRows;
     }
 
 // Return a controlled form i.e. values of the
@@ -169,13 +172,7 @@ class AdvancedSearch extends Component{
                         <button>Search</button>
                     </div>
                 </form>
-                <div class = "container container-fluid">
-                    {Array(50).fill(0).map(() => {
-                        i += 1;
-                        return i % 10 === 0 ? this.state.isSubmitted && this.renderSearchResults(i) :
-                            this.state.isSubmitted && (<div>{this.renderSearchResults(i)}</div>)
-                    })}
-                </div>
+                {this.state.isCompleted && this.renderSearchResults()}
             </div>
 
         )
