@@ -19,6 +19,7 @@ class DeckDisplay extends React.Component {
 
         const tableRows = [];
         var cards = this.props.deck.cards
+        console.log(this.props)
         //console.log(cards)
         for (let i = 0; i < cards.length; i += 5) {
             //var current = cards[i]

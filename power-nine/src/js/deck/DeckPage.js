@@ -25,8 +25,7 @@ class DeckPage extends React.Component {
     }
 
     componentDidMount() {
-        //don't need to do this
-        // this.loadFakeDeck();
+        this.loadFakeDeck();
     }
 
     loadFakeDeck(){
@@ -37,13 +36,14 @@ class DeckPage extends React.Component {
                 this.setState({
                     isLoaded: true,
                     deck: data.decks[0],
-                    editedDeck: data.decks[0]
+                    editedDeck: null
                 });
             })
             .catch(error => {
                 this.setState({
                     isLoaded: true,
-                    error: error
+                    error: error,
+                    editedDeck: null
                 })
             })
 
@@ -78,27 +78,22 @@ class DeckPage extends React.Component {
     }
 
     returnLand(e){
-        e.preventDefault();
+        // e.preventDefault();
         var currentcards = this.state.deck.cards;
         var returnedCards = [];
         for (var i = 0; i < currentcards.length; i++){
             var cardType = currentcards[i].type_line;
-            if (cardType.includes("land")){
+            if (cardType.includes("Creature")){
                 returnedCards.push(currentcards[i]);
             }
 
-        };
-        var editedDeckReturned = this.state.deck;
-        editedDeckReturned.cards = returnedCards;
-        this.setState({
-            editedDeck: editedDeckReturned
-        })
-        this.state.editedDeck.cards = returnedCards;
+        }
+        this.setState({editedDeck: returnedCards});
+        // this.state.editedDeck.cards = returnedCards;
 
     }
 
     render() {
-        this.loadFakeDeck();
         if (!this.state.isLoaded)
             return <div />;
         if (this.state.error !== null) {
@@ -107,6 +102,13 @@ class DeckPage extends React.Component {
                 {this.state.error}
             </div>);
         }
+        let deck = this.state.editedDeck;
+        if (deck === null) {
+            deck = this.state.deck;
+        } else {
+            deck = {cards: deck}
+        }
+
 
         return (<div>
             {/*adding a new test comment*/}
@@ -126,10 +128,10 @@ class DeckPage extends React.Component {
                     <Button variant="outline-info">Instants</Button>{' '}
                     <Button variant="outline-light">Sorceries</Button>{' '}
                 </div>
-                <DeckStatsDisplay deck = {this.state.editedDeck}/>
+                <DeckStatsDisplay deck = {deck}/>
             </div>
             <div>
-                <DeckDisplay deck = {this.state.editedDeck}/>
+                <DeckDisplay deck = {deck}/>
             </div>
 
         </div>);
