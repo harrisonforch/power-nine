@@ -19,6 +19,7 @@ function Login() {
 
   const history = useHistory();
 
+    LoggedInUser.clearUser();
     // if (LoggedInUser.isLoggedIn())
     //     history.push("./profile");
 

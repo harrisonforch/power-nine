@@ -39,10 +39,12 @@ public class DeckController {
             throw new UsernameNotFoundException("Unable to load principal user");
         User user = userRepository.findByUsername(principal.getName());
         deck.setUserUID(user.getUID());
-        if (!user.getDecks().contains(deck))
-            user.getDecks().add(deck);
+        Deck newDeck = deckRepository.save(deck);
+        if (!user.getDecks().contains(newDeck)) {
+            user.getDecks().add(newDeck);
+        }
         userRepository.save(user);
-        return deckRepository.save(deck);
+        return newDeck;
     }
 
     @GetMapping("/decks/{name}")

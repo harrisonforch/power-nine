@@ -18,7 +18,8 @@ public class Deck {
     private Long userUID;
 
     public Deck() {
-
+        this.UID = count;
+        count += 1;
     }
 
     public Deck(String deckName, ArrayList<Card> cards) {
