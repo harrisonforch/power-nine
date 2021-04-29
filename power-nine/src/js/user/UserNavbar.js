@@ -22,7 +22,11 @@ class UserNavbar extends React.Component {
                                 <div></div>
                         }
                         <Link to={"/search"} className="nav-link">Search</Link>
-                        <Link to={"/alldecks"} className="nav-link">All decks</Link>
+                        {
+                            LoggedInUser.isLoggedIn() ?
+                                <Link to={"/alldecks"} className="nav-link">All decks</Link> :
+                                <div></div>
+                        }
                     </ul>
                     <ul className="navbar-nav ml-auto">
                         {this.handleLogout()}
