@@ -15,7 +15,7 @@ import AdvancedSearch from "./js/search/AdvancedSearch";
 import LoggedInUser from "./js/user/LoggedInUser";
 
 export default function App() {
-    let homeRoute = <Route exact path={"/"} component={Login} />
+    let homeRoute = <Route exact path={"/"} component={AdvancedSearch} />
     if (LoggedInUser.isLoggedIn())
         homeRoute = <Route exact path={"/"} component={UserPage} />
     return (
