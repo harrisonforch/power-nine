@@ -44,7 +44,6 @@ public class UserWrapper {
             else
                 this.deckRatings.add(Float.parseFloat("0"));
         }
-        logger.info(String.format("%s", this.deckRatings));
     }
 
     public String getUsername() {

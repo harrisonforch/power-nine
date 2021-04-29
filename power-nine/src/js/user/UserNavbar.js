@@ -9,6 +9,12 @@ class UserNavbar extends React.Component {
         return <Link to={"/login"} className="nav-link">Login</Link>;
     }
 
+    handleRegister() {
+        if (LoggedInUser.isLoggedIn())
+            return <div></div>;
+        return <Link to={"/registration"} className="nav-link">Register</Link>;
+    }
+
     render() {
         return (
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -30,6 +36,7 @@ class UserNavbar extends React.Component {
                     </ul>
                     <ul className="navbar-nav ml-auto">
                         {this.handleLogout()}
+                        {this.handleRegister()}
                     </ul>
                 </div>
             </nav>

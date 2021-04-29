@@ -4,9 +4,11 @@ import Button from "react-bootstrap/Button";
 import { Navbar } from 'react-bootstrap';
 import {Nav} from "react-bootstrap";
 import { Link } from "react-router-dom";
-import request from "./backend.js";
+import BackendAPI from "./js/BackendAPI";
 import {useHistory} from 'react-router-dom';
 import "./registration.css";
+import UserNavbar from "./js/user/UserNavbar";
+import LoggedInUser from "./js/user/LoggedInUser";
 
 
 function Registration() {
@@ -52,14 +54,10 @@ function Registration() {
       }
     }
     else {
-      request("http://localhost:8080/users", "admin", "welcome1", "POST",
+      BackendAPI("http://localhost:8080/users", "admin", "welcome1", "POST",
       {username: username, password: password, firstName: fname, lastName: lname, email: email})
       .then(data => {
-        setUsername(data.username.toString());
-        setPassword(data.password.toString());
-        setFname(data.firstName.toString());
-        setLname(data.lastName.toString());
-        setEmail(data.email.toString()); 
+        LoggedInUser.setUser(data);
         history.push("./profile", data);
       })
       .catch(error =>{
@@ -70,16 +68,7 @@ function Registration() {
 
   return (
     <div className="Registration">
-        <Navbar bg="light" expand="lg">
-            <Navbar.Brand href="#home">Power Nine</Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-        <Nav className="mr-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="./login">Login</Nav.Link>
-        </Nav>
-        </Navbar.Collapse>
-        </Navbar>
+        <UserNavbar />
 
        
       <Form onSubmit={handleSubmit}>
