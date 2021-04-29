@@ -11,7 +11,6 @@ class UserPage extends React.Component {
         super(props);
         if (!LoggedInUser.isLoggedIn())
             return;
-        LoggedInUser.updateUser()
         this.state = {
             user: {
                 username: LoggedInUser.getUser().username,
@@ -23,9 +22,9 @@ class UserPage extends React.Component {
     }
 
     componentDidMount() {
-        if (LoggedInUser.isLoggedIn())
+        LoggedInUser.updateUser().then(user => {
             requestFromAPI("http://localhost:8080/users/login", "admin", "welcome1", "POST",
-                {username: this.state.user.username, password: this.state.user.password})
+                {username: user.username, password: user.password})
                 .then(data => {
                     this.setState({
                         isLoaded: true,
@@ -38,6 +37,7 @@ class UserPage extends React.Component {
                         error: error
                     })
                 })
+        });
     }
 
     generateTable() {
@@ -86,7 +86,7 @@ class UserPage extends React.Component {
     render() {
         if (LoggedInUser.isLoggedIn()) {
             if (!this.state.isLoaded)
-                return <div />;
+                return <div>Loading...</div>;
             if (this.state.error !== null) {
                 return <div>
                     Error when loading <br />

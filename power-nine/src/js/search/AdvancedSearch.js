@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import requestFromAPI from "../BackendAPI";
 import LoggedInUser from "../user/LoggedInUser";
+import UserNavbar from "../user/UserNavbar";
 
 class AdvancedSearch extends Component{
     constructor(props){
@@ -114,6 +115,7 @@ class AdvancedSearch extends Component{
     render(){
         return(
             <div>
+                <UserNavbar />
                 <form onSubmit={this.handleSubmit}>
                     <div>
                         <label htmlFor='name'>Name</label>
