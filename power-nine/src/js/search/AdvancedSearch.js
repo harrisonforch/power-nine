@@ -21,10 +21,6 @@ class AdvancedSearch extends Component{
             rarity:'',
             isSubmitted: false,
             cardData: [],
-            user: {
-                username: LoggedInUser.getUser().username,
-                password: LoggedInUser.getUser().password
-            },
             isLoaded: false,
             error: null,
             targetDeck:'',
@@ -37,9 +33,10 @@ class AdvancedSearch extends Component{
     }
 
     componentDidMount() {
-        if (LoggedInUser.isLoggedIn())
+        if (LoggedInUser.isLoggedIn()) {
+            let user = LoggedInUser.getUser();
             requestFromAPI("http://localhost:8080/users/login", "admin", "welcome1", "POST",
-                {username: this.state.user.username, password: this.state.user.password})
+                {username: user.username, password: user.password})
                 .then(data => {
                     this.setState({
                         isLoaded: true,
@@ -52,6 +49,7 @@ class AdvancedSearch extends Component{
                         error: error
                     })
                 })
+        }
     }
 
 // Form submitting logic, prevent default page refresh
@@ -159,8 +157,12 @@ class AdvancedSearch extends Component{
                         if (this.state.cardData[j] === undefined)
                             return;
                         return (<div>
-                            <button onClick={this.addToDeck} value={j}>Add to deck</button>
-                            <button onClick={this.createDeck} value={j}>Create a new deck with this card</button>
+                            {
+                                LoggedInUser.isLoggedIn() ?
+                                    (<span><button onClick={this.addToDeck} value={j}>Add to deck</button>
+                                        <button onClick={this.createDeck} value={j}>Create a new deck with this card</button></span>) :
+                                    <div></div>
+                            }
 
                             <a href={this.state.cardData[j].scryfall_uri}>
                                 <figure>
