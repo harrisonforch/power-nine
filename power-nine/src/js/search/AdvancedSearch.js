@@ -70,12 +70,12 @@ class AdvancedSearch extends Component{
         // TODO: Replace with drop-down of possible decks
         const enteredName = prompt('Please enter the name of your new deck')
         requestFromAPI("http://localhost:8080/decks", user.username, user.password, "POST",
-            {deckName: enteredName, cards: []})
+            {deckName: enteredName, cards: [this.state.cardData[ind]]})
             .then(() => {
-                requestFromAPI(`http://localhost:8080/decks/${enteredName}`, user.username, user.password, "PUT", this.state.cardData[ind])
-                    .then(() => {
-                        alert("Deck" + enteredName + " created!")
-                    });
+                alert("Deck " + enteredName + " created!")
+            })
+            .catch(() => {
+                alert("Unable to create new deck with name " + enteredName);
             });
     }
 
@@ -86,6 +86,9 @@ class AdvancedSearch extends Component{
         requestFromAPI(`http://localhost:8080/decks/${namedDeck}`, user.username, user.password, "PUT", this.state.cardData[ind])
             .then(() => {
                 alert("Card added to deck " + namedDeck)
+            })
+            .catch(() => {
+                alert("Unable to add card to deck " + namedDeck)
             })
     }
 

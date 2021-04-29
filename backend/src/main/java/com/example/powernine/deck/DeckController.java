@@ -29,14 +29,14 @@ public class DeckController {
     }
 
     @PostMapping("/decks")
-    void addDeck(@RequestBody Deck deck, Principal principal) {
+    Deck addDeck(@RequestBody Deck deck, Principal principal) {
         if (principal == null)
             throw new UsernameNotFoundException("Unable to load principal user");
         User user = userRepository.findByUsername(principal.getName());
         if (!user.getDecks().contains(deck))
             user.getDecks().add(deck);
         userRepository.save(user);
-        deckRepository.save(deck);
+        return deckRepository.save(deck);
     }
 
     @GetMapping("/decks/{name}")
@@ -71,14 +71,14 @@ public class DeckController {
     }
 
     @PutMapping("/decks/{name}")
-    void addCardToDeck(@RequestBody Card card, @PathVariable String name, Principal principal) {
+    Deck addCardToDeck(@RequestBody Card card, @PathVariable String name, Principal principal) {
         if (principal == null)
             throw new UsernameNotFoundException("Unable to load principal user");
         User user = userRepository.findByUsername(principal.getName());
         Deck deck = user.getDeckByName(name);
         deck.addCard(card);
         userRepository.save(user);
-        deckRepository.save(deck);
+        return deckRepository.save(deck);
     }
 
     @DeleteMapping("/decks/delete-card/{name}")

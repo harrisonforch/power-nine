@@ -76,7 +76,6 @@ class UserPage extends React.Component {
     }
 
     getDecksDiv() {
-        console.log(LoggedInUser.getUser())
         return (<div className={"decks-div border rounded"}>
             <div className={"container border-dark"}>
                 {this.generateTable()}
