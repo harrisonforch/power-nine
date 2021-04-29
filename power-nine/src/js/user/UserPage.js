@@ -87,7 +87,10 @@ class UserPage extends React.Component {
     render() {
         if (LoggedInUser.isLoggedIn()) {
             if (!this.state.isLoaded)
-                return <div>Loading...</div>;
+                return <div>
+                    <UserNavbar />
+                    Loading...
+                </div>;
             if (this.state.error !== null) {
                 return <div>
                     Error when loading <br />
