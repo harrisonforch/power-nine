@@ -28,9 +28,9 @@ class LoadAdminDatabase {
     @Bean
     CommandLineRunner initDatabase(UserRepository userRepository, DeckRepository deckRepository, DeckRatingsRepository deckRatingsRepository) {
 
-        userRepository.deleteAll();
-        deckRepository.deleteAll();
-        deckRatingsRepository.deleteAll();
+//        userRepository.deleteAll();
+//        deckRepository.deleteAll();
+//        deckRatingsRepository.deleteAll();
 
         // admin:welcome1
         return args -> {
