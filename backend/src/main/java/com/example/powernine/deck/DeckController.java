@@ -2,6 +2,7 @@ package com.example.powernine.deck;
 
 import com.example.powernine.card.Card;
 import com.example.powernine.deck.utils.DeckNotFoundException;
+import com.example.powernine.deck.utils.DeckRatingException;
 import com.example.powernine.user.User;
 import com.example.powernine.user.UserRepository;
 import com.example.powernine.user.utils.UserNotFoundException;
@@ -29,6 +30,8 @@ public class DeckController {
 
     @PostMapping("/decks")
     void addDeck(@RequestBody Deck deck, Principal principal) {
+        if (principal == null)
+            throw new UsernameNotFoundException("Unable to load principal user");
         User user = userRepository.findByUsername(principal.getName());
         if (!user.getDecks().contains(deck))
             user.getDecks().add(deck);
@@ -58,6 +61,8 @@ public class DeckController {
 
     @DeleteMapping("/decks/{name}")
     void deleteDeck(@PathVariable String name, Principal principal) {
+        if (principal == null)
+            throw new UsernameNotFoundException("Unable to load principal user");
         User user = userRepository.findByUsername(principal.getName());
         Deck deck = user.getDeckByName(name);
         user.getDecks().remove(deck);
@@ -67,6 +72,8 @@ public class DeckController {
 
     @PutMapping("/decks/{name}")
     void addCardToDeck(@RequestBody Card card, @PathVariable String name, Principal principal) {
+        if (principal == null)
+            throw new UsernameNotFoundException("Unable to load principal user");
         User user = userRepository.findByUsername(principal.getName());
         Deck deck = user.getDeckByName(name);
         deck.addCard(card);
@@ -76,6 +83,8 @@ public class DeckController {
 
     @DeleteMapping("/decks/delete-card/{name}")
     void removeCardFromDeck(@RequestBody Card card, @PathVariable String name, Principal principal) {
+        if (principal == null)
+            throw new UsernameNotFoundException("Unable to load principal user");
         User user = userRepository.findByUsername(principal.getName());
         Deck deck = user.getDeckByName(name);
         deck.removeCard(card);
@@ -84,13 +93,34 @@ public class DeckController {
     }
 
     @PostMapping("/decks/rate/{name}/{username}/{rating}")
-    void rateDeck(@PathVariable String name, @PathVariable String username, @PathVariable Integer rating) {
+    void rateDeck(@PathVariable String name, @PathVariable String username, @PathVariable Integer rating, Principal principal) {
+        if (principal == null)
+            throw new UsernameNotFoundException("Unable to load principal user");
+        if (rating < 0 || rating > 5)
+            throw new DeckRatingException("Unable to store value");
+        User user = userRepository.findByUsername(username);
+        User userMakingRating = userRepository.findByUsername(principal.getName());
+        if (user != null) {
+            for (Deck deck: user.getDecks()) {
+                if (deck.getDeckName().equals(name)) {
+                    deckRatingsRepository.save(new DeckRatings(deck.getId(), userMakingRating.getUID(), rating));
+                    return;
+                }
+            }
+            throw new DeckNotFoundException(name);
+        }
+        throw new UsernameNotFoundException(username);
+    }
+
+    @GetMapping("/decks/rate/{name}/{username}")
+    List<DeckRatings> getDeckRatings(@PathVariable String name, @PathVariable String username) {
         User user = userRepository.findByUsername(username);
         if (user != null) {
             for (Deck deck: user.getDecks()) {
                 if (deck.getDeckName().equals(name))
-                    deckRatingsRepository.save(new DeckRatings(deck.getId(), rating));
+                    return deckRatingsRepository.findAllByDeckUID(deck.getId());
             }
+            throw new DeckNotFoundException(username);
         }
         throw new UsernameNotFoundException(username);
     }

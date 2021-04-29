@@ -106,7 +106,7 @@ class AdvancedSearch extends Component{
 
                             <a href={this.state.cardData[j].scryfall_uri}>
                                 <figure>
-                                    {this.state.cardData[j].layout == 'transform' || this.state.cardData[j].layout == 'modal_dfc' ?
+                                    {this.state.cardData[j].layout === 'transform' || this.state.cardData[j].layout === 'modal_dfc' ?
                                         <img src={this.state.cardData[j].card_faces[1].image_uris.small}/> :
                                         <img src={this.state.cardData[j].image_uris.small}/>
                                     }

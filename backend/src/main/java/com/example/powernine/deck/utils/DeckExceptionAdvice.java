@@ -15,4 +15,11 @@ public class DeckExceptionAdvice {
     String deckNotFoundHandler(DeckNotFoundException ex) {
         return ex.getMessage();
     }
+
+    @ResponseBody
+    @ExceptionHandler(DeckRatingException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    String deckRatingExceptionHandler(DeckRatingException ex) {
+        return ex.getMessage();
+    }
 }

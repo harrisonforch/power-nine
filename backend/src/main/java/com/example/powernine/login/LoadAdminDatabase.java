@@ -2,6 +2,7 @@ package com.example.powernine.login;
 
 import com.example.powernine.card.Card;
 import com.example.powernine.deck.Deck;
+import com.example.powernine.deck.DeckRatingsRepository;
 import com.example.powernine.deck.DeckRepository;
 import com.example.powernine.user.User;
 import com.example.powernine.user.UserRepository;
@@ -25,10 +26,11 @@ class LoadAdminDatabase {
     private static final Logger log = LoggerFactory.getLogger(LoadAdminDatabase.class);
 
     @Bean
-    CommandLineRunner initDatabase(UserRepository userRepository, DeckRepository deckRepository) {
+    CommandLineRunner initDatabase(UserRepository userRepository, DeckRepository deckRepository, DeckRatingsRepository deckRatingsRepository) {
 
         userRepository.deleteAll();
         deckRepository.deleteAll();
+        deckRatingsRepository.deleteAll();
 
         // admin:welcome1
         return args -> {

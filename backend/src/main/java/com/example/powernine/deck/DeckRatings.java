@@ -11,6 +11,7 @@ public class DeckRatings {
     @Indexed(unique = true)
     private Long UID;
     private Long deckUID;
+    private Long userMakingRatingUID;
     private Integer rating;
 
     public DeckRatings() {
@@ -18,10 +19,11 @@ public class DeckRatings {
         count += 1;
     }
 
-    public DeckRatings(Long deckUID, Integer rating) {
+    public DeckRatings(Long deckUID, Long userMakingRatingUID, Integer rating) {
         UID = count;
         count += 1;
         this.deckUID = deckUID;
+        this.userMakingRatingUID = userMakingRatingUID;
         this.rating = rating;
     }
 
@@ -47,5 +49,13 @@ public class DeckRatings {
 
     public void setRating(Integer rating) {
         this.rating = rating;
+    }
+
+    public Long getUserMakingRatingUID() {
+        return userMakingRatingUID;
+    }
+
+    public void setUserMakingRatingUID(Long userMakingRatingUID) {
+        this.userMakingRatingUID = userMakingRatingUID;
     }
 }

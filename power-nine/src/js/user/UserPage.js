@@ -10,7 +10,7 @@ class UserPage extends React.Component {
     constructor(props) {
         super(props);
         if (!LoggedInUser.isLoggedIn())
-            return;
+            return LoggedInUser.redirect();
         this.state = {
             user: {
                 username: LoggedInUser.getUser().username,

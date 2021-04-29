@@ -151,7 +151,7 @@ Deck-names must be unique for a given user
 Get a user's deck by name
 
 ```javascript
-request("http://localhost:8080/decks/{deckname}", "user", "password1", "GET")
+request("http://localhost:8080/decks/{user}/{deckname}", null, null, "GET")
 ```
 
 ---
@@ -182,4 +182,24 @@ Delete `Card` from a user's deck
 
 ```javascript
 request("http://localhost:8080/decks/delete-card/{deckname}", "user", "password1", "DELETE", card)
+```
+
+---
+
+#### Rate a user's deck
+
+Assign a `rating` from 0-5 (inclusive) to the deck named `name` belonging to the user named `username`
+
+```javascript
+request("http://localhost:8080/decks/rate/{name}/{username}/{rating}", "user1", "password", "POST")
+```
+
+---
+
+#### Get the rating for a user's deck
+
+Get the ratings for the deck named `name` that belongs to the user named `username`
+
+```javascript
+request("http://localhost:8080/decks/rate/{name}/{username}", null, null, "POST")
 ```
