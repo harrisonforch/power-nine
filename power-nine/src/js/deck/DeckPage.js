@@ -10,6 +10,7 @@ import Button from 'react-bootstrap/Button';
 import { InputGroup } from 'react-bootstrap';
 import { FormControl } from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
+import UserNavbar from "../user/UserNavbar";
 
 
 class DeckPage extends React.Component {
@@ -249,9 +250,13 @@ class DeckPage extends React.Component {
 
     render() {
         if (!this.state.isLoaded)
-            return <div />;
+            return <div>
+                <UserNavbar />
+                Loading...
+            </div>;
         if (this.state.error !== null) {
             return (<div>
+                <UserNavbar />
                 Error when loading <br/>
                 {this.state.error}
             </div>);
@@ -267,7 +272,7 @@ class DeckPage extends React.Component {
         return (<div>
             {/*adding a new test comment*/}
             {/*Navbar*/}
-            <DeckNavbar />
+            <UserNavbar />
             <br></br>
             {/*Left-side image and username*/}
             <div className = "flex-container" >
