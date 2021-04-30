@@ -4,7 +4,8 @@ import Button from "react-bootstrap/Button";
 import { Navbar } from 'react-bootstrap';
 import {Nav} from "react-bootstrap";
 import { Link } from "react-router-dom";
-import request from "./backend.js";
+// import request from "./backend.js";
+import BackendAPI from "./js/BackendAPI";
 import {useHistory} from 'react-router-dom';
 import "./login.css";
 import LoggedInUser from "./js/user/LoggedInUser";
@@ -41,7 +42,7 @@ function Login() {
      
     } 
     else {
-      request("http://localhost:8080/users/login", "admin", "welcome1", "POST",
+      BackendAPI("http://localhost:8080/users/login", "admin", "welcome1", "POST",
       {username: username, password: password})
       .then(data => {
         setUsername(data.username.toString());
