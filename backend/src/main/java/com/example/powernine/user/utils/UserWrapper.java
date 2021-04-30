@@ -17,12 +17,18 @@ public class UserWrapper {
     private final String password;
     private final List<Deck> decks;
     private final ArrayList<Float> deckRatings;
+    private final String firstName;
+    private final String lastName;
+    private final String email;
 
     private static final Logger logger = LoggerFactory.getLogger(UserWrapper.class);
 
     public UserWrapper(User user, DeckRatingsRepository deckRatingsRepository) {
         this.username = user.getUsername();
         this.password = user.getPassword();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getFirstName();
+        this.email = user.getEmail();
         this.decks = user.getDecks();
         this.deckRatings = new ArrayList<>();
         getAvgDeckRatings(user, deckRatingsRepository);
@@ -60,5 +66,17 @@ public class UserWrapper {
 
     public ArrayList<Float> getDeckRatings() {
         return deckRatings;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getEmail() {
+        return email;
     }
 }
