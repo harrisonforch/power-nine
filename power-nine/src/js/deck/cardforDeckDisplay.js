@@ -60,7 +60,11 @@ class CardforDeckDisplay extends React.Component {
         return (<div classname = "card individual-card card-link container centering">
             {this.DisplayName()}
             <div>
-                <img classname = "card-image" src = {this.props.card.image_uris.small} alt ="Not able to render!"/>
+                {
+                    this.props.card.image_uris !== null ?
+                    <img className="card-image" src={this.props.card.image_uris.small} alt="Not able to render!"/> :
+                        <img className="card-image" src={this.props.card.card_faces[1].image_uris.small} alt="Not able to render!"/>
+                }
             </div>
             
         </div>);
